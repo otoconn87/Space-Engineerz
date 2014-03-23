@@ -36,15 +36,6 @@ public class LevelOne extends Map {
 		
 	}
 	
-	// matt is a neat guy
-	// test
-	// don't break eclipse
-	
-	
-	
-	
-	
-	
 	
 	
 }
