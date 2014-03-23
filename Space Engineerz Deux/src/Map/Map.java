@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 
 public abstract class Map {
 
-	
+	 
 	private int mapWidth;
 	private int mapHeight;
 	private int pixelWidth ;

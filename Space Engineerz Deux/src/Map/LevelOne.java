@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class LevelOne extends Map {
 
-	
+	 
 	public int mapWidth;
 	public int mapHeight;
 	public int pixelWidth = 32;

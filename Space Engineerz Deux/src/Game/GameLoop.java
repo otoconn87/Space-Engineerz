@@ -19,7 +19,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 
 	public int x, y;
 	public int walkTimer = 0;
-	
+	 
 	public Image offscreen;
 	public Graphics d;
 	
