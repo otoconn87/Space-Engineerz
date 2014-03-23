@@ -17,7 +17,7 @@ public class Game extends GameLoop {
 		d = offscreen.getGraphics();
 		addKeyListener(this);
 	}
-	
+	//hi guys
 	public void paint(Graphics g){
 		d.clearRect(0, 0, 854, 480);
 		d.drawImage(background, 0, 0, this);
