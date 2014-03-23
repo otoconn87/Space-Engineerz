@@ -11,24 +11,36 @@ public class LevelOne extends Map {
 	 
 	public int mapWidth;
 	public int mapHeight;
-	public int pixelWidth = 32;
-	public int pixelHeight = 32;
-	public int rows = 2;
-	public int cols = 20;
+	public int pixelWidth;
+	public int pixelHeight;
+	public int rows;
+	public int cols;
 	public BufferedImage tileMap[];
 	public BufferedImage actualLevel[][];
 	public int levelMap[][];
 	
 	
-	public LevelOne(String tiles, InputStream map){
+	
+	
+	public LevelOne(String tiles, InputStream is){
 		
-		super(tiles, map);
+		super(tiles);
+		
 		pixelWidth = 32;
 		pixelHeight = 32;
 		rows = 2;
 		cols = 20;
 		
+		this.readMap(is);
+		this.makeTileMap();
+		
 	}
+	
+	
+	
+	
+	
+	
 	
 	
 }

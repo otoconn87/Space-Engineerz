@@ -25,52 +25,59 @@ public abstract class Map {
 	//private BufferedImage actualMap[][];
 	private int levelMap[][];
 	
-	public Map (String tiles, InputStream map) {
-		tileMap = new BufferedImage[cols + (rows*cols)];
+	public Map (String tiles) {
+		
 		try {
 			tileSet = ImageIO.read(getClass().getResourceAsStream(tiles));
-			for(int i = 0; i < rows; i++){
-				for(int j = 0; j < cols; j++){
-					BufferedImage mapImage = tileSet.getSubimage(j*pixelWidth, i*pixelWidth, pixelWidth, pixelHeight);
-					tileMap[j + (i*cols)] = mapImage;
-				}
-			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		
-		
-		try{
-		br = new BufferedReader(new InputStreamReader(map));
-		mapWidth = Integer.parseInt(br.readLine());
-		setMapWidth(mapWidth);
-		//System.out.println(mapWidth);
-	    mapHeight = Integer.parseInt(br.readLine());
-	    setMapHeight(mapHeight);
-	    //System.out.println(mapHeight);
-	    levelMap = new int[mapHeight][mapWidth];
-	   // actualMap = new BufferedImage[mapHeight][mapWidth];
-
-	        for(int i = 0; i < mapHeight; i++) {
-	            String line = br.readLine();
-	          //  System.out.println(line);
-	            String[] tileValues = line.split("\\s+");
-	            for(int j = 0; j < mapWidth; j++){
-	                levelMap[i][j] = Integer.parseInt(tileValues[j]); 
-	               //actualMap[i][j] = tileMap[levelMap[i][j]];
-	               //System.out.println(levelMap[i][j]);
-	               
-	            }
-	        }
-	        map.close();
-	        
-	       
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+	}
 	
+	public void makeTileMap(){
+		tileMap = new BufferedImage[cols + (rows*cols)];
+		for(int i = 0; i < rows; i++){
+			for(int j = 0; j < cols; j++){
+				BufferedImage mapImage = tileSet.getSubimage(j*pixelWidth, i*pixelWidth, pixelWidth, pixelHeight);
+				tileMap[j + (i*cols)] = mapImage;
+			}
+		}
+	}
+	
+	public void readMap(InputStream is){
+		try{
+			br = new BufferedReader(new InputStreamReader(is));
+			mapWidth = Integer.parseInt(br.readLine());
+			setMapWidth(mapWidth);
+			//System.out.println(mapWidth);
+		    mapHeight = Integer.parseInt(br.readLine());
+		    setMapHeight(mapHeight);
+		    //System.out.println(mapHeight);
+		    levelMap = new int[mapHeight][mapWidth];
+		   // actualMap = new BufferedImage[mapHeight][mapWidth];
+
+		        for(int i = 0; i < mapHeight; i++) {
+		            String line = br.readLine();
+		          //  System.out.println(line);
+		            String[] tileValues = line.split("\\s+");
+		            for(int j = 0; j < mapWidth; j++){
+		                levelMap[i][j] = Integer.parseInt(tileValues[j]); 
+		               //actualMap[i][j] = tileMap[levelMap[i][j]];
+		               //System.out.println(levelMap[i][j]);
+		               
+		            }
+		        }
+		       
+		        is.close();
+		        
+		       
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 	}
 	
 
