@@ -39,6 +39,13 @@ public class Game extends GameLoop {
 			d.drawImage(player.jumping(playerAnimations), player.x, player.y, this);
 		}
 		
+		if(lobster.idling == true){
+			d.drawImage(lobster.idle(lobsterAnimations),  lobster.x,  lobster.y, this);
+		}
+		if(lobster.walking==true){
+			d.drawImage(lobster.walking(lobsterAnimations),  lobster.x, lobster.y, this);
+		}
+		
 		g.drawImage(offscreen,0,0, this);
 		
 	}
