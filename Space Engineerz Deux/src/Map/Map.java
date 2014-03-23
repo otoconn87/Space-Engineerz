@@ -1,7 +1,7 @@
 package Map;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
+
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 
 public abstract class Map {
 
-	 
+	private boolean blocked;
 	private int mapWidth;
 	private int mapHeight;
 	private int pixelWidth ;
@@ -38,15 +38,17 @@ public abstract class Map {
 		
 	}
 	
-	public void makeTileMap(){
-		tileMap = new BufferedImage[cols + (rows*cols)];
+	public void makeTileMap(int rows, int cols, int pixelWidth){
+		tileMap = new BufferedImage[cols + ((rows-1)*cols)];
 		for(int i = 0; i < rows; i++){
 			for(int j = 0; j < cols; j++){
-				BufferedImage mapImage = tileSet.getSubimage(j*pixelWidth, i*pixelWidth, pixelWidth, pixelHeight);
+				BufferedImage mapImage = tileSet.getSubimage(j*pixelWidth, i*pixelWidth, pixelWidth, pixelWidth);
 				tileMap[j + (i*cols)] = mapImage;
 			}
 		}
 	}
+	
+	
 	
 	public void readMap(InputStream is){
 		try{
@@ -81,7 +83,19 @@ public abstract class Map {
 	}
 	
 
+	public BufferedImage[][] getMap(){
+		BufferedImage[][] actualMap = new BufferedImage[getMapHeight()][getMapWidth()];
+		for(int i =0; i < mapHeight; i++){
+			for(int j = 0; j<mapWidth; j++){
+				actualMap[i][j] = tileMap[levelMap[i][j]];
+			}
+		}
+		return actualMap;
+	}
 	
+	public boolean setBlocked(boolean b){
+		return this.blocked = b;
+	}
 	
 	public int setMapWidth(int x){
 		return mapWidth = x;
@@ -94,14 +108,14 @@ public abstract class Map {
 	public int getMapWidth(){return this.mapWidth;}
 	public int getMapHeight(){return this.mapHeight;}
 	
-	public void paint(Graphics g){
-		for(int i = 0; i < mapHeight; i++){
-			for(int j = 0; j < mapWidth; j++){
-				g.drawImage(tileMap[levelMap[i][j]], j*pixelWidth, i*pixelHeight, null);
-			}
-		}
-		
-	}
+//	public void paint(Graphics g){
+//		for(int i = 0; i < mapHeight; i++){
+//			for(int j = 0; j < mapWidth; j++){
+//				g.drawImage(tileMap[levelMap[i][j]], j*pixelWidth, i*pixelHeight, null);
+//			}
+//		}
+//		
+//	}
 	
 	
 }

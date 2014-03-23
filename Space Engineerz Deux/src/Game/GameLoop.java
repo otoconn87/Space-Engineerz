@@ -43,7 +43,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 		
 		levelOne = new LevelOne ("level1_space.png", getClass().getResourceAsStream("space_map.map"));
 		//levelOne.loadMap();
-		//gameMap = levelOne.actualLevel;
+		gameMap = levelOne.levelOneMap();
 		try {
 			
 			background = ImageIO.read(getClass().getResourceAsStream("citybg.jpg"));

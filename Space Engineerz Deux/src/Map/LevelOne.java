@@ -22,6 +22,7 @@ public class LevelOne extends Map {
 	
 	
 	
+	
 	public LevelOne(String tiles, InputStream is){
 		
 		super(tiles);
@@ -32,8 +33,12 @@ public class LevelOne extends Map {
 		cols = 20;
 		
 		this.readMap(is);
-		this.makeTileMap();
+		this.makeTileMap(rows, cols, pixelWidth);
 		
+	}
+	
+	public BufferedImage[][] levelOneMap(){
+		return this.getMap();
 	}
 	
 	

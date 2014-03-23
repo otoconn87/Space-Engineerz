@@ -22,12 +22,12 @@ public class Game extends GameLoop {
 		d.drawImage(background, 0, 0, this);
 		//d.drawImage(levelOne.tileMap[30],100, 100, this);
 	
-//		
-//		for (int i = 0; i < levelOne.getMapHeight(); i++){
-//			for(int j = 0; j < levelOne.getMapWidth(); j++){
-//				d.drawImage(levelOne.tileMap[levelOne.levelMap[i][j]], i*levelOne.pixelHeight, j*levelOne.pixelWidth, this);
-//			}
-//		}
+		
+		for (int i = 0; i < levelOne.getMapHeight(); i++){
+			for(int j = 0; j < levelOne.getMapWidth(); j++){
+				d.drawImage(gameMap[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+			}
+		}
 		
 		if(player.idling == true){
 			d.drawImage(player.idle(playerAnimations),  player.x,  player.y, this);
