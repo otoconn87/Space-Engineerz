@@ -1,5 +1,6 @@
 package Sprites;
 
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -13,16 +14,23 @@ public class Lobster extends Sprites {
 	public boolean facingRight, left;
 
 	public int walkTimer;
+	
+	public Rectangle l = new Rectangle(0,50,47,49);
 
 	public BufferedImage walk; // walking subImages
-	public BufferedImage shoot;	//TODO
-	public BufferedImage flinch; //TODO
+	public BufferedImage shoot; // TODO
+	public BufferedImage flinch; // TODO
 
 	public Lobster(String s) {
 		super(s);
 
 		walkTimer = 0;
 		walking = true;
+		
+	}
+	
+	public Rectangle getRect(){
+		return this.l;
 	}
 
 	public int getX() {
@@ -69,12 +77,12 @@ public class Lobster extends Sprites {
 		walkTimer++;
 
 		try {
-			//TODO take out ||
+			// TODO take out ||
 			if ((facingRight && walking) || walking) {
 
 				if (walkTimer >= 1 && walkTimer < 15) {
 					walk = image.getSubimage(3, 0, 47, 49);
-					
+
 				} else if (walkTimer >= 15 && walkTimer < 30) {
 					walk = image.getSubimage(58, 0, 47, 49);
 
@@ -83,29 +91,26 @@ public class Lobster extends Sprites {
 
 				} else if (walkTimer >= 45 && walkTimer < 60) {
 					walk = image.getSubimage(159, 0, 50, 49);
-					
-				} else if (walkTimer >= 60 && walkTimer < 75){
+
+				} else if (walkTimer >= 60 && walkTimer < 75) {
 					walk = image.getSubimage(220, 0, 47, 49);
-					
-				} else if (walkTimer >= 75 && walkTimer < 90){
+
+				} else if (walkTimer >= 75 && walkTimer < 90) {
 					walk = image.getSubimage(276, 0, 47, 49);
-					
-				} else if (walkTimer >= 90 && walkTimer < 105){
+
+				} else if (walkTimer >= 90 && walkTimer < 105) {
 					walk = image.getSubimage(324, 0, 40, 49);
-					
-				} else if (walkTimer >= 105 && walkTimer < 120){
+
+				} else if (walkTimer >= 105 && walkTimer < 120) {
 					walk = image.getSubimage(365, 0, 47, 49);
-					
-				} else if (walkTimer >= 120 && walkTimer < 135){
+
+				} else if (walkTimer >= 120 && walkTimer < 135) {
 					walk = image.getSubimage(416, 0, 47, 49);
-					
-				} else{
+
+				} else {
 					walkTimer = 0;
 				}
-				
 
-				
-				
 				// Have to Implements walking left
 			} else if (!facingRight && walking) {
 				if (walkTimer >= 1 && walkTimer < 30) {
@@ -122,35 +127,37 @@ public class Lobster extends Sprites {
 				}
 
 			}
-			
-			if(!facingRight){
-				AffineTransform imageFlip = AffineTransform.getScaleInstance(-1,1);
-				imageFlip.translate(-walk.getWidth(null),0);
-				AffineTransformOp op = new AffineTransformOp(imageFlip, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+
+			if (!facingRight) {
+				AffineTransform imageFlip = AffineTransform.getScaleInstance(
+						-1, 1);
+				imageFlip.translate(-walk.getWidth(null), 0);
+				AffineTransformOp op = new AffineTransformOp(imageFlip,
+						AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 				walk = op.filter(walk, null);
 			}
-						
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return walk;
 	}
 
-	//TODO shoot
+	// TODO shoot
 	public BufferedImage shoot(BufferedImage b) {
-		if (facingRight && shooting){
-			//shoot = image.getSubimage(50, 86, 32, 32);
-		}else if (!facingRight && shooting){
-			//shoot = image.getSubimage(291, 86, 35, 33);
+		if (facingRight && shooting) {
+			// shoot = image.getSubimage(50, 86, 32, 32);
+		} else if (!facingRight && shooting) {
+			// shoot = image.getSubimage(291, 86, 35, 33);
 		}
 		return shoot;
 	}
-	
+
 	public BufferedImage flinch(BufferedImage b) {
-		if (facingRight && flinching){
-			//shoot = image.getSubimage(50, 86, 32, 32);
-		}else if (!facingRight && flinching){
-			//shoot = image.getSubimage(291, 86, 35, 33);
+		if (facingRight && flinching) {
+			// flinch = image.getSubimage(50, 86, 32, 32);
+		} else if (!facingRight && flinching) {
+			// flinch = image.getSubimage(291, 86, 35, 33);
 		}
 		return shoot;
 	}

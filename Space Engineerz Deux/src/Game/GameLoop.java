@@ -3,6 +3,7 @@ package Game;
 import java.applet.Applet;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -82,6 +83,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 			}
 			
 			lobsterMovement();
+			checkIntersection();
 			
 			repaint();
 			try {
@@ -92,7 +94,14 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 		}
 	}
 	
-	public void lobsterMovement(){
+	private void checkIntersection() {
+				
+		if(lobster.getRect().intersects(player.getRect())){
+			System.out.println("Intersection");
+		}
+	}
+
+	private void lobsterMovement(){
 		
 		if(!lobster.facingRight){
 			lobster.setLeft();
