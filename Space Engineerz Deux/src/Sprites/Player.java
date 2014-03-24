@@ -2,6 +2,7 @@
 
 package Sprites;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 
@@ -19,20 +20,26 @@ public class Player extends Sprites {
 	public BufferedImage walk; //walking subImages
 	public BufferedImage idle;
 	public BufferedImage jump;
+	
+	public Rectangle p = new Rectangle(0,0,32,32);
 		
 	public Player(String s){
 		super(s);
 		
 		walkTimer = 0;
 		jumpTimer = 0;
+		
+
+	}
+	
+	public Rectangle getRect(){
+		return this.p;
 	}
 	
 	public int getX(){
 		return this.x;
 	}
-	
-	
-	
+		
 	public int getY(){
 		return this.y;
 	}

@@ -3,12 +3,10 @@ package Sprites;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.awt.Rectangle;
+
 
 public abstract class Sprites {
-	
-	
-	
-	
 	
 	protected BufferedImage image;
 	
@@ -16,9 +14,8 @@ public abstract class Sprites {
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream(s));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+		
 }

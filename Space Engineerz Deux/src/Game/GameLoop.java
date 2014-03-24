@@ -3,6 +3,7 @@ package Game;
 import java.applet.Applet;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -44,7 +45,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 		player.setPosition(100,100);
 		
 		lobster = new Lobster("space_lobster.png");
-		lobster.setFacingRight(true);
+		lobster.setFacingRight(false);
 		lobster.setPosition(400, 100);
 		
 		levelOne = new LevelOne ("level1_space.png", getClass().getResourceAsStream("space_map.map"));
@@ -84,6 +85,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 				player.setIdling();
 			}
 			
+			lobsterMovement();
+			checkIntersection();
+			
 			repaint();
 			try {
 				Thread.sleep(15);
@@ -91,6 +95,30 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 					e.printStackTrace();
 			}
 		}
+	}
+	
+	private void checkIntersection() {
+				
+		if(lobster.getRect().intersects(player.getRect())){
+			System.out.println("Intersection");
+		}
+	}
+
+	private void lobsterMovement(){
+		
+		if(!lobster.facingRight){
+			lobster.setLeft();
+		}else{
+			lobster.setRight();
+		}
+		
+		if(lobster.getX() == 200){
+			lobster.setRight();
+		}
+		if(lobster.getX() == 400){
+			lobster.setLeft();
+		}
+		
 	}
 
 
