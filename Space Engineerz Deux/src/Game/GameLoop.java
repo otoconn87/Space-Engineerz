@@ -6,12 +6,12 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import Map.LevelOne;
+import Sprites.Lobster;
 import Sprites.Player;
 
 @SuppressWarnings("serial")
@@ -27,11 +27,12 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 	
 	public boolean walking, idling; //character states
 	
-	public BufferedImage background, playerAnimations;
+	public BufferedImage background, playerAnimations, lobsterAnimations;
 	public LevelOne levelOne;
 	public BufferedImage gameMap[][];
 	
 	public Player player;
+	public Lobster lobster;
 	
 	
 	public void run(){
@@ -40,6 +41,10 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 		player = new Player("space_player.png");
 		player.setFacingRight(true);
 		player.setPosition(100,100);
+		
+		lobster = new Lobster("space_lobster.png");
+		lobster.setFacingRight(true);
+		lobster.setPosition(400, 100);
 		
 		levelOne = new LevelOne ("level1_space.png", getClass().getResourceAsStream("space_map.map"));
 		//levelOne.loadMap();
