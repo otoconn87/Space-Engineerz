@@ -43,7 +43,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 		player.setPosition(100,100);
 		
 		lobster = new Lobster("space_lobster.png");
-		lobster.setFacingRight(true);
+		lobster.setFacingRight(false);
 		lobster.setPosition(400, 100);
 		
 		levelOne = new LevelOne ("level1_space.png", getClass().getResourceAsStream("space_map.map"));
@@ -81,6 +81,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 				player.setIdling();
 			}
 			
+			lobsterMovement();
+			
 			repaint();
 			try {
 				Thread.sleep(15);
@@ -88,6 +90,23 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 					e.printStackTrace();
 			}
 		}
+	}
+	
+	public void lobsterMovement(){
+		
+		if(!lobster.facingRight){
+			lobster.setLeft();
+		}else{
+			lobster.setRight();
+		}
+		
+		if(lobster.getX() == 200){
+			lobster.setRight();
+		}
+		if(lobster.getX() == 400){
+			lobster.setLeft();
+		}
+		
 	}
 
 

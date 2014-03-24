@@ -6,14 +6,15 @@ public class Lobster extends Sprites {
 
 	public int x, y;
 
-	public boolean walking, idling, shooting, falling;
+	public boolean walking, shooting, flinching;
 
 	public boolean facingRight, left;
 
 	public int walkTimer;
 
 	public BufferedImage walk; // walking subImages
-	public BufferedImage idle;
+	public BufferedImage shoot;	//TODO
+	public BufferedImage flinch; //TODO
 
 	public Lobster(String s) {
 		super(s);
@@ -43,7 +44,6 @@ public class Lobster extends Sprites {
 
 		walking = true;
 		setFacingRight(false);
-		idling = false;
 		x -= 2;
 
 	}
@@ -52,25 +52,23 @@ public class Lobster extends Sprites {
 
 		walking = true;
 		setFacingRight(true);
-		idling = false;
 		x += 2;
 	}
 
-	public void setFalling() {
-		falling = true;
+	public void setFlinching() {
+		flinching = true;
 	}
 
 	public void setIdling() {
 		walking = false;
-		idling = true;
 	}
 
 	public BufferedImage walking(BufferedImage b) {
 		walkTimer++;
 
 		try {
-
-			if (facingRight && walking) {
+			//TODO take out ||
+			if ((facingRight && walking) || walking) {
 
 				if (walkTimer >= 1 && walkTimer < 15) {
 					walk = image.getSubimage(3, 0, 47, 49);
@@ -119,19 +117,28 @@ public class Lobster extends Sprites {
 
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return walk;
 	}
 
-	public BufferedImage idle(BufferedImage b) {
-		if (facingRight && idling)
-			idle = image.getSubimage(50, 86, 32, 32);
-		else if (!facingRight && idling)
-			idle = image.getSubimage(291, 86, 35, 33);
-
-		return idle;
+	//TODO shoot
+	public BufferedImage shoot(BufferedImage b) {
+		if (facingRight && shooting){
+			//shoot = image.getSubimage(50, 86, 32, 32);
+		}else if (!facingRight && shooting){
+			//shoot = image.getSubimage(291, 86, 35, 33);
+		}
+		return shoot;
+	}
+	
+	public BufferedImage flinch(BufferedImage b) {
+		if (facingRight && flinching){
+			//shoot = image.getSubimage(50, 86, 32, 32);
+		}else if (!facingRight && flinching){
+			//shoot = image.getSubimage(291, 86, 35, 33);
+		}
+		return shoot;
 	}
 
 }
