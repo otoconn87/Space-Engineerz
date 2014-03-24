@@ -1,5 +1,7 @@
 package Sprites;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class Lobster extends Sprites {
@@ -100,6 +102,10 @@ public class Lobster extends Sprites {
 				} else{
 					walkTimer = 0;
 				}
+				
+
+				
+				
 				// Have to Implements walking left
 			} else if (!facingRight && walking) {
 				if (walkTimer >= 1 && walkTimer < 30) {
@@ -116,6 +122,14 @@ public class Lobster extends Sprites {
 				}
 
 			}
+			
+			if(!facingRight){
+				AffineTransform imageFlip = AffineTransform.getScaleInstance(-1,1);
+				imageFlip.translate(-walk.getWidth(null),0);
+				AffineTransformOp op = new AffineTransformOp(imageFlip, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+				walk = op.filter(walk, null);
+			}
+						
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
