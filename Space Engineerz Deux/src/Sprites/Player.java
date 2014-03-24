@@ -88,7 +88,7 @@ public class Player extends Sprites {
 	
 	public BufferedImage jumping(BufferedImage b){
 		if(facingRight){
-			jump = image.getSubimage(72,122,40,41);
+			jump = image.getSubimage(72, 122, 40, 41);
 		}
 		else if (!facingRight){
 			jump = image.getSubimage(260, 123, 44, 41);

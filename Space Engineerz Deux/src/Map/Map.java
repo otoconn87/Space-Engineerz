@@ -1,6 +1,6 @@
 package Map;
 
-import java.awt.Graphics;
+
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -12,17 +12,16 @@ import javax.imageio.ImageIO;
 
 public abstract class Map {
 
-	private boolean blocked;
+	//private boolean blocked;
 	private int mapWidth;
 	private int mapHeight;
-	private int pixelWidth ;
-	private int pixelHeight;
-	private int rows;
-	private int cols;
+	
 	private BufferedReader br; 
 	private BufferedImage tileSet;
+	private BufferedImage blockedTiles[];
 	private BufferedImage tileMap[];
-	//private BufferedImage actualMap[][];
+	
+	
 	private int levelMap[][];
 	
 	public Map (String tiles) {
@@ -40,10 +39,14 @@ public abstract class Map {
 	
 	public void makeTileMap(int rows, int cols, int pixelWidth){
 		tileMap = new BufferedImage[cols + ((rows-1)*cols)];
+		blockedTiles = new BufferedImage[cols];
 		for(int i = 0; i < rows; i++){
 			for(int j = 0; j < cols; j++){
 				BufferedImage mapImage = tileSet.getSubimage(j*pixelWidth, i*pixelWidth, pixelWidth, pixelWidth);
 				tileMap[j + (i*cols)] = mapImage;
+				if(i==0){
+					blockedTiles[j + (i*cols)] = mapImage;
+				}
 			}
 		}
 	}
@@ -93,9 +96,9 @@ public abstract class Map {
 		return actualMap;
 	}
 	
-	public boolean setBlocked(boolean b){
-		return this.blocked = b;
-	}
+//	public boolean setBlocked(boolean b){
+//		return this.blocked = b;
+//	}
 	
 	public int setMapWidth(int x){
 		return mapWidth = x;
@@ -108,14 +111,7 @@ public abstract class Map {
 	public int getMapWidth(){return this.mapWidth;}
 	public int getMapHeight(){return this.mapHeight;}
 	
-//	public void paint(Graphics g){
-//		for(int i = 0; i < mapHeight; i++){
-//			for(int j = 0; j < mapWidth; j++){
-//				g.drawImage(tileMap[levelMap[i][j]], j*pixelWidth, i*pixelHeight, null);
-//			}
-//		}
-//		
-//	}
+
 	
 	
 }
