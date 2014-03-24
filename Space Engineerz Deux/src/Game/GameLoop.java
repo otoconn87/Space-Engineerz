@@ -29,8 +29,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 	
 	public BufferedImage background, playerAnimations, lobsterAnimations;
 	public LevelOne levelOne;
-	public BufferedImage gameMap[][];
-	
+	public BufferedImage gameMapBlocked[][];
+	public BufferedImage gameMapPassed[][];
+	public int[][] levelOneMap;
 	public Player player;
 	public Lobster lobster;
 	
@@ -48,7 +49,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 		
 		levelOne = new LevelOne ("level1_space.png", getClass().getResourceAsStream("space_map.map"));
 		//levelOne.loadMap();
-		gameMap = levelOne.levelOneMap();
+		gameMapBlocked = levelOne.getLevelOneBlockedTiles();
+		gameMapPassed = levelOne.getLevelOnePassTiles();
+		levelOneMap = levelOne.getLevelOneMap();
 		try {
 			
 			background = ImageIO.read(getClass().getResourceAsStream("citybg.jpg"));

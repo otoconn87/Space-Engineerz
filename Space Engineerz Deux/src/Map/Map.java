@@ -19,6 +19,7 @@ public abstract class Map {
 	private BufferedReader br; 
 	private BufferedImage tileSet;
 	private BufferedImage blockedTiles[];
+	private BufferedImage passTiles[];
 	private BufferedImage tileMap[];
 	
 	
@@ -35,17 +36,24 @@ public abstract class Map {
 		}
 		
 		
+		
 	}
 	
 	public void makeTileMap(int rows, int cols, int pixelWidth){
 		tileMap = new BufferedImage[cols + ((rows-1)*cols)];
-		blockedTiles = new BufferedImage[cols];
+		blockedTiles = new BufferedImage[cols + ((rows-1)*cols)];
+		passTiles = new BufferedImage[cols + ((rows-1)*cols)];
 		for(int i = 0; i < rows; i++){
 			for(int j = 0; j < cols; j++){
 				BufferedImage mapImage = tileSet.getSubimage(j*pixelWidth, i*pixelWidth, pixelWidth, pixelWidth);
 				tileMap[j + (i*cols)] = mapImage;
-				if(i==0){
+				if(i==1){
 					blockedTiles[j + (i*cols)] = mapImage;
+					passTiles[j + (i*cols)] = tileSet.getSubimage(0, 0, pixelWidth, pixelWidth);
+				}
+				if(i ==0){
+					passTiles[j + (i*cols)] = mapImage;
+					blockedTiles[j + (i*cols)] = tileSet.getSubimage(0, 0, pixelWidth, pixelWidth);
 				}
 			}
 		}
@@ -86,16 +94,25 @@ public abstract class Map {
 	}
 	
 
-	public BufferedImage[][] getMap(){
+	public BufferedImage[][] getBlockedTiles(){
 		BufferedImage[][] actualMap = new BufferedImage[getMapHeight()][getMapWidth()];
 		for(int i =0; i < mapHeight; i++){
 			for(int j = 0; j<mapWidth; j++){
-				actualMap[i][j] = tileMap[levelMap[i][j]];
+				actualMap[i][j] = blockedTiles[levelMap[i][j]];
 			}
 		}
 		return actualMap;
 	}
 	
+	public BufferedImage[][] getPassTiles(){
+		BufferedImage[][] actualMap = new BufferedImage[getMapHeight()][getMapWidth()];
+		for(int i =0; i < mapHeight; i++){
+			for(int j = 0; j<mapWidth; j++){
+				actualMap[i][j] = passTiles[levelMap[i][j]];
+			}
+		}
+		return actualMap;
+	}
 //	public boolean setBlocked(boolean b){
 //		return this.blocked = b;
 //	}

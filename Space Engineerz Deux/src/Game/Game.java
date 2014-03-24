@@ -9,25 +9,37 @@ public class Game extends GameLoop {
 	
 		
 	public void init(){
-		setSize(854, 480);
+		setSize(900, 500);
 		Thread thread = new Thread(this);
 		thread.start();
-		offscreen = createImage(854, 480);
+		offscreen = createImage(900, 500);
 		d = offscreen.getGraphics();
 		addKeyListener(this);
 	}
 	
 	public void paint(Graphics g){
-		d.clearRect(0, 0, 854, 480);
+		d.clearRect(0, 0, 900, 500);
 		d.drawImage(background, 0, 0, this);
 		//d.drawImage(levelOne.tileMap[30],100, 100, this);
-	
 		
 		for (int i = 0; i < levelOne.getMapHeight(); i++){
 			for(int j = 0; j < levelOne.getMapWidth(); j++){
-				d.drawImage(gameMap[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+				
+				d.drawImage(gameMapPassed[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
 			}
 		}
+		
+		for (int i = 0; i < levelOne.getMapHeight(); i++){
+			for(int j = 0; j < levelOne.getMapWidth(); j++){
+				if(levelOneMap[i][j] > 19){
+					d.drawImage(gameMapBlocked[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+				}
+				else{
+					continue;
+				}
+			}
+		}
+		
 		
 		if(player.idling == true){
 			d.drawImage(player.idle(playerAnimations),  player.x,  player.y, this);

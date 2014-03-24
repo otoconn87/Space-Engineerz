@@ -37,10 +37,16 @@ public class LevelOne extends Map {
 		
 	}
 	
-	public BufferedImage[][] levelOneMap(){
-		return this.getMap();
+	public BufferedImage[][] getLevelOneBlockedTiles(){
+		return this.getBlockedTiles();
+	}
+	public BufferedImage[][] getLevelOnePassTiles(){
+		return this.getPassTiles();
 	}
 	
+	public int[][] getLevelOneMap(){
+		return this.levelMap;
+	}
 	
 	
 }
