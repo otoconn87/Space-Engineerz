@@ -13,7 +13,7 @@ public class Player extends Sprites {
 
 	public boolean walking, idling, jumping, shooting, jetpack, falling, dead;
 
-	public boolean facingRight, left;
+	public boolean facingRight, left, shotOnce;
 
 	public int walkTimer, shootTimer;
 
@@ -29,6 +29,7 @@ public class Player extends Sprites {
 		jumpTimer = 0;
 		health = 5;
 		dead = false;
+		shotOnce = false;
 
 	}
 
@@ -90,6 +91,10 @@ public class Player extends Sprites {
 		walking = false;
 		jumping = false;
 		
+	}
+	
+	public void laserFire(){
+		System.out.println("LASER!!!");
 	}
 
 	public void setFalling() {
@@ -156,37 +161,41 @@ public class Player extends Sprites {
 
 		return idle;
 	}
-	
-	public BufferedImage shoot(BufferedImage b){
-	
+
+	public BufferedImage shoot(BufferedImage b) {
+
 		shootTimer++;
-		
-		try{
-			if(shooting){
-				if(shootTimer >= 1 && shootTimer < 5){
+
+		try {
+			if (shooting) {
+				if(shootTimer == 10){
+					laserFire();
+				}
+				
+				if (shootTimer >= 1 && shootTimer < 5) {
 					shoot = image.getSubimage(13, 8, 32, 32);
-				}else if(shootTimer >= 5 && shootTimer < 10){
+				} else if (shootTimer >= 5 && shootTimer < 10) {
 					shoot = image.getSubimage(50, 8, 32, 32);
-				}else if(shootTimer >= 10 && shootTimer < 15){
+				} else if (shootTimer >= 10 && shootTimer < 15) {
 					shoot = image.getSubimage(84, 8, 45, 32);
-				}else{
+				} else {
+					shootTimer = 0;
 					shooting = false;
-					//shootTimer = 0;
+					shotOnce = true;
 				}
 				if (!facingRight) {
-					AffineTransform imageFlip = AffineTransform.getScaleInstance(
-							-1, 1);
+					AffineTransform imageFlip = AffineTransform
+							.getScaleInstance(-1, 1);
 					imageFlip.translate(-shoot.getWidth(null), 0);
 					AffineTransformOp op = new AffineTransformOp(imageFlip,
 							AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 					shoot = op.filter(shoot, null);
 				}
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		return shoot;
 	}
 

@@ -86,13 +86,10 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	private void playerMovement() {
 		if (left == true) {
-
 			player.setLeft();
 		} else if (right == true) {
-
 			player.setRight();
 		} else if (jump == true) {
-
 			player.setJump();
 		} else if (down == true) {
 			if (left == true)
@@ -111,7 +108,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		} else {
 			lobster.setRight();
 		}
-
 		if (lobster.getX() == 200) {
 			lobster.setRight();
 		}
@@ -172,7 +168,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		if (key.getKeyCode() == 70){
 			shoot = false;
 		}
-
 	}
 
 	@Override
