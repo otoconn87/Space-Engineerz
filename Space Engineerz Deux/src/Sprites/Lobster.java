@@ -75,8 +75,7 @@ public class Lobster extends Sprites {
 		walkTimer++;
 
 		try {
-			// TODO take out ||
-			if ((facingRight && walking) || walking) {
+			if (walking) {
 
 				if (walkTimer >= 1 && walkTimer < 15) {
 					walk = image.getSubimage(3, 0, 47, 49);
@@ -110,29 +109,16 @@ public class Lobster extends Sprites {
 				}
 
 				// Have to Implements walking left
-			} else if (!facingRight && walking) {
-				if (walkTimer >= 1 && walkTimer < 30) {
-					walk = image.getSubimage(333, 43, 35, 34);
+			
 
-				} else if (walkTimer >= 30 && walkTimer < 60) {
-					walk = image.getSubimage(299, 43, 30, 35);
-
-				} else if (walkTimer >= 60 && walkTimer < 90) {
-					walk = image.getSubimage(258, 43, 38, 33);
-
-				} else {
-					walkTimer = 0;
+				if (!facingRight) {
+					AffineTransform imageFlip = AffineTransform
+							.getScaleInstance(-1, 1);
+					imageFlip.translate(-walk.getWidth(null), 0);
+					AffineTransformOp op = new AffineTransformOp(imageFlip,
+							AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+					walk = op.filter(walk, null);
 				}
-
-			}
-
-			if (!facingRight) {
-				AffineTransform imageFlip = AffineTransform.getScaleInstance(
-						-1, 1);
-				imageFlip.translate(-walk.getWidth(null), 0);
-				AffineTransformOp op = new AffineTransformOp(imageFlip,
-						AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-				walk = op.filter(walk, null);
 			}
 
 		} catch (Exception e) {

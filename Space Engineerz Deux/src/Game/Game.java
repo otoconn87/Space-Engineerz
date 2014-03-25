@@ -50,7 +50,9 @@ public class Game extends GameLoop {
 		if(player.jumping == true){
 			d.drawImage(player.jumping(playerAnimations), player.x, player.y, this);
 		}
-		
+		if(player.shooting == true){
+			d.drawImage(player.shoot(playerAnimations), player.x, player.y, this);
+		}
 		if(lobster.flinching == true){
 			d.drawImage(lobster.flinch(lobsterAnimations),  lobster.x,  lobster.y, this);
 		}

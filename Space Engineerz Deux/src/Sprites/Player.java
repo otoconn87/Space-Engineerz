@@ -1,171 +1,193 @@
-
-
 package Sprites;
 
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
-
 public class Player extends Sprites {
-	
+
 	public int jumpTimer;
 	public int x, y;
 	public int health;
-	
+
 	public boolean walking, idling, jumping, shooting, jetpack, falling, dead;
-	
+
 	public boolean facingRight, left;
-	
-	public int walkTimer;
-	
-	public BufferedImage walk; //walking subImages
+
+	public int walkTimer, shootTimer;
+
+	public BufferedImage walk; // walking subImages
 	public BufferedImage idle;
 	public BufferedImage jump;
-			
-	public Player(String s){
+	public BufferedImage shoot;
+
+	public Player(String s) {
 		super(s);
-		
-		walkTimer = 0;
+
+		walkTimer = shootTimer = 0;
 		jumpTimer = 0;
 		health = 5;
 		dead = false;
-		
 
 	}
-	
-	public Rectangle getRect(){
-		return new Rectangle(this.x,this.y,32,32);
+
+	public Rectangle getRect() {
+		return new Rectangle(this.x, this.y, 32, 32);
 	}
-	
-	public int getX(){
+
+	public int getX() {
 		return this.x;
 	}
-		
-	public int getY(){
+
+	public int getY() {
 		return this.y;
 	}
-	
-	public void setPosition(int x, int y){
+
+	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
-	
-	public void setFacingRight(boolean b){
+
+	public void setFacingRight(boolean b) {
 		facingRight = b;
 	}
-	
-	public void setLeft(){
-		
+
+	public void setLeft() {
+
 		walking = true;
 		setFacingRight(false);
 		idling = false;
 		jumping = false;
-		x-=2;
-		
+		x -= 2;
+
 	}
-	public void setRight(){
-		
+
+	public void setRight() {
+
 		walking = true;
 		setFacingRight(true);
 		idling = false;
 		jumping = false;
-		x+=2;
+		x += 2;
 	}
-	
-	public void setJump(){
+
+	public void setJump() {
 		jumpTimer++;
 		walking = false;
 		idling = false;
 		jumping = true;
-		y-= 5;
-		if (jumpTimer == 5){
+		y -= 5;
+		if (jumpTimer == 5) {
 			falling = true;
-		}		
+		}
+
+	}
+	
+	public void setShoot(){
+		shooting = true;
+		idling = false;
+		walking = false;
+		jumping = false;
 		
 	}
-	
-	public void setFalling(){
+
+	public void setFalling() {
 		falling = true;
 	}
-	
-	public void setIdling(){
+
+	public void setIdling() {
 		walking = false;
 		jumping = false;
 		idling = true;
 	}
-	
-	public BufferedImage jumping(BufferedImage b){
-		if(facingRight){
+
+	public BufferedImage jumping(BufferedImage b) {
+		if (facingRight) {
 			jump = image.getSubimage(72, 122, 40, 41);
-		}
-		else if (!facingRight){
+		} else if (!facingRight) {
 			jump = image.getSubimage(260, 123, 44, 41);
 		}
-		
+
 		return jump;
-	}	
-	
-	
-	public BufferedImage walking(BufferedImage b){
-		walkTimer++;
-		
-		try{
-			
-		
-		if(facingRight && walking){
-			
-		
-		if(walkTimer >= 1 && walkTimer < 30){
-			walk = image.getSubimage(8,43,32,33);
-			
-		}
-		else if(walkTimer >= 30 && walkTimer < 60){
-			walk = image.getSubimage(46,43,30,32);
-			
-		}
-		else if (walkTimer >=60 && walkTimer < 90 ){
-			walk = image.getSubimage(80,43,36,32);
-			
-		}
-		else{
-			walkTimer = 0;
-		}
 	}
-		else if (!facingRight && walking){
-			if(walkTimer >= 1 && walkTimer < 30){
-			walk = image.getSubimage(333,43,35,34);
-			
-		}
-		else if(walkTimer >= 30 && walkTimer < 60){
-			walk = image.getSubimage(299,43,30,35);
-			
-		}
-		else if (walkTimer >=60 && walkTimer < 90 ){
-			walk = image.getSubimage(258,43,38,33);
-			
-		}
-		else{
-			walkTimer = 0;
-		}
-		
-			
-		}
-		}
-		catch (Exception e) {
-			// TODO Auto-generated catch block
+
+	public BufferedImage walking(BufferedImage b) {
+		walkTimer++;
+
+		try {
+			if (walking) {
+				if (walkTimer >= 1 && walkTimer < 5) {
+					walk = image.getSubimage(8, 43, 32, 33);
+				} else if (walkTimer >= 5 && walkTimer < 10) {
+					walk = image.getSubimage(46, 43, 30, 32);
+				} else if (walkTimer >= 10 && walkTimer < 15) {
+					walk = image.getSubimage(80, 43, 36, 32);
+				} else {
+					walkTimer = 0;
+				}
+				if (!facingRight) {
+					AffineTransform imageFlip = AffineTransform
+							.getScaleInstance(-1, 1);
+					imageFlip.translate(-walk.getWidth(null), 0);
+					AffineTransformOp op = new AffineTransformOp(imageFlip,
+							AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+					walk = op.filter(walk, null);
+				}
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return walk;		
+		return walk;
 	}
-	
-	public BufferedImage idle(BufferedImage b){
-		if (facingRight && idling) 
-			 idle = image.getSubimage(50, 86, 32, 32);
-		else if(!facingRight && idling)
-			 idle = image.getSubimage(291,86,35,33);
-		
+
+	public BufferedImage idle(BufferedImage b) {
+		if (idling){
+			idle = image.getSubimage(50, 86, 32, 32);
+			if (!facingRight) {
+				AffineTransform imageFlip = AffineTransform.getScaleInstance(
+						-1, 1);
+				imageFlip.translate(-idle.getWidth(null), 0);
+				AffineTransformOp op = new AffineTransformOp(imageFlip,
+						AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+				idle = op.filter(idle, null);
+			}
+		}
+
 		return idle;
 	}
 	
+	public BufferedImage shoot(BufferedImage b){
 	
+		shootTimer++;
+		
+		try{
+			if(shooting){
+				if(shootTimer >= 1 && shootTimer < 5){
+					shoot = image.getSubimage(13, 8, 32, 32);
+				}else if(shootTimer >= 5 && shootTimer < 10){
+					shoot = image.getSubimage(50, 8, 32, 32);
+				}else if(shootTimer >= 10 && shootTimer < 15){
+					shoot = image.getSubimage(84, 8, 45, 32);
+				}else{
+					shooting = false;
+					//shootTimer = 0;
+				}
+				if (!facingRight) {
+					AffineTransform imageFlip = AffineTransform.getScaleInstance(
+							-1, 1);
+					imageFlip.translate(-shoot.getWidth(null), 0);
+					AffineTransformOp op = new AffineTransformOp(imageFlip,
+							AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+					shoot = op.filter(shoot, null);
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		return shoot;
+	}
+
 }

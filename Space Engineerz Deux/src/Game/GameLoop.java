@@ -23,9 +23,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public Image offscreen;
 	public Graphics d;
 
-	public boolean left, right, jump, down; // directional buttons
+	public boolean left, right, jump, down, shoot; // directional buttons
 
-	public boolean walking, idling, dead; // character states
+	public boolean walking, idling, shooting,dead; // character states
 	
 	public boolean lobsterCollision;
 
@@ -97,7 +97,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		} else if (down == true) {
 			if (left == true)
 				player.setFacingRight(false);
-		} else {
+		} else if (shoot == true){
+			player.setShoot();
+		} else{
 			player.setIdling();
 		}
 	}
@@ -149,6 +151,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		if (key.getKeyCode() == 40) {
 			down = true;
 		}
+		if (key.getKeyCode() == 70){
+			shoot = true;
+		}
 	}
 
 	public void keyReleased(KeyEvent key) {
@@ -163,6 +168,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 		if (key.getKeyCode() == 40) {
 			down = false;
+		}
+		if (key.getKeyCode() == 70){
+			shoot = false;
 		}
 
 	}
