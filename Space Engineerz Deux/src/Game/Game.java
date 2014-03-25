@@ -33,13 +33,10 @@ public class Game extends GameLoop {
 		for (int i = 0; i < levelOne.getMapHeight(); i++){
 			for(int j = 0; j < levelOne.getMapWidth(); j++){
 				if(levelOneMap[i][j] > 19){
-					Rectangle rect = new Rectangle(j*levelOne.pixelWidth, i*levelOne.pixelHeight, levelOne.pixelWidth, levelOne.pixelWidth);
-					//d.fillRect(j*levelOne.pixelWidth, i*levelOne.pixelHeight, levelOne.pixelWidth, levelOne.pixelWidth);
-					d.drawImage(gameMapBlocked[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
-					if(player.mapCollision(player.getRect(), rect)){
-						player.setMapCollision(true);
-					}
+					//Rectangle rect = new Rectangle(j*levelOne.pixelWidth, i*levelOne.pixelHeight, levelOne.pixelWidth, levelOne.pixelWidth);
 					
+					d.drawImage(gameMapBlocked[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+
 				}
 				
 			}

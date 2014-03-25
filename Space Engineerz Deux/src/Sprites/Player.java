@@ -11,7 +11,8 @@ public class Player extends Sprites {
 	public int x, y;
 
 	
-	public boolean walking, idling, jumping, shooting, jetpack, falling, mapCollision;
+	public boolean walking, idling, jumping, shooting, jetpack, falling;
+	public boolean leftMapCollision, rightMapCollision, topMapCollision, bottomMapCollision;
 	
 	public boolean facingRight, left, shootLaser;
 	
@@ -37,12 +38,14 @@ public class Player extends Sprites {
 		jumpTimer = 0;
 		health = 5;
 		dead = false;
+		shotOnce = false;
 		shootLaser = false;
+
 
 	}
 
 	public Rectangle getRect() {
-		return new Rectangle(this.x, this.y, 32, 32);
+		return new Rectangle(this.x, this.y, 30, 30);
 	}
 
 	public int getX() {
@@ -54,8 +57,17 @@ public class Player extends Sprites {
 	}
 
 	
-	public void setMapCollision(boolean b){
-		mapCollision = b;
+	public void setLeftMapCollision(boolean b){
+		leftMapCollision = b;
+	}
+	public void setRightMapCollision(boolean b){
+		rightMapCollision = b;
+	}
+	public void setTopMapCollision(boolean b){
+		topMapCollision = b;
+	}
+	public void setBottomMapCollision(boolean b){
+		bottomMapCollision = b;
 	}
 	
 	public void setPosition(int x, int y){
@@ -70,11 +82,14 @@ public class Player extends Sprites {
 
 	
 	public void setLeft(){
-		if(mapCollision == true){
-			x-=0;
+		if(leftMapCollision){
+		    x-=0;
+			rightMapCollision = false;
 			
 		}
 		else {
+			leftMapCollision = false;
+			rightMapCollision = false;
 			walking = true;
 			setFacingRight(false);
 			idling = false;
@@ -85,12 +100,20 @@ public class Player extends Sprites {
 
 
 	public void setRight() {
-
-		walking = true;
-		setFacingRight(true);
-		idling = false;
-		jumping = false;
-		x += 2;
+		if(rightMapCollision && !bottomMapCollision){
+			x+=0;
+			leftMapCollision = false;
+			
+		}
+		else if (bottomMapCollision == true){
+			rightMapCollision = false;
+			leftMapCollision = false;
+			walking = true;
+			setFacingRight(true);
+			idling = false;
+			jumping = false;
+			x += 2;
+		}
 	}
 
 	public void setJump() {
@@ -100,7 +123,7 @@ public class Player extends Sprites {
 		jumping = true;
 		y -= 5;
 		if (jumpTimer == 5) {
-			falling = true;
+			setFalling();
 		}
 
 	}
@@ -124,7 +147,20 @@ public class Player extends Sprites {
 	}
 
 	public void setFalling() {
-		falling = true;
+		if(bottomMapCollision == true){
+			falling = false;
+			jumping = false;
+			y+=0;
+			walking = true;
+		}
+		else{
+			falling = true;
+			jumping = false;
+			bottomMapCollision = false;
+			y+=2;
+			
+		}
+		
 	}
 
 	public void setIdling() {
