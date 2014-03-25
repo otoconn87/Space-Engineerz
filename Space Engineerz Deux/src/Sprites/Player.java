@@ -9,15 +9,20 @@ public class Player extends Sprites {
 
 	public int jumpTimer;
 	public int x, y;
+
+	
+	public boolean walking, idling, jumping, shooting, jetpack, falling, mapCollision;
+	
+	public boolean facingRight, left;
+	
+	public int walkTimer;
+	
+	public BufferedImage walk; //walking subImages
+
 	public int health;
+	public boolean dead, shotOnce;
+	public int shootTimer;
 
-	public boolean walking, idling, jumping, shooting, jetpack, falling, dead;
-
-	public boolean facingRight, left, shotOnce;
-
-	public int walkTimer, shootTimer;
-
-	public BufferedImage walk; // walking subImages
 	public BufferedImage idle;
 	public BufferedImage jump;
 	public BufferedImage shoot;
@@ -45,7 +50,13 @@ public class Player extends Sprites {
 		return this.y;
 	}
 
-	public void setPosition(int x, int y) {
+	
+	public void setMapCollision(boolean b){
+		mapCollision = b;
+	}
+	
+	public void setPosition(int x, int y){
+
 		this.x = x;
 		this.y = y;
 	}
@@ -54,15 +65,21 @@ public class Player extends Sprites {
 		facingRight = b;
 	}
 
-	public void setLeft() {
-
-		walking = true;
-		setFacingRight(false);
-		idling = false;
-		jumping = false;
-		x -= 2;
-
+	
+	public void setLeft(){
+		if(mapCollision == true){
+			x-=0;
+			
+		}
+		else {
+			walking = true;
+			setFacingRight(false);
+			idling = false;
+			jumping = false;
+			x-=2;
+		}
 	}
+
 
 	public void setRight() {
 

@@ -19,6 +19,15 @@ public abstract class Sprites {
 		}
 	}
 	
+	public boolean mapCollision(Rectangle r1, Rectangle r2){
+		if (r1.intersects(r2)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	
 		
 }

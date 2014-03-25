@@ -16,8 +16,11 @@ public abstract class Map {
 	//private boolean blocked;
 	private int mapWidth;
 	private int mapHeight;
+	private int pixelWidth;
+	private int pixelHeight;
 	
 	private Rectangle rect;
+	private Rectangle[][] rectArray; //lol
 	
 	private BufferedReader br; 
 	private BufferedImage tileSet;
@@ -131,9 +134,36 @@ public abstract class Map {
 		return map;
 	}
 	
-	public Rectangle makeRectangle(int x, int y, int width, int height){
-		Rectangle rectogon = new Rectangle(x, y, width, height);
-		return this.rect = rectogon;
+	public void makeRectangles(){
+		for(int i = 0; i < getMapHeight(); i++){
+			for(int j = 0; j < getMapWidth(); j++){
+				if(levelMap[i][j] > 19){
+					rect = new Rectangle(j*pixelWidth, i*pixelWidth, pixelWidth, pixelWidth);
+				}
+				else{
+					continue;
+				}
+			}
+		}
+	}
+	
+	public Rectangle[][] blockedRectangles(){
+		rectArray = new Rectangle[getMapHeight()][getMapWidth()];
+		for(int i = 0; i < getMapHeight(); i++){
+			for(int j = 0; j < getMapWidth(); j++){
+				if(levelMap[i][j] > 19){
+					rectArray[i][j] = new Rectangle(j*pixelWidth, i*pixelWidth, pixelWidth, pixelWidth);
+				}
+				else{
+					rectArray[i][j] = new Rectangle(0,0,0,0);
+				}
+			}
+		}
+			return rectArray;
+	}
+	
+	public Rectangle getRectangle(){
+		return this.rect;
 	}
 	
 	public int setMapWidth(int x){

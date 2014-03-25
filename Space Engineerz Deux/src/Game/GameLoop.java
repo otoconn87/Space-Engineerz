@@ -3,6 +3,7 @@ package Game;
 import java.applet.Applet;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -33,6 +34,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public LevelOne levelOne;
 	public BufferedImage gameMapBlocked[][];
 	public BufferedImage gameMapPassed[][];
+	public Rectangle levelOneBlockedRectangles[][];
 	public int[][] levelOneMap;
 	public Player player;
 	public Lobster lobster;
@@ -55,7 +57,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		gameMapBlocked = levelOne.getLevelOneBlockedTiles();
 		gameMapPassed = levelOne.getLevelOnePassTiles();
 		levelOneMap = levelOne.getLevelOneMap();
-		
+
 		try {
 
 			background = ImageIO.read(getClass().getResourceAsStream(
@@ -73,7 +75,23 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 			playerMovement();
 			lobsterMovement();
-			checkIntersection();
+			
+//			for(int i = 0; i < levelOne.getMapHeight(); i++){
+//				for (int j = 0; j < levelOne.getMapWidth(); j++){
+//					if(player.mapCollision(player.getRect(), levelOne.getRect(player.getX() - 32,  player.getY()) ) == true){
+//						
+//					
+//					System.out.println("collision");
+//					}
+//					
+//				else if (player.mapCollision(player.getRect(), levelOne.getRect(player.getX(),  player.getY()) ) == false){
+//					System.out.println("no collision");
+//				}
+//			}
+//			}
+			
+			//player.mapCollision(player.getRect(), );
+			//checkIntersection();
 
 			repaint();
 			try {
@@ -117,6 +135,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	}
 
+
 	private void checkIntersection() {
 		
 		if ((lobster.getRect().intersects(player.getRect())) && !lobsterCollision) {
@@ -132,6 +151,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 		
 	}
+
 
 	public void keyPressed(KeyEvent key) {
 
