@@ -25,7 +25,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	public boolean left, right, jump, down; // directional buttons
 
-	public boolean walking, idling; // character states
+	public boolean walking, idling, dead; // character states
+	
+	public boolean lobsterCollision;
 
 	public BufferedImage background, playerAnimations, lobsterAnimations;
 	public LevelOne levelOne;
@@ -34,24 +36,26 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public int[][] levelOneMap;
 	public Player player;
 	public Lobster lobster;
-
+			
 	public void run() {
 
 		player = new Player("space_player.png");
 		player.setFacingRight(true);
 		player.setPosition(100, 100);
-
+		
 		lobster = new Lobster("space_lobster.png");
 		lobster.setFacingRight(false);
 		lobster.setPosition(400, 100);
-
+		
+		lobsterCollision = false;
+		
 		levelOne = new LevelOne("level1_space.png", getClass()
 				.getResourceAsStream("space_map.map"));
 		// levelOne.loadMap();
 		gameMapBlocked = levelOne.getLevelOneBlockedTiles();
 		gameMapPassed = levelOne.getLevelOnePassTiles();
 		levelOneMap = levelOne.getLevelOneMap();
-
+		
 		try {
 
 			background = ImageIO.read(getClass().getResourceAsStream(
@@ -63,6 +67,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 
 		while (true) {
+			if(player.dead){
+				System.out.println("Game Over");
+			}
 
 			playerMovement();
 			lobsterMovement();
@@ -90,7 +97,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		} else if (down == true) {
 			if (left == true)
 				player.setFacingRight(false);
-
 		} else {
 			player.setIdling();
 		}
@@ -114,10 +120,19 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	}
 
 	private void checkIntersection() {
-
-		if (lobster.getRect().intersects(player.getRect())) {
-			System.out.println("Intersection");
+		
+		if ((lobster.getRect().intersects(player.getRect())) && !lobsterCollision) {
+			lobsterCollision = true;
+			player.health -= 1;
+			System.out.println("Player Health:\t"+player.health);	
+			if(player.health == 0){
+				player.dead = true;
+			}
 		}
+		if(!(lobster.getRect().intersects(player.getRect()))){
+			lobsterCollision = false;
+		}
+		
 	}
 
 	public void keyPressed(KeyEvent key) {

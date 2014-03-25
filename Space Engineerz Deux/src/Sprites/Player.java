@@ -10,8 +10,9 @@ public class Player extends Sprites {
 	
 	public int jumpTimer;
 	public int x, y;
+	public int health;
 	
-	public boolean walking, idling, jumping, shooting, jetpack, falling;
+	public boolean walking, idling, jumping, shooting, jetpack, falling, dead;
 	
 	public boolean facingRight, left;
 	
@@ -26,6 +27,8 @@ public class Player extends Sprites {
 		
 		walkTimer = 0;
 		jumpTimer = 0;
+		health = 5;
+		dead = false;
 		
 
 	}
