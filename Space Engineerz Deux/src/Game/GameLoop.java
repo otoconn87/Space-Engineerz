@@ -12,13 +12,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import Map.LevelOne;
+import Sprites.Laser;
 import Sprites.Lobster;
 import Sprites.Player;
 
 @SuppressWarnings("serial")
 public class GameLoop extends Applet implements Runnable, KeyListener {
 
-	public int x, y;
+	public int x, y, laserX;
 	public int walkTimer = 0;
 
 	public Image offscreen;
@@ -30,7 +31,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	
 	public boolean lobsterCollision;
 
-	public BufferedImage background, playerAnimations, lobsterAnimations;
+	public BufferedImage background, playerAnimations, lobsterAnimations, laserAnimations;
 	public LevelOne levelOne;
 	public BufferedImage gameMapBlocked[][];
 	public BufferedImage gameMapPassed[][];
@@ -38,6 +39,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public int[][] levelOneMap;
 	public Player player;
 	public Lobster lobster;
+	public Laser laser;
+	
 			
 	public void run() {
 
@@ -48,6 +51,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		lobster = new Lobster("space_lobster.png");
 		lobster.setFacingRight(false);
 		lobster.setPosition(400, 100);
+		
+		laserX = 0;
 		
 		lobsterCollision = false;
 		
@@ -75,6 +80,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 			playerMovement();
 			lobsterMovement();
+			checkIntersection();
+			createLaser();
+			
 			
 //			for(int i = 0; i < levelOne.getMapHeight(); i++){
 //				for (int j = 0; j < levelOne.getMapWidth(); j++){
@@ -91,7 +99,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 //			}
 			
 			//player.mapCollision(player.getRect(), );
-			//checkIntersection();
 
 			repaint();
 			try {
@@ -100,6 +107,28 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void createLaser() {
+		if(player.shootLaser){
+			
+//			System.out.println("Laser Game Loop");
+			
+			laserX+=10;
+			
+			laser = new Laser("space_player.png");
+			laser.setPosition(player.getX()+laserX, player.getY());
+			if (player.facingRight) {
+				laser.setFacingRight(true);
+				laser.setRight();
+			} else {
+				laser.setFacingRight(false);
+				laser.setLeft();
+			}
+
+
+//			player.shootLaser = false;
+		}		
 	}
 
 	private void playerMovement() {

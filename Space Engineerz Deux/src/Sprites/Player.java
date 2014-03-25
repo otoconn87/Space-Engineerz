@@ -13,19 +13,22 @@ public class Player extends Sprites {
 	
 	public boolean walking, idling, jumping, shooting, jetpack, falling, mapCollision;
 	
-	public boolean facingRight, left;
+	public boolean facingRight, left, shootLaser;
 	
 	public int walkTimer;
 	
 	public BufferedImage walk; //walking subImages
 
 	public int health;
+
 	public boolean dead, shotOnce;
 	public int shootTimer;
 
 	public BufferedImage idle;
 	public BufferedImage jump;
 	public BufferedImage shoot;
+	
+	public Laser laser;
 
 	public Player(String s) {
 		super(s);
@@ -34,7 +37,7 @@ public class Player extends Sprites {
 		jumpTimer = 0;
 		health = 5;
 		dead = false;
-		shotOnce = false;
+		shootLaser = false;
 
 	}
 
@@ -112,6 +115,12 @@ public class Player extends Sprites {
 	
 	public void laserFire(){
 		System.out.println("LASER!!!");
+		
+		shootLaser = true;
+		
+//		laser = new Laser("space_player.png");
+//		laser.setFacingRight(false);
+//		laser.setPosition(200, 100);
 	}
 
 	public void setFalling() {
@@ -198,7 +207,6 @@ public class Player extends Sprites {
 				} else {
 					shootTimer = 0;
 					shooting = false;
-					shotOnce = true;
 				}
 				if (!facingRight) {
 					AffineTransform imageFlip = AffineTransform

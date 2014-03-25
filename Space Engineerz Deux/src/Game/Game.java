@@ -64,6 +64,17 @@ public class Game extends GameLoop {
 		if(lobster.walking==true){
 			d.drawImage(lobster.walking(lobsterAnimations),  lobster.x, lobster.y, this);
 		}
+		try{
+			if(player.shootLaser){
+				if(laser.laserFire){
+					d.drawImage(laser.laserIm(laserAnimations), laser.x, laser.y, this);
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
 		
 		g.drawImage(offscreen,0,0, this);
 		
