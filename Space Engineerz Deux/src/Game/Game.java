@@ -39,7 +39,7 @@ public class Game extends GameLoop {
 				}
 			}
 		}
-		
+		 
 		
 		if(player.idling == true){
 			d.drawImage(player.idle(playerAnimations),  player.x,  player.y, this);
