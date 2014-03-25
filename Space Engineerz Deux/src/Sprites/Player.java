@@ -20,9 +20,7 @@ public class Player extends Sprites {
 	public BufferedImage walk; //walking subImages
 	public BufferedImage idle;
 	public BufferedImage jump;
-	
-	public Rectangle p = new Rectangle(0,0,32,32);
-		
+			
 	public Player(String s){
 		super(s);
 		
@@ -33,7 +31,7 @@ public class Player extends Sprites {
 	}
 	
 	public Rectangle getRect(){
-		return this.p;
+		return new Rectangle(this.x,this.y,32,32);
 	}
 	
 	public int getX(){

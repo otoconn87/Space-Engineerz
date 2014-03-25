@@ -15,8 +15,6 @@ public class Lobster extends Sprites {
 
 	public int walkTimer;
 	
-	public Rectangle l = new Rectangle(0,50,47,49);
-
 	public BufferedImage walk; // walking subImages
 	public BufferedImage shoot; // TODO
 	public BufferedImage flinch; // TODO
@@ -30,7 +28,7 @@ public class Lobster extends Sprites {
 	}
 	
 	public Rectangle getRect(){
-		return this.l;
+		return new Rectangle(this.x,this.y,47,49);
 	}
 
 	public int getX() {
