@@ -35,6 +35,7 @@ public class LevelOne extends Map {
 		this.readMap(is);
 		this.makeTileMap(rows, cols, pixelWidth);
 		
+		
 	}
 	
 	public BufferedImage[][] getLevelOneBlockedTiles(){
@@ -45,7 +46,7 @@ public class LevelOne extends Map {
 	}
 	
 	public int[][] getLevelOneMap(){
-		return this.levelMap;
+		return this.setLevelMap();
 	}
 	
 	

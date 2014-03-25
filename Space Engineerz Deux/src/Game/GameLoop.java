@@ -3,7 +3,7 @@ package Game;
 import java.applet.Applet;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -53,6 +53,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener{
 		gameMapBlocked = levelOne.getLevelOneBlockedTiles();
 		gameMapPassed = levelOne.getLevelOnePassTiles();
 		levelOneMap = levelOne.getLevelOneMap();
+		
 		try {
 			
 			background = ImageIO.read(getClass().getResourceAsStream("citybg.jpg"));

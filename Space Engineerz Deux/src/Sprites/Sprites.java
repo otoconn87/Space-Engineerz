@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 
 public abstract class Sprites {
 	
+
 	protected BufferedImage image;
 	
 	public Sprites(String s){
@@ -17,5 +18,7 @@ public abstract class Sprites {
 			e.printStackTrace();
 		}
 	}
+	
+	
 		
 }

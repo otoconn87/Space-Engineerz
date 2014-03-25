@@ -2,6 +2,7 @@ package Map;
 
 
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +16,8 @@ public abstract class Map {
 	//private boolean blocked;
 	private int mapWidth;
 	private int mapHeight;
+	
+	private Rectangle rect;
 	
 	private BufferedReader br; 
 	private BufferedImage tileSet;
@@ -84,6 +87,7 @@ public abstract class Map {
 		               
 		            }
 		        }
+		        
 		       
 		        is.close();
 		        
@@ -116,6 +120,21 @@ public abstract class Map {
 //	public boolean setBlocked(boolean b){
 //		return this.blocked = b;
 //	}
+	
+	public int[][] setLevelMap(){
+		int[][] map = new int[getMapHeight()][getMapWidth()];
+		for(int i = 0; i < getMapHeight(); i++){
+			for(int j = 0; j < getMapWidth(); j++){
+				map[i][j] = levelMap[i][j];
+			}
+		}
+		return map;
+	}
+	
+	public Rectangle makeRectangle(int x, int y, int width, int height){
+		Rectangle rectogon = new Rectangle(x, y, width, height);
+		return this.rect = rectogon;
+	}
 	
 	public int setMapWidth(int x){
 		return mapWidth = x;
