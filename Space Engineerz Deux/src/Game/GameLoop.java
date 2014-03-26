@@ -20,6 +20,7 @@ import Sprites.Player;
 
 @SuppressWarnings("serial")
 public class GameLoop extends Applet implements Runnable, KeyListener {
+	
 
 	public int x, y, laserX;
 	public int walkTimer = 0;
@@ -40,8 +41,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public Rectangle levelOneBlockedRectangles[][];
 	public int[][] levelOneMap;
 	public Player player;
-//	public Lobster lobster;
 	public ArrayList<Lobster> lobsters;
+	public ArrayList<Laser> lazer;
 	
 	public int gameTimer = 0;
 	public Laser laser;
@@ -49,7 +50,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 			
 	public void run() {
-		
 		gameTimer++;
 		
 
@@ -58,6 +58,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		player.setPosition(100, 100);
 			
 		lobsters = new ArrayList<Lobster>();
+		lazer = new ArrayList<Laser>();
 
 		Lobster l;		
 		Point[] points = new Point[]{
@@ -74,10 +75,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			lobsters.add(l);
 		}		
 		
+		//Point[] laserPoints;
 		
 		
-		
-		laserX = 0;
 		
 		lobsterPlayerCollision = false;
 		lobsterLaserCollision = false;
@@ -110,7 +110,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 			player.update();
 			playerMovement();
-			createLaser();
+			//createLaser();
+			createLazer();
+			updateLaser();
 			checkIntersection();
 			lobsterMovement();
 			
@@ -162,74 +164,113 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			}
 		}
 	}
-
-	private void createLaser() {
-		if(player.shootLaser){
 	
-			laser = new Laser("space_player.png");
-			laser.setPosition(player.getX()+laserX, player.getY());
-			if (player.facingRight) {
-				laser.setFacingRight(true);
-				laser.setRight();
-				laserX+=10;
-			} else {
-				laser.setFacingRight(false);
-				laser.setLeft();
-				laserX-=10;
-			}
+	private void updateLaser() {
+		for(int i=0; i < lazer.size(); i++){
+			lazer.get(i).update();
+		}
+		checkLaserCollision();
+		checkLaserLobsterCollision();
+	}
+
+	private void createLazer(){
+		if(player.shootLaser){
+			player.shootLaser = false;
+			shoot = false;
 			
-			checkLaserCollision();
-			checkLaserLobsterCollision();
-		}else{
-			laserX = 0;
+			Laser lz;
+			
+			lz = new Laser("space_player.png");
+			lz.setPosition(player.getX(), player.getY());
+			if (player.facingRight) {
+				lz.setFacingRight(true);
+				lz.setRight();
+			} else {
+				lz.setFacingRight(false);
+				lz.setLeft();
+			}	
+			lazer.add(lz);
 		}
 	}
 
+//	private void createLaser() {
+//		if(player.shootLaser){
+//			shoot = false;
+//			laser = new Laser("space_player.png");
+//			laser.setPosition(player.getX()+laserX, player.getY());
+//			if (player.facingRight) {
+//				laser.setFacingRight(true);
+//				laser.setRight();
+//				laserX+=10;
+//			} else {
+//				laser.setFacingRight(false);
+//				laser.setLeft();
+//				laserX-=10;
+//			}
+//			
+//			checkLaserCollision();
+//			checkLaserLobsterCollision();
+//		}else{
+//			laserX = 0;
+//		}
+//	}
+
 	private void checkLaserLobsterCollision() {
-		for(int i = 0; i < lobsters.size(); i++){
-			if ((lobsters.get(i).getRect().intersects(laser.getRect())) && !lobsterLaserCollision) {
-				lobsterLaserCollision = true;
-				lobsters.get(i).health -= 1;
-				player.shootLaser = false;
-				System.out.println("Lobster Health:\t"+lobsters.get(i).health);				
-			}
-			if(!(lobsters.get(i).getRect().intersects(laser.getRect()))){
-				lobsterLaserCollision = false;
-			}
-			if(lobsters.get(i).health == 0){
-				lobsters.get(i).dead = true;
-				lobsters.remove(i);
-//				i--;
+		for(int i=0; i < lazer.size(); i++){
+			for(int j = 0; j < lobsters.size(); j++){
+				if ((lobsters.get(j).getRect().intersects(lazer.get(i).getRect())) && !lobsterLaserCollision) {
+					lobsterLaserCollision = true;
+					lobsters.get(j).health -= 1;
+					player.shootLaser = false;
+					lazer.remove(i);
+					lobsterLaserCollision = false;
+					System.out.println("Lobster Health:\t"+lobsters.get(j).health);				
+				}
+//				if(!(lobsters.get(j).getRect().intersects(lazer.get(i).getRect()))){
+//					lobsterLaserCollision = false;
+//				}
+				if(lobsters.get(j).health == 0){
+					lobsters.get(j).dead = true;
+					lobsters.remove(j);
+//					i--;
+				}
 			}
 		}
+		
 		
 		
 	}
 
 	private void checkLaserCollision() {
+		if(lazer.size() == 0){
+			return;
+		}
 		
-		for (int i = 0; i < levelOne.getMapHeight(); i++) {
-			for (int j = 0; j < levelOne.getMapWidth(); j++) {
-				if (levelOneMap[i][j] > 19) {
-					Rectangle rect = new Rectangle(j * levelOne.pixelWidth, i
-							* levelOne.pixelHeight, levelOne.pixelWidth,
-							levelOne.pixelWidth);
+		for(int k=0; k < lazer.size(); k++){
+			for (int i = 0; i < levelOne.getMapHeight(); i++) {
+				for (int j = 0; j < levelOne.getMapWidth(); j++) {
+					if (levelOneMap[i][j] > 19) {
+						Rectangle rect = new Rectangle(j * levelOne.pixelWidth, i
+								* levelOne.pixelHeight, levelOne.pixelWidth,
+								levelOne.pixelWidth);
 
-					if (laser.mapCollision(laser.getRect(), rect)) {
-						if (!laser.facingRight) {
-							laser.setLeftMapCollision(true);
-							laser.setRightMapCollision(false);
+						if (lazer.get(k).mapCollision(lazer.get(k).getRect(), rect)) {
+							if (!lazer.get(k).facingRight) {
+								lazer.get(k).setLeftMapCollision(true);
+								lazer.get(k).setRightMapCollision(false);
+							}
+							if (lazer.get(k).facingRight) {
+								lazer.get(k).setRightMapCollision(true);
+								lazer.get(k).setLeftMapCollision(false);
+							}
 							player.shootLaser = false;
-						}
-						if (laser.facingRight) {
-							laser.setRightMapCollision(true);
-							laser.setLeftMapCollision(false);
-							player.shootLaser = false;
+							lazer.remove(k);
+							return;
 						}
 					}
 				}
 			}
-		}
+		}	
 	}
 
 	private void playerMovement() {

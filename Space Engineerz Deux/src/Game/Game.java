@@ -70,11 +70,19 @@ public class Game extends GameLoop {
 		
 		
 		try{
-			if(player.shootLaser){
-				if(laser.laserFire){
-					d.drawImage(laser.laserIm(laserAnimations), laser.x, laser.y, this);
+				for(int i=0; i < lazer.size(); i++){
+					if(lazer.get(i).laserFire){
+						d.drawImage(lazer.get(i).laserIm(laserAnimations), lazer.get(i).x, lazer.get(i).y, this);
+					}
 				}
-			}
+				
+				
+				
+				
+//				if(laser.laserFire){
+//					d.drawImage(laser.laserIm(laserAnimations), laser.x, laser.y, this);
+//				}
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

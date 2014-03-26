@@ -17,7 +17,15 @@ public class Laser extends Player {
 	public Laser(String s) {
 		super(s);
 		laserFire = true;
-		
+	}
+	
+	public void update(){
+		if(facingRight){
+			x+=5;	
+		}else{
+			x-=5;
+		}
+		setPosition(x,y);
 	}
 
 	public Rectangle getRect() {
