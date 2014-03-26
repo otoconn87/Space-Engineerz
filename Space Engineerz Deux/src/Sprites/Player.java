@@ -11,7 +11,7 @@ public class Player extends Sprites {
 	public int x, y;
 	public int dx, dy;
 	
-	public boolean walking, idling, jumping, shooting, jetpack, falling;
+	public boolean walking, idling, jumping, shooting, jetpack, falling, inAir;
 	public boolean leftMapCollision, rightMapCollision, topMapCollision, bottomMapCollision;
 	
 	public boolean facingRight, left, right, shootLaser;
@@ -87,39 +87,46 @@ public class Player extends Sprites {
 	public void update(){
 		
 		if(jumping){
-			jumpTimer++;
+			walking = false;
 			idling = false;
-			if(topMapCollision){
-				y+=2;
-				falling = true;
-				topMapCollision =false;
+			y-=3;
+			jumpTimer++;
+			if(right && !rightMapCollision){
+				x+=2;
 			}
-			if(bottomMapCollision){
-				y-=4;
-				if(jumpTimer == 4){
-				bottomMapCollision = false;
-				falling = true;
-				}
+			if(left && !leftMapCollision){
+				x-=2;
 			}
-			if(!bottomMapCollision  &&(jumpTimer <= 6)){
-				y-=2;
-				//falling = true;
-			}
-			if(jumpTimer >6){
+			if(jumpTimer == 20){
 				falling = true;
 				jumping = false;
+				bottomMapCollision = false;
+				jumpTimer = 0;
 			}
+			
+			
 						
 		}
 		if(falling){
+			walking = false;
+			topMapCollision = false;
 			if(!bottomMapCollision){
-				y+=3;
+				y+=3;				
+				jumping = false;
+				if(right && !rightMapCollision){
+					x+=2;
+				}
+				if(left && !leftMapCollision){
+					x-=2;
+				}
 			}
 			if(bottomMapCollision){
 				y+=0;
+				falling = false;
 			}
 		}
-		if(left){
+		if(left && (!falling && !jumping)){
+			inAir = false;
 			right = false;
 			facingRight = false;
 			walking = true;
@@ -128,12 +135,13 @@ public class Player extends Sprites {
 				x+=3;
 				leftMapCollision = rightMapCollision = false;
 			}
-			else if(!leftMapCollision && bottomMapCollision){
+			else if(!leftMapCollision){
 				x-=2;
 			}
 		}
 		
-		if(right){
+		if(right && (!falling && !jumping)){
+			inAir = false;
 			left = false;
 			facingRight = true;
 			walking = true;
@@ -142,80 +150,45 @@ public class Player extends Sprites {
 				x-=3;
 				leftMapCollision = rightMapCollision = false;
 			}
-			else if(!rightMapCollision && bottomMapCollision){
+			else if(!rightMapCollision){
 				x+=2;
 			}
-		}		
+		}
+		if(!right && !left){
+			walking = false;
+		}
+		
+		if (!walking && !falling && !jumping &&!shooting){
+			setIdling(true);
+		}
 				
 		
 		if(idling){
-			left = right = false;
+			
 			x+=0;
 			x-=0;
+			y+=0;
+			y-=0;
 		}
 	}
 	
 	public void setLeft(boolean b){
 		left = b;
-//		if(leftMapCollision){
-//		    x-=0;
-//			rightMapCollision = false;
-//			
-//		}
-//		else if(bottomMapCollision){
-//			leftMapCollision = false;
-//			rightMapCollision = false;
-//			walking = true;
-//			setFacingRight(false);
-//			idling = false;
-//			jumping = false;
-//			x-=2;
-//		}
+
 	}
 
 
 	public void setRight(boolean b) {
 		right = b;
-//		if(rightMapCollision){
-//			x+=0;
-//			leftMapCollision = false;
-//			
-//		}
-//		else if (bottomMapCollision){
-//			rightMapCollision = false;
-//			leftMapCollision = false;
-//			walking = true;
-//			setFacingRight(true);
-//			idling = false;
-//			jumping = false;
-//			x += 2;
-//		}
+
 	}
 
 	public void setJump(boolean b) {
 		jumping = b;
-//		if(topMapCollision){
-//			y-=0;
-//			setFalling();
-//		}
-//		jumpTimer++;
-//		bottomMapCollision = false;
-//		walking = false;
-//		idling = false;
-//		jumping = true;
-//		y -= 10;
-//		if (jumpTimer == 5) {
-//			setFalling();
-//		}
-		
-
 	}
 	
-	public void setShoot(){
-		shooting = true;
-		idling = false;
-		walking = false;
-		jumping = false;
+	public void setShoot(boolean b){
+		shooting = b;
 		
 	}
 	
@@ -232,26 +205,12 @@ public class Player extends Sprites {
 
 	public void setFalling(boolean b) {
 		falling = b;
-//		if(bottomMapCollision){
-//			falling = true;
-//			jumping = false;
-//			y+=0;
-//			
-//		}
-//		else{
-//			falling = true;
-//			jumping = false;
-//			bottomMapCollision = false;
-//			y+=5;
-//			
-//		}
 		
 	}
 
-	public void setIdling() {
-		walking = false;
-		jumping = false;
-		idling = true;
+	public void setIdling(boolean b) {
+		
+		idling = b;
 	}
 
 	public BufferedImage jumping(BufferedImage b) {

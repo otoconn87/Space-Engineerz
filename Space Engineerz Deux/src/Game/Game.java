@@ -8,6 +8,9 @@ import java.awt.Graphics;
 @SuppressWarnings("serial")
 public class Game extends GameLoop {
 	
+	public boolean menuState;
+	public boolean levelOneState;
+	
 		
 	public void init(){
 		setSize(900, 500);
@@ -16,10 +19,20 @@ public class Game extends GameLoop {
 		offscreen = createImage(900, 500);
 		d = offscreen.getGraphics();
 		addKeyListener(this);
+		menuState = true;
 	}
 	
 	public void paint(Graphics g){
 		d.clearRect(0, 0, 900, 500);
+		
+		if(menuState){
+			d.drawImage(menu.getMenuBG(), 0, 0, this);
+			d.drawImage(menu.getNGSprite(), 300, 230, this);
+			d.drawImage(menu.getQuitSprite(), 300, 300, this);
+		}
+		
+		
+		if(levelOneState){
 		d.drawImage(background, 0, 0, this);
 		
 		//d.drawImage(levelOne.tileMap[30],100, 100, this);
@@ -42,20 +55,21 @@ public class Game extends GameLoop {
 				
 			}
 		}
-		d.fillRect(player.x, player.y+10, 30, 10);
-		d.fillRect(player.x+10, player.y, 10, 30);
+		//d.fillRect(player.x, player.y+10, 30, 10);
+	//	d.fillRect(player.x+10, player.y, 10, 30);
 		
 		 
 		
 		if(player.idling == true){
 			d.drawImage(player.idle(playerAnimations),  player.x,  player.y, this);
 		}
+		if(player.jumping || player.falling){
+			d.drawImage(player.jumping(playerAnimations), player.x, player.y, this);
+		}
 		if(player.walking==true){
 			d.drawImage(player.walking(playerAnimations),  player.x, player.y, this);
 		}
-		if(player.jumping == true){
-			d.drawImage(player.jumping(playerAnimations), player.x, player.y, this);
-		}
+		
 		if(player.shooting == true){
 			d.drawImage(player.shoot(playerAnimations), player.x, player.y, this);
 		}
@@ -86,7 +100,7 @@ public class Game extends GameLoop {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+		}
 		
 		
 		g.drawImage(offscreen,0,0, this);

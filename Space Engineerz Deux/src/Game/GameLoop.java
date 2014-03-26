@@ -34,7 +34,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	
 	public boolean lobsterPlayerCollision, lobsterLaserCollision;
 
-	public BufferedImage background, playerAnimations, lobsterAnimations, laserAnimations;
+	public BufferedImage background,  playerAnimations, lobsterAnimations, laserAnimations;
+	public Menu menu;
 	public LevelOne levelOne;
 	public BufferedImage gameMapBlocked[][];
 	public BufferedImage gameMapPassed[][];
@@ -52,7 +53,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public void run() {
 		gameTimer++;
 		
-
+		menu = new Menu("megaman_menu.jpg", "menuSprites.png");
+		
 		player = new Player("space_player.png");
 		player.setFacingRight(true);
 		player.setPosition(100, 100);
@@ -88,6 +90,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		gameMapBlocked = levelOne.getLevelOneBlockedTiles();
 		gameMapPassed = levelOne.getLevelOnePassTiles();
 		levelOneMap = levelOne.getLevelOneMap();
+		
 
 		try {
 
@@ -101,6 +104,13 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 		while (true) {
 			
+			if (!player.left && !player.right && !player.falling && !player.jumping && !player.shooting){
+				player.setIdling(true);
+			}
+			else{
+				player.setIdling(false);
+			}
+			
 			if(gameTimer == 1){
 				player.setFalling(true);
 			}
@@ -109,10 +119,13 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			}
 
 			player.update();
-			playerMovement();
+			//playerMovement();
+			//createLaser();
+			//playerMovement();
 			//createLaser();
 			createLazer();
 			updateLaser();
+
 			checkIntersection();
 			lobsterMovement();
 			
@@ -127,10 +140,10 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 						
 						if(player.mapCollision(player.getTBRect(), rect)){
 							
-							if(player.jumping){
+							if(player.inAir){
 								player.setTopMapCollision(true);
 							}
-							if(player.falling){
+							else if(player.falling ){
 								player.setBottomMapCollision(true);
 								//System.out.println(player.bottomMapCollision);
 							}
@@ -273,26 +286,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}	
 	}
 
-	private void playerMovement() {
-		if (left == true) {
-			player.setLeft(true);
-			player.setRight(false);
-		} else if (right == true) {
-			player.setRight(true);
-			player.setLeft(false);
-		} else if (jump == true) {
-			player.setJump(true);
-//			player.setLeft(false);
-//			player.setRight(false);
-//		} else if (down == true) {
-//			if (left == true)
-//				player.setFacingRight(false);
-		} else if (shoot == true){
-			player.setShoot();
-		} else{
-			player.setIdling();
-		}
-	}
+	
 
 	private void lobsterMovement() {
 
@@ -338,42 +332,37 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public void keyPressed(KeyEvent key) {
 
 		if (key.getKeyCode() == 37) {
-			left = true;
+			player.setLeft(true);
 			
 		}
 		if (key.getKeyCode() == 39) {
-			right = true;
+			player.setRight(true);
 			
 		}
 		if (key.getKeyCode() == 87) {
-			jump = true;
+			player.setJump(true);
 		}
-		if (key.getKeyCode() == 40) {
-			down = true;
-		}
+		
 		if (key.getKeyCode() == 70){
-			shoot = true;
+			player.setShoot(true);
 		}
+		
 	}
 
 	public void keyReleased(KeyEvent key) {
 		if (key.getKeyCode() == 37) {
-			left = false;
-			player.setLeft(false);
-			
+			player.setLeft(false);			
 		}
 		if (key.getKeyCode() == 39) {
-			right = false;
+	
 			player.setRight(false);
 		}
 		if (key.getKeyCode() == 87) {
-			jump = false;
+			//player.setJump(false);
 		}
-		if (key.getKeyCode() == 40) {
-			down = false;
-		}
+	
 		if (key.getKeyCode() == 70){
-			shoot = false;
+			player.setShoot(false);
 		}
 	}
 
