@@ -112,11 +112,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			createLaser();
 			checkIntersection();
 			lobsterMovement();
-
-//			if(lobsters.get(0).dead){
-//				lobsters.remove(0);
-////				i--;
-//			}
 			
 			
 			
@@ -259,9 +254,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 				lobsters.get(i).setLeft();
 			}
 		}
-		
-		
-
 	}
 
 

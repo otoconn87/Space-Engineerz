@@ -19,7 +19,7 @@ public class Lobster extends Sprites {
 	public BufferedImage walk; // walking subImages
 	public BufferedImage shoot; // TODO
 	public BufferedImage flinch; // TODO
-
+	
 	public Lobster(String s) {
 		super(s);
 
