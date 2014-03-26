@@ -3,11 +3,13 @@ package Game;
 import java.applet.Applet;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -29,7 +31,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	public boolean walking, idling, shooting,dead; // character states
 	
-	public boolean lobsterCollision;
+	public boolean lobsterPlayerCollision, lobsterLaserCollision;
 
 	public BufferedImage background, playerAnimations, lobsterAnimations, laserAnimations;
 	public LevelOne levelOne;
@@ -38,7 +40,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public Rectangle levelOneBlockedRectangles[][];
 	public int[][] levelOneMap;
 	public Player player;
-	public Lobster lobster;
+//	public Lobster lobster;
+	public ArrayList<Lobster> lobsters;
 	
 	public int gameTimer = 0;
 	public Laser laser;
@@ -53,14 +56,31 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		player = new Player("space_player.png");
 		player.setFacingRight(true);
 		player.setPosition(100, 100);
+			
+		lobsters = new ArrayList<Lobster>();
+
+		Lobster l;		
+		Point[] points = new Point[]{
+				new Point(400,275)
+//				new Point(860,200),
+//				new Point(1525,200),
+//				new Point(1680,200),
+//				new Point(1800,200)
+		};
+		for(int i = 0; i < points.length; i++){
+			l = new Lobster("space_lobster.png");
+			l.setFacingRight(false);
+			l.setPosition(points[i].x, points[i].y);
+			lobsters.add(l);
+		}		
 		
-		lobster = new Lobster("space_lobster.png");
-		lobster.setFacingRight(false);
-		lobster.setPosition(400, 100);
+		
+		
 		
 		laserX = 0;
 		
-		lobsterCollision = false;
+		lobsterPlayerCollision = false;
+		lobsterLaserCollision = false;
 		
 		levelOne = new LevelOne("level1_space.png", getClass()
 				.getResourceAsStream("space_map.map"));
@@ -80,6 +100,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 
 		while (true) {
+			
 			if(gameTimer == 1){
 				player.setFalling();
 			}
@@ -88,9 +109,16 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			}
 
 			playerMovement();
-			lobsterMovement();
-			checkIntersection();
 			createLaser();
+			checkIntersection();
+			lobsterMovement();
+
+//			if(lobsters.get(0).dead){
+//				lobsters.remove(0);
+////				i--;
+//			}
+			
+			
 			
 			
 
@@ -132,24 +160,71 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	private void createLaser() {
 		if(player.shootLaser){
-			
-//			System.out.println("Laser Game Loop");
-			
-			laserX+=10;
-			
+	
 			laser = new Laser("space_player.png");
 			laser.setPosition(player.getX()+laserX, player.getY());
 			if (player.facingRight) {
 				laser.setFacingRight(true);
 				laser.setRight();
+				laserX+=10;
 			} else {
 				laser.setFacingRight(false);
 				laser.setLeft();
+				laserX-=10;
 			}
+			
+			checkLaserCollision();
+			checkLaserLobsterCollision();
+		}else{
+			laserX = 0;
+		}
+	}
 
+	private void checkLaserLobsterCollision() {
+		for(int i = 0; i < lobsters.size(); i++){
+			if ((lobsters.get(i).getRect().intersects(laser.getRect())) && !lobsterLaserCollision) {
+				lobsterLaserCollision = true;
+				lobsters.get(i).health -= 1;
+				player.shootLaser = false;
+				System.out.println("Lobster Health:\t"+lobsters.get(i).health);				
+			}
+			if(!(lobsters.get(i).getRect().intersects(laser.getRect()))){
+				lobsterLaserCollision = false;
+			}
+			if(lobsters.get(i).health == 0){
+				lobsters.get(i).dead = true;
+				lobsters.remove(i);
+//				i--;
+			}
+		}
+		
+		
+	}
 
-//			player.shootLaser = false;
-		}		
+	private void checkLaserCollision() {
+		
+		for (int i = 0; i < levelOne.getMapHeight(); i++) {
+			for (int j = 0; j < levelOne.getMapWidth(); j++) {
+				if (levelOneMap[i][j] > 19) {
+					Rectangle rect = new Rectangle(j * levelOne.pixelWidth, i
+							* levelOne.pixelHeight, levelOne.pixelWidth,
+							levelOne.pixelWidth);
+
+					if (laser.mapCollision(laser.getRect(), rect)) {
+						if (!laser.facingRight) {
+							laser.setLeftMapCollision(true);
+							laser.setRightMapCollision(false);
+							player.shootLaser = false;
+						}
+						if (laser.facingRight) {
+							laser.setRightMapCollision(true);
+							laser.setLeftMapCollision(false);
+							player.shootLaser = false;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	private void playerMovement() {
@@ -171,34 +246,40 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	private void lobsterMovement() {
 
-		if (!lobster.facingRight) {
-			lobster.setLeft();
-		} else {
-			lobster.setRight();
+		for(int i = 0; i < lobsters.size(); i++){
+			if (!lobsters.get(i).facingRight) {
+				lobsters.get(i).setLeft();
+			} else {
+				lobsters.get(i).setRight();
+			}
+			if (lobsters.get(i).getX() == 200) {
+				lobsters.get(i).setRight();
+			}
+			if (lobsters.get(i).getX() == 400) {
+				lobsters.get(i).setLeft();
+			}
 		}
-		if (lobster.getX() == 200) {
-			lobster.setRight();
-		}
-		if (lobster.getX() == 400) {
-			lobster.setLeft();
-		}
+		
+		
 
 	}
 
 
 	private void checkIntersection() {
-		
-		if ((lobster.getRect().intersects(player.getRect())) && !lobsterCollision) {
-			lobsterCollision = true;
-			player.health -= 1;
-			System.out.println("Player Health:\t"+player.health);	
-			if(player.health == 0){
-				player.dead = true;
+		for(int i = 0; i < lobsters.size(); i++){
+			if ((lobsters.get(i).getRect().intersects(player.getRect())) && !lobsterPlayerCollision) {
+				lobsterPlayerCollision = true;
+				player.health -= 1;
+				System.out.println("Player Health:\t"+player.health);	
+				if(player.health == 0){
+					player.dead = true;
+				}
+			}
+			if(!(lobsters.get(i).getRect().intersects(player.getRect()))){
+				lobsterPlayerCollision = false;
 			}
 		}
-		if(!(lobster.getRect().intersects(player.getRect()))){
-			lobsterCollision = false;
-		}
+		
 		
 	}
 

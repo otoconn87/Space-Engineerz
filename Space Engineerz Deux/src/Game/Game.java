@@ -55,12 +55,16 @@ public class Game extends GameLoop {
 		if(player.shooting == true){
 			d.drawImage(player.shoot(playerAnimations), player.x, player.y, this);
 		}
-		if(lobster.flinching == true){
-			d.drawImage(lobster.flinch(lobsterAnimations),  lobster.x,  lobster.y, this);
+		for(int i = 0; i < lobsters.size(); i++){
+			if(lobsters.get(0).flinching == true){
+				d.drawImage(lobsters.get(0).flinch(lobsterAnimations),  lobsters.get(0).x,  lobsters.get(0).y, this);
+			}
+			if(lobsters.get(0).walking==true){
+				d.drawImage(lobsters.get(0).walking(lobsterAnimations),  lobsters.get(0).x, lobsters.get(0).y, this);
+			}
 		}
-		if(lobster.walking==true){
-			d.drawImage(lobster.walking(lobsterAnimations),  lobster.x, lobster.y, this);
-		}
+		
+		
 		try{
 			if(player.shootLaser){
 				if(laser.laserFire){

@@ -8,8 +8,9 @@ import java.awt.image.BufferedImage;
 public class Lobster extends Sprites {
 
 	public int x, y;
+	public int health;
 
-	public boolean walking, shooting, flinching;
+	public boolean walking, shooting, flinching, dead;
 
 	public boolean facingRight, left;
 
@@ -24,6 +25,7 @@ public class Lobster extends Sprites {
 
 		walkTimer = 0;
 		walking = true;
+		health = 3;
 		
 	}
 	

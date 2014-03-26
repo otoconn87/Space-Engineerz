@@ -21,7 +21,7 @@ public class Laser extends Player {
 	}
 
 	public Rectangle getRect() {
-		return new Rectangle(this.x, this.y, 29, 32);
+		return new Rectangle(this.x, this.y, 29, 15);
 	}
 
 	public int getX() {
@@ -50,6 +50,13 @@ public class Laser extends Player {
 	public void setRight() {
 		setFacingRight(true);
 		x += 3;
+	}
+	
+	public void setLeftMapCollision(boolean b){
+		leftMapCollision = b;
+	}
+	public void setRightMapCollision(boolean b){
+		rightMapCollision = b;
 	}
 
 	public BufferedImage laserIm(BufferedImage b) {

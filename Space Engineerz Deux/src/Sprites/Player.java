@@ -136,14 +136,8 @@ public class Player extends Sprites {
 		
 	}
 	
-	public void laserFire(){
-		System.out.println("LASER!!!");
-		
+	public void laserFire(){		
 		shootLaser = true;
-		
-//		laser = new Laser("space_player.png");
-//		laser.setFacingRight(false);
-//		laser.setPosition(200, 100);
 	}
 
 	public void setFalling() {
