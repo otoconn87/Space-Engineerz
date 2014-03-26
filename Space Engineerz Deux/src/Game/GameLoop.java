@@ -102,12 +102,13 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		while (true) {
 			
 			if(gameTimer == 1){
-				player.setFalling();
+				player.setFalling(true);
 			}
 			if(player.dead){
 				System.out.println("Game Over");
 			}
 
+			player.update();
 			playerMovement();
 			createLaser();
 			checkIntersection();
@@ -127,19 +128,28 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 					if(levelOneMap[i][j] > 19){
 						Rectangle rect = new Rectangle(j*levelOne.pixelWidth, i*levelOne.pixelHeight, levelOne.pixelWidth, levelOne.pixelWidth);
 						
-						if(player.mapCollision(player.getRect(), rect)){
-							if(!player.facingRight){
-								player.setLeftMapCollision(true);
-								player.setRightMapCollision(false);
-							}
-							if(player.facingRight){
-								player.setRightMapCollision(true);
-								player.setLeftMapCollision(false);
+						if(player.mapCollision(player.getTBRect(), rect)){
+							
+							if(player.jumping){
+								player.setTopMapCollision(true);
 							}
 							if(player.falling){
 								player.setBottomMapCollision(true);
-								player.setTopMapCollision(false);
+								//System.out.println(player.bottomMapCollision);
 							}
+						}
+						if(player.mapCollision(player.getLRRect(), rect)){
+							if(player.left){
+								player.setLeftMapCollision(true);
+								player.setRightMapCollision(false);
+								System.out.println(player.leftMapCollision);
+							}
+							if(player.right){
+								player.setRightMapCollision(true);
+								player.setLeftMapCollision(false);
+								//System.out.println(player.leftMapCollision);
+							}
+							
 						}
 					
 						
@@ -228,15 +238,19 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	}
 
 	private void playerMovement() {
-		if (left == true && player.bottomMapCollision) {
-			player.setLeft();
-		} else if (right == true && player.bottomMapCollision) {
-			player.setRight();
+		if (left == true) {
+			player.setLeft(true);
+			player.setRight(false);
+		} else if (right == true) {
+			player.setRight(true);
+			player.setLeft(false);
 		} else if (jump == true) {
-			player.setJump();
-		} else if (down == true) {
-			if (left == true)
-				player.setFacingRight(false);
+			player.setJump(true);
+//			player.setLeft(false);
+//			player.setRight(false);
+//		} else if (down == true) {
+//			if (left == true)
+//				player.setFacingRight(false);
 		} else if (shoot == true){
 			player.setShoot();
 		} else{
@@ -266,8 +280,11 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 
 	private void checkIntersection() {
+
+		
+		
 		for(int i = 0; i < lobsters.size(); i++){
-			if ((lobsters.get(i).getRect().intersects(player.getRect())) && !lobsterPlayerCollision) {
+			if ((lobsters.get(i).getRect().intersects(player.getLRRect())) && !lobsterPlayerCollision) {
 				lobsterPlayerCollision = true;
 				player.health -= 1;
 				System.out.println("Player Health:\t"+player.health);	
@@ -275,12 +292,13 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 					player.dead = true;
 				}
 			}
-			if(!(lobsters.get(i).getRect().intersects(player.getRect()))){
+			if(!(lobsters.get(i).getRect().intersects(player.getLRRect()))){
 				lobsterPlayerCollision = false;
+
 			}
 		}
-		
-		
+
+				
 	}
 
 
@@ -288,9 +306,11 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 		if (key.getKeyCode() == 37) {
 			left = true;
+			
 		}
 		if (key.getKeyCode() == 39) {
 			right = true;
+			
 		}
 		if (key.getKeyCode() == 87) {
 			jump = true;
@@ -306,9 +326,12 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public void keyReleased(KeyEvent key) {
 		if (key.getKeyCode() == 37) {
 			left = false;
+			player.setLeft(false);
+			
 		}
 		if (key.getKeyCode() == 39) {
 			right = false;
+			player.setRight(false);
 		}
 		if (key.getKeyCode() == 87) {
 			jump = false;

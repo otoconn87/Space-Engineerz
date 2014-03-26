@@ -2,7 +2,7 @@ package Game;
 
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
+
 
 
 @SuppressWarnings("serial")
@@ -21,6 +21,7 @@ public class Game extends GameLoop {
 	public void paint(Graphics g){
 		d.clearRect(0, 0, 900, 500);
 		d.drawImage(background, 0, 0, this);
+		
 		//d.drawImage(levelOne.tileMap[30],100, 100, this);
 		
 		for (int i = 0; i < levelOne.getMapHeight(); i++){
@@ -41,6 +42,9 @@ public class Game extends GameLoop {
 				
 			}
 		}
+		d.fillRect(player.x, player.y+10, 30, 10);
+		d.fillRect(player.x+10, player.y, 10, 30);
+		
 		 
 		
 		if(player.idling == true){
