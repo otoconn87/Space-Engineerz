@@ -9,12 +9,13 @@ public class Player extends Sprites {
 
 	public int jumpTimer;
 	public int x, y;
-
+	public int dx, dy;
 	
 	public boolean walking, idling, jumping, shooting, jetpack, falling;
 	public boolean leftMapCollision, rightMapCollision, topMapCollision, bottomMapCollision;
 	
-	public boolean facingRight, left, shootLaser;
+	public boolean facingRight, left, right, shootLaser;
+	
 	
 	public int walkTimer;
 	
@@ -44,9 +45,9 @@ public class Player extends Sprites {
 
 	}
 
-	public Rectangle getRect() {
-		return new Rectangle(this.x, this.y, 30, 30);
-	}
+	
+	
+	
 
 	public int getX() {
 		return this.x;
@@ -55,6 +56,8 @@ public class Player extends Sprites {
 	public int getY() {
 		return this.y;
 	}
+	
+	
 
 	
 	public void setLeftMapCollision(boolean b){
@@ -81,50 +84,130 @@ public class Player extends Sprites {
 	}
 
 	
-	public void setLeft(){
-		if(leftMapCollision){
-		    x-=0;
-			rightMapCollision = false;
-			
-		}
-		else {
-			leftMapCollision = false;
-			rightMapCollision = false;
-			walking = true;
-			setFacingRight(false);
+	public void update(){
+		
+		if(jumping){
+			jumpTimer++;
 			idling = false;
-			jumping = false;
-			x-=2;
+			if(topMapCollision){
+				y+=2;
+				falling = true;
+				topMapCollision =false;
+			}
+			if(bottomMapCollision){
+				y-=4;
+				if(jumpTimer == 4){
+				bottomMapCollision = false;
+				falling = true;
+				}
+			}
+			if(!bottomMapCollision  &&(jumpTimer <= 6)){
+				y-=2;
+				//falling = true;
+			}
+			if(jumpTimer >6){
+				falling = true;
+				jumping = false;
+			}
+						
 		}
-	}
-
-
-	public void setRight() {
-		if(rightMapCollision && !bottomMapCollision){
+		if(falling){
+			if(!bottomMapCollision){
+				y+=3;
+			}
+			if(bottomMapCollision){
+				y+=0;
+			}
+		}
+		if(left){
+			right = false;
+			facingRight = false;
+			walking = true;
+			idling = false;
+			if(leftMapCollision){
+				x+=3;
+				leftMapCollision = rightMapCollision = false;
+			}
+			else if(!leftMapCollision && bottomMapCollision){
+				x-=2;
+			}
+		}
+		
+		if(right){
+			left = false;
+			facingRight = true;
+			walking = true;
+			idling = false;
+			if(rightMapCollision){
+				x-=3;
+				leftMapCollision = rightMapCollision = false;
+			}
+			else if(!rightMapCollision && bottomMapCollision){
+				x+=2;
+			}
+		}		
+				
+		
+		if(idling){
+			left = right = false;
 			x+=0;
-			leftMapCollision = false;
-			
-		}
-		else if (bottomMapCollision == true){
-			rightMapCollision = false;
-			leftMapCollision = false;
-			walking = true;
-			setFacingRight(true);
-			idling = false;
-			jumping = false;
-			x += 2;
+			x-=0;
 		}
 	}
+	
+	public void setLeft(boolean b){
+		left = b;
+//		if(leftMapCollision){
+//		    x-=0;
+//			rightMapCollision = false;
+//			
+//		}
+//		else if(bottomMapCollision){
+//			leftMapCollision = false;
+//			rightMapCollision = false;
+//			walking = true;
+//			setFacingRight(false);
+//			idling = false;
+//			jumping = false;
+//			x-=2;
+//		}
+	}
 
-	public void setJump() {
-		jumpTimer++;
-		walking = false;
-		idling = false;
-		jumping = true;
-		y -= 5;
-		if (jumpTimer == 5) {
-			setFalling();
-		}
+
+	public void setRight(boolean b) {
+		right = b;
+//		if(rightMapCollision){
+//			x+=0;
+//			leftMapCollision = false;
+//			
+//		}
+//		else if (bottomMapCollision){
+//			rightMapCollision = false;
+//			leftMapCollision = false;
+//			walking = true;
+//			setFacingRight(true);
+//			idling = false;
+//			jumping = false;
+//			x += 2;
+//		}
+	}
+
+	public void setJump(boolean b) {
+		jumping = b;
+//		if(topMapCollision){
+//			y-=0;
+//			setFalling();
+//		}
+//		jumpTimer++;
+//		bottomMapCollision = false;
+//		walking = false;
+//		idling = false;
+//		jumping = true;
+//		y -= 10;
+//		if (jumpTimer == 5) {
+//			setFalling();
+//		}
+		
 
 	}
 	
@@ -139,21 +222,29 @@ public class Player extends Sprites {
 	public void laserFire(){		
 		shootLaser = true;
 	}
+	public Rectangle getTBRect() {
+		return new Rectangle(this.x+10, this.y, 10, 30);
+	}
+	
+	public Rectangle getLRRect(){
+		return new Rectangle(this.x, this.y+10, 30, 10);
+	}
 
-	public void setFalling() {
-		if(bottomMapCollision == true){
-			falling = false;
-			jumping = false;
-			y+=0;
-			walking = true;
-		}
-		else{
-			falling = true;
-			jumping = false;
-			bottomMapCollision = false;
-			y+=2;
-			
-		}
+	public void setFalling(boolean b) {
+		falling = b;
+//		if(bottomMapCollision){
+//			falling = true;
+//			jumping = false;
+//			y+=0;
+//			
+//		}
+//		else{
+//			falling = true;
+//			jumping = false;
+//			bottomMapCollision = false;
+//			y+=5;
+//			
+//		}
 		
 	}
 

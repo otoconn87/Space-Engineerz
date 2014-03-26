@@ -8,7 +8,7 @@ import java.awt.Rectangle;
 
 public abstract class Sprites {
 	
-
+	protected int x, y;
 	protected BufferedImage image;
 	
 	public Sprites(String s){
@@ -27,6 +27,14 @@ public abstract class Sprites {
 			return false;
 		}
 	}
+	
+//	public Rectangle getTBRect() {
+//		return new Rectangle(this.x+10, this.y, 10, 30);
+//	}
+//	
+//	public Rectangle getLRRect(){
+//		return new Rectangle(this.x, this.y+10, 30, 10);
+//	}
 	
 	
 		
