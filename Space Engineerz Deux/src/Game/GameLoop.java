@@ -27,8 +27,10 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	public Image offscreen;
 	public Graphics d;
-
-	public boolean left, right, jump, down, shoot; // directional buttons
+	
+	
+	public boolean select, down, up, cursor;
+	public boolean left, right, jump, shoot; // directional buttons
 
 	public boolean walking, idling, shooting,dead; // character states
 	
@@ -51,9 +53,11 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 			
 	public void run() {
-		gameTimer++;
 		
-		menu = new Menu("megaman_menu.jpg", "menuSprites.png");
+		player.setFalling(true);
+		
+		cursor = true;
+		menu = new Menu("megaman_menu.jpg", "menuSprites.png", "MegaMan7.gif");
 		
 		player = new Player("space_player.png");
 		player.setFacingRight(true);
@@ -103,6 +107,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 
 		while (true) {
+			
+			//gameTimer++;
 			
 			if (!player.left && !player.right && !player.falling && !player.jumping && !player.shooting){
 				player.setIdling(true);
@@ -339,12 +345,27 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			player.setRight(true);
 			
 		}
+		if (key.getKeyCode() == 38) {
+			up = true;
+			cursor = true;
+			
+		}
+	
+		if (key.getKeyCode() == 40) {
+			down = true;
+			cursor = false;
+			
+		}
 		if (key.getKeyCode() == 87) {
 			player.setJump(true);
 		}
 		
 		if (key.getKeyCode() == 70){
 			player.setShoot(true);
+		}
+		if(key.getKeyCode() == 10){
+			select = true;
+			
 		}
 		
 	}
@@ -364,6 +385,18 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		if (key.getKeyCode() == 70){
 			player.setShoot(false);
 		}
+		if(key.getKeyCode() == 10){
+			//select = false;
+			
+		}
+		if (key.getKeyCode() == 38) {
+			up = false	;		
+		}
+	
+		if (key.getKeyCode() == 40) {
+			down = false;
+		}
+			
 	}
 
 	@Override

@@ -10,6 +10,11 @@ public class Game extends GameLoop {
 	
 	public boolean menuState;
 	public boolean levelOneState;
+	public boolean newGame;
+	public boolean quit;
+	public boolean gameStart;
+	public boolean choose;
+	public int menuTimer;
 	
 		
 	public void init(){
@@ -20,15 +25,46 @@ public class Game extends GameLoop {
 		d = offscreen.getGraphics();
 		addKeyListener(this);
 		menuState = true;
+		choose = true;
+		
 	}
 	
 	public void paint(Graphics g){
 		d.clearRect(0, 0, 900, 500);
 		
 		if(menuState){
+			d.clearRect(0, 0, 900, 500);
 			d.drawImage(menu.getMenuBG(), 0, 0, this);
 			d.drawImage(menu.getNGSprite(), 300, 230, this);
 			d.drawImage(menu.getQuitSprite(), 300, 300, this);
+			
+			if(gameStart){
+				choose  = false;
+				menuTimer++;
+				d.drawImage(menu.getStartSprites(), menu.x, menu.y, this );
+				if(menuTimer == 101){
+					menuState = false;
+					levelOneState = true;
+				}
+			}
+			
+			if(choose && (up || cursor)){
+				
+				d.drawImage(menu.getSelectSprite(),  250, 240, this);
+			}
+			if(choose && (down || !cursor)){				
+				
+				d.drawImage(menu.getSelectSprite(),  250, 310, this);
+			}
+			if(!cursor && select){
+				System.exit(0);
+			}
+			if(cursor && select){
+				gameStart = true;
+				
+				
+			}
+			
 		}
 		
 		
