@@ -105,9 +105,16 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 		while (true) {
 			
-			if(gameTimer == 1){
-				player.setFalling(true);
+
+			
+			if (!player.left && !player.right && !player.falling && !player.jumping && !player.shooting){
+				player.setIdling(true);
 			}
+			else{
+				player.setIdling(false);
+			}
+			
+
 			if(player.dead){
 				System.out.println("Game Over");
 			}

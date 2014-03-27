@@ -2,9 +2,14 @@ package Sprites;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import Audio.JukeBox;
 
 public class Player extends Sprites {
-
+	
+	
+	public JukeBox audio;
+	
+	
 	public int jumpTimer;
 	public int x, y;
 	public int dx, dy;
@@ -83,10 +88,15 @@ public class Player extends Sprites {
 		}
 		
 		if(jumping){
+			jumpTimer++;
+			if(jumpTimer == 1){
+				audio = new JukeBox("jump_09.wav");
+				audio.play();
+			}
 			walking = false;
 			idling = false;
 			y-=3;
-			jumpTimer++;
+		
 			if(right && !rightMapCollision){
 				x+=2;
 			}

@@ -3,10 +3,14 @@ package Game;
 
 import java.awt.Graphics;
 
+import Audio.JukeBox;
+
 
 
 @SuppressWarnings("serial")
 public class Game extends GameLoop {
+	
+	public JukeBox audio;
 	
 	public boolean menuState;
 	public boolean levelOneState;
@@ -28,6 +32,7 @@ public class Game extends GameLoop {
 		addKeyListener(this);
 		menuState = true;
 		choose = true;
+		gameTimer = 1;
 		
 	}
 	
@@ -35,12 +40,21 @@ public class Game extends GameLoop {
 		d.clearRect(0, 0, 900, 500);
 		
 		if(menuState){
+			
+			if(gameTimer == 1){
+				gameTimer++;
+				audio = new JukeBox("Flash man.mp3");
+				audio.loop();
+			}
 			d.clearRect(0, 0, 900, 500);
 			d.drawImage(menu.getMenuBG(), 0, 0, this);
 			d.drawImage(menu.getNGSprite(), 300, 230, this);
 			d.drawImage(menu.getQuitSprite(), 300, 300, this);
 			
 			if(gameStart){
+				audio.stop();
+				audio.close();
+				gameTimer = 3;
 				choose  = false;
 				menuTimer++;
 				d.drawImage(menu.getStartSprites(), menu.x, menu.y, this );
@@ -71,6 +85,12 @@ public class Game extends GameLoop {
 		
 		
 		if(levelOneState){
+		
+		if(gameTimer == 3){
+			audio = new JukeBox("Epic Level Music.mp3");
+			audio.loop();
+			gameTimer++;
+		}
 		d.drawImage(background, 0, 0, this);
 		
 		//d.drawImage(levelOne.tileMap[30],100, 100, this);

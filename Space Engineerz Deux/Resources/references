@@ -1,2 +1,12 @@
 Flip Buffered Image
 http://stackoverflow.com/questions/9558981/flip-image-with-graphics2d
+
+Audio Stuff
+http://my.safaribooksonline.com/book/programming/game-programming/1592730051/sound-effects-and-music/ch04lev1sec2
+
+and the following line of code:
+
+"AudioFormat.Encoding.PCM_SIGNED, iFormat.getSampleRate(), 16, iFormat.getChannels(),
+    					iFormat.getChannels() * 2, iFormat.getSampleRate(),"
+    					
+From Dragon Tale
