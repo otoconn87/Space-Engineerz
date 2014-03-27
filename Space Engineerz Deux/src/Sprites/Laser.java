@@ -74,12 +74,7 @@ public class Laser extends Player {
 				laserIm = image.getSubimage(133, 8, 29, 32);
 
 				if (!facingRight) {
-					AffineTransform imageFlip = AffineTransform
-							.getScaleInstance(-1, 1);
-					imageFlip.translate(-laserIm.getWidth(null), 0);
-					AffineTransformOp op = new AffineTransformOp(imageFlip,
-							AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-					laserIm = op.filter(laserIm, null);
+					laserIm = flip(laserIm);
 				}
 			}
 

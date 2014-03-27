@@ -16,6 +16,8 @@ public class Game extends GameLoop {
 	public boolean choose;
 	public int menuTimer;
 	
+	
+
 		
 	public void init(){
 		setSize(900, 500);
@@ -24,6 +26,7 @@ public class Game extends GameLoop {
 		offscreen = createImage(900, 500);
 		d = offscreen.getGraphics();
 		addKeyListener(this);
+//		levelOneState = true;
 		menuState = true;
 		choose = true;
 		
@@ -77,6 +80,7 @@ public class Game extends GameLoop {
 			for(int j = 0; j < levelOne.getMapWidth(); j++){
 				
 				d.drawImage(gameMapPassed[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+			
 			}
 		}
 		

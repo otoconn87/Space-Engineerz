@@ -114,12 +114,7 @@ public class Lobster extends Sprites {
 			
 
 				if (!facingRight) {
-					AffineTransform imageFlip = AffineTransform
-							.getScaleInstance(-1, 1);
-					imageFlip.translate(-walk.getWidth(null), 0);
-					AffineTransformOp op = new AffineTransformOp(imageFlip,
-							AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-					walk = op.filter(walk, null);
+					walk = flip(walk);
 				}
 			}
 

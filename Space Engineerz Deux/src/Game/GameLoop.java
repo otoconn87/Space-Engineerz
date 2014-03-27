@@ -54,7 +54,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			
 	public void run() {
 		
-				
 		cursor = true;
 		menu = new Menu("megaman_menu.jpg", "menuSprites.png", "MegaMan7.gif");
 		
@@ -80,7 +79,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			lobsters.add(l);
 		}		
 		
-		//Point[] laserPoints;
 		
 		
 		
@@ -99,6 +97,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 			background = ImageIO.read(getClass().getResourceAsStream(
 					"citybg.jpg"));
+			
 
 		} catch (IOException e1) {
 
@@ -107,6 +106,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 		while (true) {
 			
+//			background = background.getSubimage(0, 0, 200, 200);
+//			d.drawImage(background, 0, 0, this);
 			//gameTimer++;
 			
 			if (!player.left && !player.right && !player.falling && !player.jumping && !player.shooting){
@@ -124,10 +125,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			}
 
 			player.update();
-			//playerMovement();
-			//createLaser();
-			//playerMovement();
-			//createLaser();
 			createLazer();
 			updateLaser();
 
@@ -199,11 +196,12 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			Laser lz;
 			
 			lz = new Laser("space_player.png");
-			lz.setPosition(player.getX(), player.getY());
 			if (player.facingRight) {
+				lz.setPosition(player.getX()+20, player.getY());
 				lz.setFacingRight(true);
 				lz.setRight();
 			} else {
+				lz.setPosition(player.getX()-20, player.getY());
 				lz.setFacingRight(false);
 				lz.setLeft();
 			}	

@@ -1,5 +1,7 @@
 package Sprites;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -26,6 +28,15 @@ public abstract class Sprites {
 		else{
 			return false;
 		}
+	}
+	
+	public BufferedImage flip(BufferedImage b) {
+		AffineTransform imageFlip = AffineTransform.getScaleInstance(-1, 1);
+		imageFlip.translate(-b.getWidth(null), 0);
+		AffineTransformOp op = new AffineTransformOp(imageFlip,
+				AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		b = op.filter(b, null);
+		return b;
 	}
 	
 //	public Rectangle getTBRect() {

@@ -31,6 +31,7 @@ public class Player extends Sprites {
 	public BufferedImage shoot;
 	
 	public Laser laser;
+	private int jumpShootTimer;
 
 	public Player(String s) {
 		super(s);
@@ -218,10 +219,14 @@ public class Player extends Sprites {
 	}
 
 	public BufferedImage jumping(BufferedImage b) {
-		if (facingRight) {
+
+		if (shooting) {
+			jump = image.getSubimage(49, 167, 42, 40);
+		} else {
 			jump = image.getSubimage(72, 122, 40, 41);
-		} else if (!facingRight) {
-			jump = image.getSubimage(260, 123, 44, 41);
+		}
+		if (!facingRight) {
+			jump = flip(jump);
 		}
 
 		return jump;
@@ -242,12 +247,7 @@ public class Player extends Sprites {
 					walkTimer = 0;
 				}
 				if (!facingRight) {
-					AffineTransform imageFlip = AffineTransform
-							.getScaleInstance(-1, 1);
-					imageFlip.translate(-walk.getWidth(null), 0);
-					AffineTransformOp op = new AffineTransformOp(imageFlip,
-							AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-					walk = op.filter(walk, null);
+					walk = flip(walk);
 				}
 			}
 		} catch (Exception e) {
@@ -259,13 +259,8 @@ public class Player extends Sprites {
 	public BufferedImage idle(BufferedImage b) {
 		if (idling){
 			idle = image.getSubimage(50, 86, 32, 32);
-			if (!facingRight) {
-				AffineTransform imageFlip = AffineTransform.getScaleInstance(
-						-1, 1);
-				imageFlip.translate(-idle.getWidth(null), 0);
-				AffineTransformOp op = new AffineTransformOp(imageFlip,
-						AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-				idle = op.filter(idle, null);
+			if (!facingRight) {				
+				idle = flip(idle);
 			}
 		}
 
@@ -293,12 +288,7 @@ public class Player extends Sprites {
 					shooting = false;
 				}
 				if (!facingRight) {
-					AffineTransform imageFlip = AffineTransform
-							.getScaleInstance(-1, 1);
-					imageFlip.translate(-shoot.getWidth(null), 0);
-					AffineTransformOp op = new AffineTransformOp(imageFlip,
-							AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-					shoot = op.filter(shoot, null);
+					shoot = flip(shoot);
 				}
 			}
 		} catch (Exception e) {
@@ -307,5 +297,18 @@ public class Player extends Sprites {
 
 		return shoot;
 	}
+	
+//	public BufferedImage jumpShoot(BufferedImage b){
+//		jumpShootTimer++;
+//		
+//		try{
+//			if()
+//			
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		
+//		return jumpShoot;
+//	}
 
 }
