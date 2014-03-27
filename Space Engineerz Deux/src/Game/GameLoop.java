@@ -54,8 +54,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			
 	public void run() {
 		
-		player.setFalling(true);
-		
+				
 		cursor = true;
 		menu = new Menu("megaman_menu.jpg", "menuSprites.png", "MegaMan7.gif");
 		

@@ -161,6 +161,10 @@ public class Player extends Sprites {
 		if (!walking && !falling && !jumping &&!shooting){
 			setIdling(true);
 		}
+		
+		if(!leftMapCollision && !rightMapCollision && !topMapCollision && !bottomMapCollision){
+			falling = true;
+		}
 				
 		
 		if(idling){
