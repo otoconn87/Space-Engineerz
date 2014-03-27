@@ -1,8 +1,6 @@
 package Sprites;
 
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class Player extends Sprites {
@@ -11,27 +9,25 @@ public class Player extends Sprites {
 	public int x, y;
 	public int dx, dy;
 	
-	public boolean walking, idling, jumping, shooting, jetpack, falling, inAir;
+	public boolean walking, idling, jumping, shooting, jetpack, falling, inAir, jumpShooting;
 	public boolean leftMapCollision, rightMapCollision, topMapCollision, bottomMapCollision;
 	
-	public boolean facingRight, left, right, shootLaser;
-	
+	public boolean facingRight, left, right, shootLaser;	
 	
 	public int walkTimer;
 	
-	public BufferedImage walk; //walking subImages
-
 	public int health;
 
 	public boolean dead, shotOnce;
 	public int shootTimer;
 
+	public BufferedImage walk; //walking subImages
 	public BufferedImage idle;
 	public BufferedImage jump;
 	public BufferedImage shoot;
+	public BufferedImage jumpShoot;
 	
 	public Laser laser;
-	private int jumpShootTimer;
 
 	public Player(String s) {
 		super(s);
@@ -43,12 +39,7 @@ public class Player extends Sprites {
 		shotOnce = false;
 		shootLaser = false;
 
-
 	}
-
-	
-	
-	
 
 	public int getX() {
 		return this.x;
@@ -57,9 +48,6 @@ public class Player extends Sprites {
 	public int getY() {
 		return this.y;
 	}
-	
-	
-
 	
 	public void setLeftMapCollision(boolean b){
 		leftMapCollision = b;
@@ -87,6 +75,13 @@ public class Player extends Sprites {
 	
 	public void update(){
 		
+		if (!left && !right && !falling && !jumping && !shooting && !jumpShooting){
+			setIdling(true);
+		}
+		else{
+			setIdling(false);
+		}
+		
 		if(jumping){
 			walking = false;
 			idling = false;
@@ -104,8 +99,9 @@ public class Player extends Sprites {
 				bottomMapCollision = false;
 				jumpTimer = 0;
 			}
-			
-			
+			if(!shooting){
+				jumpShooting = false;
+			}
 						
 		}
 		if(falling){
@@ -125,6 +121,9 @@ public class Player extends Sprites {
 				y+=0;
 				falling = false;
 			}
+			if(!shooting){
+				jumpShooting = false;
+			}
 		}
 		if(left && (!falling && !jumping)){
 			inAir = false;
@@ -132,6 +131,7 @@ public class Player extends Sprites {
 			facingRight = false;
 			walking = true;
 			idling = false;
+			jumpShooting = false;
 			if(leftMapCollision){
 				x+=3;
 				leftMapCollision = rightMapCollision = false;
@@ -147,6 +147,7 @@ public class Player extends Sprites {
 			facingRight = true;
 			walking = true;
 			idling = false;
+			jumpShooting = false;
 			if(rightMapCollision){
 				x-=3;
 				leftMapCollision = rightMapCollision = false;
@@ -159,33 +160,37 @@ public class Player extends Sprites {
 			walking = false;
 		}
 		
-		if (!walking && !falling && !jumping &&!shooting){
+		if (!walking && !falling && !jumping &&!shooting && !jumpShooting){
 			setIdling(true);
+			
 		}
 		
 		if(!leftMapCollision && !rightMapCollision && !topMapCollision && !bottomMapCollision){
 			falling = true;
-		}
-				
+		}			
 		
-		if(idling){
-			
+		if(idling){	
 			x+=0;
 			x-=0;
 			y+=0;
 			y-=0;
 		}
+		
+		if((jumping || falling) && shooting){
+			jumpShooting = true;
+		}
+		if(!(jumping || falling) && shooting){
+			jumpShooting = false;
+		}
+
 	}
 	
 	public void setLeft(boolean b){
 		left = b;
-
 	}
-
 
 	public void setRight(boolean b) {
 		right = b;
-
 	}
 
 	public void setJump(boolean b) {
@@ -193,13 +198,13 @@ public class Player extends Sprites {
 	}
 	
 	public void setShoot(boolean b){
-		shooting = b;
-		
+		shooting = b;	
 	}
 	
 	public void laserFire(){		
 		shootLaser = true;
 	}
+	
 	public Rectangle getTBRect() {
 		return new Rectangle(this.x+10, this.y, 10, 30);
 	}
@@ -209,22 +214,24 @@ public class Player extends Sprites {
 	}
 
 	public void setFalling(boolean b) {
-		falling = b;
-		
+		falling = b;	
 	}
 
-	public void setIdling(boolean b) {
-		
+	public void setIdling(boolean b) {	
 		idling = b;
+	}
+	
+	public void setJumpShooting(boolean b){
+		jumpShooting = b;
 	}
 
 	public BufferedImage jumping(BufferedImage b) {
-
-		if (shooting) {
-			jump = image.getSubimage(49, 167, 42, 40);
-		} else {
+		
+		if(jumping && !shooting && !jumpShooting){
 			jump = image.getSubimage(72, 122, 40, 41);
 		}
+		
+		
 		if (!facingRight) {
 			jump = flip(jump);
 		}
@@ -272,11 +279,10 @@ public class Player extends Sprites {
 		shootTimer++;
 
 		try {
-			if (shooting) {
+			if (shooting && !jumpShooting) {
 				if(shootTimer == 10){
 					laserFire();
-				}
-				
+				}		
 				if (shootTimer >= 1 && shootTimer < 5) {
 					shoot = image.getSubimage(13, 8, 32, 32);
 				} else if (shootTimer >= 5 && shootTimer < 10) {
@@ -298,17 +304,26 @@ public class Player extends Sprites {
 		return shoot;
 	}
 	
-//	public BufferedImage jumpShoot(BufferedImage b){
-//		jumpShootTimer++;
-//		
-//		try{
-//			if()
-//			
-//		}catch(Exception e){
-//			e.printStackTrace();
-//		}
-//		
-//		return jumpShoot;
-//	}
+	public BufferedImage jumpShoot(BufferedImage b){
+		
+		try{
+			if(jumpShooting){
+				jumpShoot = image.getSubimage(49, 167, 42, 40);
+				if(!shotOnce){
+					laserFire();
+					shotOnce = true;
+				}
+				
+				if(!facingRight){
+					jumpShoot = flip(jumpShoot);
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return jumpShoot;
+	}
 
 }

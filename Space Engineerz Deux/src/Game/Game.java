@@ -26,7 +26,6 @@ public class Game extends GameLoop {
 		offscreen = createImage(900, 500);
 		d = offscreen.getGraphics();
 		addKeyListener(this);
-//		levelOneState = true;
 		menuState = true;
 		choose = true;
 		
@@ -100,18 +99,21 @@ public class Game extends GameLoop {
 		
 		 
 		
-		if(player.idling == true){
+		if(player.idling){
 			d.drawImage(player.idle(playerAnimations),  player.x,  player.y, this);
 		}
-		if(player.jumping || player.falling){
+		if((player.jumping || player.falling) && !(player.shooting || player.jumpShooting)){
 			d.drawImage(player.jumping(playerAnimations), player.x, player.y, this);
 		}
-		if(player.walking==true){
+		if(player.walking){
 			d.drawImage(player.walking(playerAnimations),  player.x, player.y, this);
 		}
 		
-		if(player.shooting == true){
+		if(player.shooting && !player.jumpShooting){
 			d.drawImage(player.shoot(playerAnimations), player.x, player.y, this);
+		}
+		if(player.jumpShooting){
+			d.drawImage(player.jumpShoot(playerAnimations), player.x, player.y, this);
 		}
 		for(int i = 0; i < lobsters.size(); i++){
 			if(lobsters.get(0).flinching == true){
@@ -128,15 +130,7 @@ public class Game extends GameLoop {
 					if(lazer.get(i).laserFire){
 						d.drawImage(lazer.get(i).laserIm(laserAnimations), lazer.get(i).x, lazer.get(i).y, this);
 					}
-				}
-				
-				
-				
-				
-//				if(laser.laserFire){
-//					d.drawImage(laser.laserIm(laserAnimations), laser.x, laser.y, this);
-//				}
-			
+				}			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

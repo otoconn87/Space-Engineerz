@@ -19,8 +19,7 @@ import Sprites.Lobster;
 import Sprites.Player;
 
 @SuppressWarnings("serial")
-public class GameLoop extends Applet implements Runnable, KeyListener {
-	
+public class GameLoop extends Applet implements Runnable, KeyListener {	
 
 	public int x, y, laserX;
 	public int walkTimer = 0;
@@ -106,17 +105,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 		while (true) {
 			
-//			background = background.getSubimage(0, 0, 200, 200);
-//			d.drawImage(background, 0, 0, this);
-			//gameTimer++;
-			
-			if (!player.left && !player.right && !player.falling && !player.jumping && !player.shooting){
-				player.setIdling(true);
-			}
-			else{
-				player.setIdling(false);
-			}
-			
 			if(gameTimer == 1){
 				player.setFalling(true);
 			}
@@ -127,50 +115,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			player.update();
 			createLazer();
 			updateLaser();
-
-			checkIntersection();
+			lobsterPlayerCollision();
 			lobsterMovement();
-			
-			
-			
-			
-
-			for (int i = 0; i < levelOne.getMapHeight(); i++){
-				for(int j = 0; j < levelOne.getMapWidth(); j++){
-					if(levelOneMap[i][j] > 19){
-						Rectangle rect = new Rectangle(j*levelOne.pixelWidth, i*levelOne.pixelHeight, levelOne.pixelWidth, levelOne.pixelWidth);
-						
-						if(player.mapCollision(player.getTBRect(), rect)){
-							
-							if(player.inAir){
-								player.setTopMapCollision(true);
-							}
-							else if(player.falling ){
-								player.setBottomMapCollision(true);
-								//System.out.println(player.bottomMapCollision);
-							}
-						}
-						if(player.mapCollision(player.getLRRect(), rect)){
-							if(player.left){
-								player.setLeftMapCollision(true);
-								player.setRightMapCollision(false);
-								System.out.println(player.leftMapCollision);
-							}
-							if(player.right){
-								player.setRightMapCollision(true);
-								player.setLeftMapCollision(false);
-								//System.out.println(player.leftMapCollision);
-							}
-							
-						}
-					
-						
-					}
-					
-				}
-			}
-
-
+			checkMapCollision();
 			repaint();
 			try {
 				Thread.sleep(15);
@@ -180,6 +127,38 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 	}
 	
+	private void checkMapCollision() {
+		for (int i = 0; i < levelOne.getMapHeight(); i++) {
+			for (int j = 0; j < levelOne.getMapWidth(); j++) {
+				if (levelOneMap[i][j] > 19) {
+					Rectangle rect = new Rectangle(j * levelOne.pixelWidth, i
+							* levelOne.pixelHeight, levelOne.pixelWidth,
+							levelOne.pixelWidth);
+
+					if (player.mapCollision(player.getTBRect(), rect)) {
+
+						if (player.inAir) {
+							player.setTopMapCollision(true);
+						} else if (player.falling) {
+							player.setBottomMapCollision(true);
+						}
+					}
+					if (player.mapCollision(player.getLRRect(), rect)) {
+						if (player.left) {
+							player.setLeftMapCollision(true);
+							player.setRightMapCollision(false);
+							System.out.println(player.leftMapCollision);
+						}
+						if (player.right) {
+							player.setRightMapCollision(true);
+							player.setLeftMapCollision(false);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	private void updateLaser() {
 		for(int i=0; i < lazer.size(); i++){
 			lazer.get(i).update();
@@ -190,7 +169,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	private void createLazer(){
 		if(player.shootLaser){
-			player.shootLaser = false;
+			player.shootLaser = false;		// only one shot per button pressed
 			shoot = false;
 			
 			Laser lz;
@@ -209,28 +188,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 	}
 
-//	private void createLaser() {
-//		if(player.shootLaser){
-//			shoot = false;
-//			laser = new Laser("space_player.png");
-//			laser.setPosition(player.getX()+laserX, player.getY());
-//			if (player.facingRight) {
-//				laser.setFacingRight(true);
-//				laser.setRight();
-//				laserX+=10;
-//			} else {
-//				laser.setFacingRight(false);
-//				laser.setLeft();
-//				laserX-=10;
-//			}
-//			
-//			checkLaserCollision();
-//			checkLaserLobsterCollision();
-//		}else{
-//			laserX = 0;
-//		}
-//	}
-
 	private void checkLaserLobsterCollision() {
 		for(int i=0; i < lazer.size(); i++){
 			for(int j = 0; j < lobsters.size(); j++){
@@ -242,25 +199,15 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 					lobsterLaserCollision = false;
 					System.out.println("Lobster Health:\t"+lobsters.get(j).health);				
 				}
-//				if(!(lobsters.get(j).getRect().intersects(lazer.get(i).getRect()))){
-//					lobsterLaserCollision = false;
-//				}
 				if(lobsters.get(j).health == 0){
 					lobsters.get(j).dead = true;
 					lobsters.remove(j);
-//					i--;
 				}
 			}
-		}
-		
-		
-		
+		}		
 	}
 
 	private void checkLaserCollision() {
-		if(lazer.size() == 0){
-			return;
-		}
 		
 		for(int k=0; k < lazer.size(); k++){
 			for (int i = 0; i < levelOne.getMapHeight(); i++) {
@@ -289,8 +236,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}	
 	}
 
-	
-
 	private void lobsterMovement() {
 
 		for(int i = 0; i < lobsters.size(); i++){
@@ -309,10 +254,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	}
 
 
-	private void checkIntersection() {
-
-		
-		
+	private void lobsterPlayerCollision() {
+	
 		for(int i = 0; i < lobsters.size(); i++){
 			if ((lobsters.get(i).getRect().intersects(player.getLRRect())) && !lobsterPlayerCollision) {
 				lobsterPlayerCollision = true;
@@ -324,11 +267,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			}
 			if(!(lobsters.get(i).getRect().intersects(player.getLRRect()))){
 				lobsterPlayerCollision = false;
-
 			}
-		}
-
-				
+		}				
 	}
 
 
@@ -376,15 +316,15 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			player.setRight(false);
 		}
 		if (key.getKeyCode() == 87) {
-			//player.setJump(false);
+//			player.setJump(false);
 		}
 	
 		if (key.getKeyCode() == 70){
 			player.setShoot(false);
+			player.shotOnce = false;
 		}
 		if(key.getKeyCode() == 10){
-			//select = false;
-			
+			select = false;		
 		}
 		if (key.getKeyCode() == 38) {
 			up = false	;		
