@@ -227,6 +227,8 @@ public class Player extends Sprites {
 			jumpShooting = false;
 		}
 		
+		
+		//TODO still a bunch of issues
 		if(jetpack){
 			walking = idling = jumping = falling = shooting = jumpShooting = false;
 			jetTimer++;
@@ -235,13 +237,21 @@ public class Player extends Sprites {
 			}else{
 				dy = -3;
 			}
-			if(right && !rightMapCollision){
+			if(right){
 				facingRight = true;
-				dx=2;
+				if(!rightMapCollision){
+					dx = 2;
+				}else{
+					dx = 0;
+				}
 			}
-			if(left && !leftMapCollision){
+			if(left){
 				facingRight = false;
-				dx=-2;
+				if(!leftMapCollision){
+					dx = -2;
+				}else{
+					dx = 0;
+				}
 			}
 			if(rightMapCollision || leftMapCollision){
 				dx = 0;
