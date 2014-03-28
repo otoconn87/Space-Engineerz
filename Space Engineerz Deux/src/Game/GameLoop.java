@@ -27,7 +27,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public Image offscreen;
 	public Graphics d;
 	
-	
+	public boolean levelOneState;
 	public boolean select, down, up, cursor;
 	public boolean left, right, jump, shoot; // directional buttons
 
@@ -45,6 +45,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public Player player;
 	public ArrayList<Lobster> lobsters;
 	public ArrayList<Laser> lazer;
+	public int bottomCollisionCounter;
 	
 	public int gameTimer = 0;
 	public Laser laser;
@@ -58,7 +59,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		
 		player = new Player("space_player.png");
 		player.setFacingRight(true);
-		player.setPosition(100, 100);
+		
+		//player.setPosition(109, 359);
 			
 		lobsters = new ArrayList<Lobster>();
 		lazer = new ArrayList<Laser>();
@@ -85,7 +87,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		lobsterLaserCollision = false;
 		
 		levelOne = new LevelOne("level1_space.png", getClass()
-				.getResourceAsStream("space_map.map"));
+				.getResourceAsStream("level1a.map"));
 		// levelOne.loadMap();
 		gameMapBlocked = levelOne.getLevelOneBlockedTiles();
 		gameMapPassed = levelOne.getLevelOnePassTiles();
@@ -95,7 +97,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		try {
 
 			background = ImageIO.read(getClass().getResourceAsStream(
-					"citybg.jpg"));
+					"futuropolis.jpg"));
 			
 
 		} catch (IOException e1) {
@@ -105,7 +107,18 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 		while (true) {
 			
-
+			if (player.bottomMapCollision){
+				System.out.println("bottom collision");
+			}
+			if (player.topMapCollision){
+				System.out.println("top collision");
+			}
+			if (player.leftMapCollision){
+				System.out.println("left collision");
+			}
+			if (player.rightMapCollision){
+				System.out.println("right collision");
+			}
 			
 			if (!player.left && !player.right && !player.falling && !player.jumping && !player.shooting){
 				player.setIdling(true);
@@ -135,35 +148,66 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	}
 	
 	private void checkMapCollision() {
-		for (int i = 0; i < levelOne.getMapHeight(); i++) {
-			for (int j = 0; j < levelOne.getMapWidth(); j++) {
-				if (levelOneMap[i][j] > 19) {
-					Rectangle rect = new Rectangle(j * levelOne.pixelWidth, i
-							* levelOne.pixelHeight, levelOne.pixelWidth,
-							levelOne.pixelWidth);
-
-					if (player.mapCollision(player.getTBRect(), rect)) {
-
-						if (player.inAir) {
-							player.setTopMapCollision(true);
-						} else if (player.falling) {
-							player.setBottomMapCollision(true);
+		if(levelOneState){
+			
+			for (int i = 0; i < levelOne.getMapHeight(); i++) {
+				for (int j = 0; j < levelOne.getMapWidth(); j++) {
+					if (levelOneMap[i][j] > 19) {						
+						Rectangle rect = new Rectangle(j * levelOne.pixelWidth, i
+								* levelOne.pixelHeight, levelOne.pixelWidth,
+								levelOne.pixelWidth);
+						
+						//System.out.println(player.mapCollision(player.getTBRect(), rect));
+						
+						
+						if (player.mapCollision(player.getLRRect(), rect)) {
+							if (player.left) {
+								player.setLeftMapCollision(true);
+								player.setRightMapCollision(false);
+								
+							}
+							if (player.right) {
+								player.setRightMapCollision(true);
+								player.setLeftMapCollision(false);
+							}
 						}
-					}
-					if (player.mapCollision(player.getLRRect(), rect)) {
-						if (player.left) {
-							player.setLeftMapCollision(true);
-							player.setRightMapCollision(false);
-							System.out.println(player.leftMapCollision);
+						
+						if (player.mapCollision(player.getTBRect(), rect)) {
+							bottomCollisionCounter++;
+							if(player.jumping && (bottomCollisionCounter >= 1)){
+								player.setTopMapCollision(true);
+							}			
+							else if(bottomCollisionCounter >= 1){
+								
+								player.setBottomMapCollision(true);
+								//System.out.println(bottomCollisionCounter);
+							}
+//							else if (bottomCollisionCounter == 0){
+//								player.setBottomMapCollision(false);
+//							}
+											
 						}
-						if (player.right) {
-							player.setRightMapCollision(true);
-							player.setLeftMapCollision(false);
+						System.out.println(bottomCollisionCounter);
+						//System.out.println("player x position is " + player.x + "and player y is " + player.y);
+						
+						if(player.grounded == true){
+						if((bottomCollisionCounter == 0)){
+							player.grounded = false;
+							player.setBottomMapCollision(false);
+							//player.setFalling(true);
+							player.setJump(false);
 						}
+						}
+							
+						
+						
+						
+						
 					}
 				}
 			}
-		}
+			bottomCollisionCounter = 0;
+			}
 	}
 
 	private void updateLaser() {

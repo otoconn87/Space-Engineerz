@@ -13,31 +13,33 @@ public class Game extends GameLoop {
 	public JukeBox audio;
 	
 	public boolean menuState;
-	public boolean levelOneState;
+	//public boolean levelOneState;
 	public boolean newGame;
 	public boolean quit;
 	public boolean gameStart;
 	public boolean choose;
 	public int menuTimer;
+	public int waitTimer;
 	
 	
 
 		
 	public void init(){
-		setSize(900, 500);
+		setSize(864, 480);
 		Thread thread = new Thread(this);
 		thread.start();
-		offscreen = createImage(900, 500);
+		offscreen = createImage(854, 480);
 		d = offscreen.getGraphics();
 		addKeyListener(this);
 		menuState = true;
 		choose = true;
 		gameTimer = 1;
+		waitTimer = 0;
 		
 	}
 	
 	public void paint(Graphics g){
-		d.clearRect(0, 0, 900, 500);
+		d.clearRect(0, 0, 864, 480);
 		
 		if(menuState){
 			
@@ -85,6 +87,12 @@ public class Game extends GameLoop {
 		
 		
 		if(levelOneState){
+			waitTimer++;
+			
+			if (waitTimer == 100){
+				player.setPosition(109, 300);
+				System.out.println("done");
+			}
 		
 		if(gameTimer == 3){
 			audio = new JukeBox("Epic Level Music.mp3");
@@ -93,7 +101,6 @@ public class Game extends GameLoop {
 		}
 		d.drawImage(background, 0, 0, this);
 		
-		//d.drawImage(levelOne.tileMap[30],100, 100, this);
 		
 		for (int i = 0; i < levelOne.getMapHeight(); i++){
 			for(int j = 0; j < levelOne.getMapWidth(); j++){
@@ -143,6 +150,7 @@ public class Game extends GameLoop {
 				d.drawImage(lobsters.get(0).walking(lobsterAnimations),  lobsters.get(0).x, lobsters.get(0).y, this);
 			}
 		}
+		
 		
 		
 		try{
