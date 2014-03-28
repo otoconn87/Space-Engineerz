@@ -16,7 +16,7 @@ public class Player extends Sprites {
 	public double y;
 	public int dx, dy;
 	
-	public boolean walking, idling, jumping, shooting, jetpack, falling, inAir, jumpShooting;
+	public boolean walking, idling, jumping, shooting, jetpack, falling, inAir, jumpShooting, grounded;
 	public boolean leftMapCollision, rightMapCollision, topMapCollision, bottomMapCollision;
 	
 	public boolean facingRight, left, right, shootLaser;	
@@ -85,6 +85,10 @@ public class Player extends Sprites {
 	
 	public void update(){
 		
+		if(!bottomMapCollision &&!jumping){
+			falling = true;
+		}
+		
 		if (!left && !right && !falling && !jumping && !shooting && !jumpShooting){
 			setIdling(true);
 		}
@@ -94,6 +98,7 @@ public class Player extends Sprites {
 		
 		if(jumping){
 			jumpTimer++;
+			
 			if(jumpTimer == 1){
 				audio = new JukeBox("jump_09.wav");
 				audio.play();
@@ -111,6 +116,7 @@ public class Player extends Sprites {
 			if(jumpTimer == 20){
 				falling = true;
 				jumping = false;
+				grounded = false;
 				bottomMapCollision = false;
 				jumpTimer = 0;
 			}
@@ -121,8 +127,15 @@ public class Player extends Sprites {
 		}
 		if(falling){
 			walking = false;
+			jumping = false;
 			topMapCollision = false;
-			if(!bottomMapCollision){
+			if(bottomMapCollision){
+				y+=0;
+				falling = false;
+				grounded = true;
+			}
+			else if(grounded == false) {
+				
 				y+=3;				
 				jumping = false;
 				if(right && !rightMapCollision){
@@ -132,15 +145,13 @@ public class Player extends Sprites {
 					x-=2;
 				}
 			}
-			if(bottomMapCollision){
-				y+=0;
-				falling = false;
-			}
+			
 			if(!shooting){
 				jumpShooting = false;
 			}
 		}
 		if(left && (!falling && !jumping)){
+			grounded = true;
 			inAir = false;
 			right = false;
 			facingRight = false;
@@ -157,6 +168,7 @@ public class Player extends Sprites {
 		}
 		
 		if(right && (!falling && !jumping)){
+			grounded = true;
 			inAir = false;
 			left = false;
 			facingRight = true;
