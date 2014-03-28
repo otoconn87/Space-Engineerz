@@ -2,6 +2,7 @@ package Sprites;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import Audio.JukeBox;
 
 public class Player extends Sprites {
@@ -11,7 +12,8 @@ public class Player extends Sprites {
 	
 	
 	public int jumpTimer;
-	public int x, y;
+	public int x;
+	public double y;
 	public int dx, dy;
 	
 	public boolean walking, idling, jumping, shooting, jetpack, falling, inAir, jumpShooting;
@@ -31,14 +33,17 @@ public class Player extends Sprites {
 	public BufferedImage jump;
 	public BufferedImage shoot;
 	public BufferedImage jumpShoot;
+	public BufferedImage jetpackIm;
 	
 	public Laser laser;
+
+
+	public int jetTimer;
 
 	public Player(String s) {
 		super(s);
 
-		walkTimer = shootTimer = 0;
-		jumpTimer = 0;
+		walkTimer = shootTimer = jetTimer = jumpTimer = 0;
 		health = 5;
 		dead = false;
 		shotOnce = false;
@@ -51,7 +56,7 @@ public class Player extends Sprites {
 	}
 
 	public int getY() {
-		return this.y;
+		return (int)this.y;
 	}
 	
 	public void setLeftMapCollision(boolean b){
@@ -192,6 +197,28 @@ public class Player extends Sprites {
 		if(!(jumping || falling) && shooting){
 			jumpShooting = false;
 		}
+		
+		//TODO	finish jetpack
+		if(jetpack){
+			walking = idling = jumping = falling = shooting = jumpShooting = false;
+			jetTimer++;
+			if(jetTimer <= 50){
+				y -= 3*jetTimer*jetTimer/2500;		//exponential jetpack
+			}else{
+				y -= 3;
+			}
+			
+		}
+		
+		if(!bottomMapCollision){
+			y+=2;				
+//			if(right && !rightMapCollision){
+//				x+=2;
+//			}
+//			if(left && !leftMapCollision){
+//				x-=2;
+//			}
+		}
 
 	}
 	
@@ -216,11 +243,11 @@ public class Player extends Sprites {
 	}
 	
 	public Rectangle getTBRect() {
-		return new Rectangle(this.x+10, this.y, 10, 30);
+		return new Rectangle(this.x+10, (int)this.y, 10, 30);
 	}
 	
 	public Rectangle getLRRect(){
-		return new Rectangle(this.x, this.y+10, 30, 10);
+		return new Rectangle(this.x, (int)this.y+10, 30, 10);
 	}
 
 	public void setFalling(boolean b) {
@@ -234,6 +261,10 @@ public class Player extends Sprites {
 	public void setJumpShooting(boolean b){
 		jumpShooting = b;
 	}
+	
+	public void setJetpack(boolean b) {
+		jetpack = b;
+		}
 
 	public BufferedImage jumping(BufferedImage b) {
 		
@@ -335,5 +366,22 @@ public class Player extends Sprites {
 		
 		return jumpShoot;
 	}
+
+	public BufferedImage jetpackIm(BufferedImage b){
+		
+		try{
+			if(jetpack){
+				jetpackIm = image.getSubimage(11, 210, 40, 41);
+				if(!facingRight){
+					jetpackIm = flip(jetpackIm);
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return jetpackIm;
+	}
+
 
 }

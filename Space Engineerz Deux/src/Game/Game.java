@@ -43,8 +43,8 @@ public class Game extends GameLoop {
 			
 			if(gameTimer == 1){
 				gameTimer++;
-				audio = new JukeBox("Flash man.mp3");
-				audio.loop();
+//				audio = new JukeBox("Flash man.mp3");
+//				audio.loop();
 			}
 			d.clearRect(0, 0, 900, 500);
 			d.drawImage(menu.getMenuBG(), 0, 0, this);
@@ -52,8 +52,8 @@ public class Game extends GameLoop {
 			d.drawImage(menu.getQuitSprite(), 300, 300, this);
 			
 			if(gameStart){
-				audio.stop();
-				audio.close();
+//				audio.stop();
+//				audio.close();
 				gameTimer = 3;
 				choose  = false;
 				menuTimer++;
@@ -87,8 +87,8 @@ public class Game extends GameLoop {
 		if(levelOneState){
 		
 		if(gameTimer == 3){
-			audio = new JukeBox("Epic Level Music.mp3");
-			audio.loop();
+//			audio = new JukeBox("Epic Level Music.mp3");
+//			audio.loop();
 			gameTimer++;
 		}
 		d.drawImage(background, 0, 0, this);
@@ -120,20 +120,23 @@ public class Game extends GameLoop {
 		 
 		
 		if(player.idling){
-			d.drawImage(player.idle(playerAnimations),  player.x,  player.y, this);
+			d.drawImage(player.idle(playerAnimations),  player.x,  (int)player.y, this);
 		}
 		if((player.jumping || player.falling) && !(player.shooting || player.jumpShooting)){
-			d.drawImage(player.jumping(playerAnimations), player.x, player.y, this);
+			d.drawImage(player.jumping(playerAnimations), player.x, (int)player.y, this);
 		}
 		if(player.walking){
-			d.drawImage(player.walking(playerAnimations),  player.x, player.y, this);
+			d.drawImage(player.walking(playerAnimations),  player.x, (int)player.y, this);
 		}
 		
 		if(player.shooting && !player.jumpShooting){
-			d.drawImage(player.shoot(playerAnimations), player.x, player.y, this);
+			d.drawImage(player.shoot(playerAnimations), player.x, (int)player.y, this);
 		}
 		if(player.jumpShooting){
-			d.drawImage(player.jumpShoot(playerAnimations), player.x, player.y, this);
+			d.drawImage(player.jumpShoot(playerAnimations), player.x, (int)player.y, this);
+		}
+		if(player.jetpack){
+			d.drawImage(player.jetpackIm(playerAnimations), player.x, (int)player.y, this);
 		}
 		for(int i = 0; i < lobsters.size(); i++){
 			if(lobsters.get(0).flinching == true){
