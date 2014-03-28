@@ -191,12 +191,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 							//player.setFalling(true);
 							player.setJump(false);
 						}
-						}
-							
-						
-						
-						
-						
+						}					
 					}
 				}
 			}
@@ -351,6 +346,10 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 		if(key.getKeyCode() == KeyEvent.VK_E){
 			player.setJetpack(true);
+		}
+		
+		if(key.getKeyCode() == KeyEvent.VK_P){
+			player.setPosition(109, 300);
 		}
 		
 	}

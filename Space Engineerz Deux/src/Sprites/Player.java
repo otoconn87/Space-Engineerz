@@ -227,7 +227,6 @@ public class Player extends Sprites {
 			jumpShooting = false;
 		}
 		
-		//TODO	finish jetpack
 		if(jetpack){
 			walking = idling = jumping = falling = shooting = jumpShooting = false;
 			jetTimer++;
@@ -244,8 +243,19 @@ public class Player extends Sprites {
 				facingRight = false;
 				dx=-2;
 			}
+			if(rightMapCollision || leftMapCollision){
+				dx = 0;
+			}
 		}
 		
+		if(facingRight && (dx < 0)){
+			dx = 0;
+		}
+		if(!facingRight && (dx > 0)){
+			dx = 0;
+		}
+
+		// keep bottom of update function
 		movementUpdate();
 
 	}
