@@ -108,16 +108,16 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		while (true) {
 			
 			if (player.bottomMapCollision){
-				System.out.println("bottom collision");
+//				System.out.println("bottom collision");
 			}
 			if (player.topMapCollision){
-				System.out.println("top collision");
+//				System.out.println("top collision");
 			}
 			if (player.leftMapCollision){
-				System.out.println("left collision");
+//				System.out.println("left collision");
 			}
 			if (player.rightMapCollision){
-				System.out.println("right collision");
+//				System.out.println("right collision");
 			}
 			
 			if (!player.left && !player.right && !player.falling && !player.jumping && !player.shooting){
@@ -157,7 +157,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 								* levelOne.pixelHeight, levelOne.pixelWidth,
 								levelOne.pixelWidth);
 						
-						//System.out.println(player.mapCollision(player.getTBRect(), rect));
 						
 						
 						if (player.mapCollision(player.getLRRect(), rect)) {
@@ -180,15 +179,10 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 							else if(bottomCollisionCounter >= 1){
 								
 								player.setBottomMapCollision(true);
-								//System.out.println(bottomCollisionCounter);
 							}
-//							else if (bottomCollisionCounter == 0){
-//								player.setBottomMapCollision(false);
-//							}
+
 											
 						}
-						System.out.println(bottomCollisionCounter);
-						//System.out.println("player x position is " + player.x + "and player y is " + player.y);
 						
 						if(player.grounded == true){
 						if((bottomCollisionCounter == 0)){

@@ -48,6 +48,7 @@ public class Player extends Sprites {
 		dead = false;
 		shotOnce = false;
 		shootLaser = false;
+		dx = dy = 0;
 
 	}
 
@@ -85,18 +86,18 @@ public class Player extends Sprites {
 	
 	public void update(){
 		
-		if(!bottomMapCollision &&!jumping){
+		if(!bottomMapCollision &&!jumping && !jetpack){
 			falling = true;
 		}
 		
-		if (!left && !right && !falling && !jumping && !shooting && !jumpShooting){
+		if (!left && !right && !falling && !jumping && !shooting && !jumpShooting && !jetpack){
 			setIdling(true);
 		}
 		else{
 			setIdling(false);
 		}
 		
-		if(jumping){
+		if(jumping && !jetpack){
 			jumpTimer++;
 			
 			if(jumpTimer == 1){
@@ -105,13 +106,16 @@ public class Player extends Sprites {
 			}
 			walking = false;
 			idling = false;
-			y-=3;
+//			y-=3;
+			dy = -3;
 		
 			if(right && !rightMapCollision){
-				x+=2;
+//				x+=2;
+				dx = 2;
 			}
 			if(left && !leftMapCollision){
-				x-=2;
+//				x-=2;
+				dx = -2;
 			}
 			if(jumpTimer == 20){
 				falling = true;
@@ -125,24 +129,28 @@ public class Player extends Sprites {
 			}
 						
 		}
-		if(falling){
+		if(falling && !jetpack){
 			walking = false;
 			jumping = false;
 			topMapCollision = false;
 			if(bottomMapCollision){
-				y+=0;
+//				y+=0;
+				dy = 0;
 				falling = false;
 				grounded = true;
 			}
 			else if(grounded == false) {
 				
-				y+=3;				
+//				y+=3;
+				dy = 3;
 				jumping = false;
 				if(right && !rightMapCollision){
-					x+=2;
+//					x+=2;
+					dx = 2;
 				}
 				if(left && !leftMapCollision){
-					x-=2;
+//					x-=2;
+					dx = -2;
 				}
 			}
 			
@@ -150,7 +158,7 @@ public class Player extends Sprites {
 				jumpShooting = false;
 			}
 		}
-		if(left && (!falling && !jumping)){
+		if(left && (!falling && !jumping && !jetpack)){
 			grounded = true;
 			inAir = false;
 			right = false;
@@ -159,15 +167,18 @@ public class Player extends Sprites {
 			idling = false;
 			jumpShooting = false;
 			if(leftMapCollision){
-				x+=3;
+//				x+=3;
+				dx = 3;
 				leftMapCollision = rightMapCollision = false;
 			}
 			else if(!leftMapCollision){
-				x-=2;
+//				x-=2;
+				dx = -2;
+				
 			}
 		}
 		
-		if(right && (!falling && !jumping)){
+		if(right && (!falling && !jumping && !jetpack)){
 			grounded = true;
 			inAir = false;
 			left = false;
@@ -176,31 +187,37 @@ public class Player extends Sprites {
 			idling = false;
 			jumpShooting = false;
 			if(rightMapCollision){
-				x-=3;
+//				x-=3;
+				dx = -3;
 				leftMapCollision = rightMapCollision = false;
 			}
 			else if(!rightMapCollision){
-				x+=2;
+//				x+=2;
+				dx = 2;
 			}
 		}
+		
+		
+		
 		if(!right && !left){
 			walking = false;
 		}
 		
-		if (!walking && !falling && !jumping &&!shooting && !jumpShooting){
+		if (!walking && !falling && !jumping &&!shooting && !jumpShooting && !jetpack){
 			setIdling(true);
 			
 		}
 		
-		if(!leftMapCollision && !rightMapCollision && !topMapCollision && !bottomMapCollision){
+		if(!leftMapCollision && !rightMapCollision && !topMapCollision && !bottomMapCollision && !jetpack){
 			falling = true;
 		}			
 		
 		if(idling){	
-			x+=0;
-			x-=0;
-			y+=0;
-			y-=0;
+//			x+=0;
+//			x-=0;
+//			y+=0;
+//			y-=0;
+			dx = dy = 0;
 		}
 		
 		if((jumping || falling) && shooting){
@@ -214,24 +231,28 @@ public class Player extends Sprites {
 		if(jetpack){
 			walking = idling = jumping = falling = shooting = jumpShooting = false;
 			jetTimer++;
-			if(jetTimer <= 50){
-				y -= 3*jetTimer*jetTimer/2500;		//exponential jetpack
+			if(jetTimer <= 20){
+				dy = -3*jetTimer*jetTimer/(20*20);		//exponential jetpack
 			}else{
-				y -= 3;
+				dy = -3;
 			}
-			
+			if(right && !rightMapCollision){
+				facingRight = true;
+				dx=2;
+			}
+			if(left && !leftMapCollision){
+				facingRight = false;
+				dx=-2;
+			}
 		}
 		
-		if(!bottomMapCollision){
-			y+=2;				
-//			if(right && !rightMapCollision){
-//				x+=2;
-//			}
-//			if(left && !leftMapCollision){
-//				x-=2;
-//			}
-		}
+		movementUpdate();
 
+	}
+	
+	public void movementUpdate(){
+		x+=dx;
+		y+=dy;
 	}
 	
 	public void setLeft(boolean b){
@@ -280,7 +301,7 @@ public class Player extends Sprites {
 
 	public BufferedImage jumping(BufferedImage b) {
 		
-		if(jumping && !shooting && !jumpShooting){
+		if((jumping || falling) && !shooting && !jumpShooting){
 			jump = image.getSubimage(72, 122, 40, 41);
 		}
 		
