@@ -140,7 +140,7 @@ public class Lobster extends Sprites {
 		} else if (!facingRight && flinching) {
 			// flinch = image.getSubimage(291, 86, 35, 33);
 		}
-		return shoot;
+		return flinch;
 	}
 
 }

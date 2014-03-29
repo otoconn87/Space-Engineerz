@@ -3,6 +3,7 @@ package Game;
 
 import java.awt.Graphics;
 
+import Sprites.Lobster;
 import Audio.JukeBox;
 
 
@@ -25,10 +26,10 @@ public class Game extends GameLoop {
 
 		
 	public void init(){
-		setSize(864, 480);
+		setSize(864, 500);
 		Thread thread = new Thread(this);
 		thread.start();
-		offscreen = createImage(854, 480);
+		offscreen = createImage(854, 500);
 		d = offscreen.getGraphics();
 		addKeyListener(this);
 		menuState = true;
@@ -39,7 +40,7 @@ public class Game extends GameLoop {
 	}
 	
 	public void paint(Graphics g){
-		d.clearRect(0, 0, 864, 480);
+		d.clearRect(0, 0, 864, 500);
 		
 		if(menuState){
 			
@@ -63,6 +64,9 @@ public class Game extends GameLoop {
 				if(menuTimer == 101){
 					menuState = false;
 					levelOneState = true;
+					
+					gameStarted = true;
+					
 				}
 			}
 			
@@ -93,6 +97,29 @@ public class Game extends GameLoop {
 				player.setPosition(109, 300);
 				System.out.println("done");
 			}
+			
+			if(player.x <= 33 && player.y <=200){
+				player.x +=0;
+				player.y+=0;
+				player.x-=0;
+				player.y-=0;
+				player.walking = true;
+				levelOneMap = null;
+				gameMapBlocked = null;
+				gameMapPassed = null;
+				levelOneMap = null;
+				if(lobsters.size() > 0){
+					for(int i = 0; i < lobsters.size(); i++){
+						lobsters.remove(i);
+						
+					}	
+					}
+				levelOneState = false;
+				levelOneSet = false;
+				levelOneBState = true;
+				waitTimer = 0;
+				
+			}
 		
 		if(gameTimer == 3){
 //			audio = new JukeBox("Epic Level Music.mp3");
@@ -120,9 +147,175 @@ public class Game extends GameLoop {
 				}
 				
 			}
+		
 		}
-		//d.fillRect(player.x, player.y+10, 30, 10);
-	//	d.fillRect(player.x+10, player.y, 10, 30);
+		}
+
+
+		if(levelOneBState){
+			waitTimer++;
+			
+			if (waitTimer == 5){
+				player.setPosition(790, 132);
+				System.out.println("done");
+			}
+			
+			if(player.x <= 19 && player.y <=128){
+				player.x +=0;
+				player.y+=0;
+				player.x-=0;
+				player.y-=0;
+				player.walking = true;
+				if(lobsters.size() > 0){
+					for(int i = 0; i < lobsters.size(); i++){
+						lobsters.remove(i);
+						
+					}	
+					}
+				levelOneMap = null;
+				gameMapBlocked = null;
+				gameMapPassed = null;
+				
+				levelOneBState = false;
+				levelOneBSet = false;
+				levelOneCState = true;
+				waitTimer = 0;
+				
+			}
+		
+		
+		d.drawImage(background, 0, 0, this);
+		
+		
+		for (int i = 0; i < levelOneB.getMapHeight(); i++){
+			for(int j = 0; j < levelOneB.getMapWidth(); j++){
+				
+				d.drawImage(gameMapPassed[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+			
+			}
+		}
+		
+		for (int i = 0; i < levelOneB.getMapHeight(); i++){
+			for(int j = 0; j < levelOneB.getMapWidth(); j++){
+				if(levelOneMap[i][j] > 19){
+					//Rectangle rect = new Rectangle(j*levelOne.pixelWidth, i*levelOne.pixelHeight, levelOne.pixelWidth, levelOne.pixelWidth);
+					
+					d.drawImage(gameMapBlocked[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+
+				}
+				
+			}
+		
+		}
+		}
+		
+		if(levelOneCState){
+			waitTimer++;
+			
+			if (waitTimer == 5){
+				player.setPosition(800, 170);
+				System.out.println("done");
+			}
+			
+			if((player.x <= 263 && player.x >= 179) && player.y >=515){
+				player.x +=0;
+				player.y+=0;
+				player.x-=0;
+				player.y-=0;
+				player.falling = true;
+				if(lobsters.size() > 0){
+				for(int i = 0; i < lobsters.size(); i++){
+					lobsters.remove(i);
+					
+				}	
+				}
+				levelOneMap = null;
+				gameMapBlocked = null;
+				gameMapPassed = null;
+				
+				levelOneCState = false;
+				levelOneCSet = false;
+				levelOneDState = true;
+				waitTimer = 0;
+				
+			}
+		
+		
+		d.drawImage(background, 0, 0, this);
+		
+		
+		for (int i = 0; i < levelOneC.getMapHeight(); i++){
+			for(int j = 0; j < levelOneC.getMapWidth(); j++){
+				
+				d.drawImage(gameMapPassed[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+			
+			}
+		}
+		
+		for (int i = 0; i < levelOneC.getMapHeight(); i++){
+			for(int j = 0; j < levelOneC.getMapWidth(); j++){
+				if(levelOneMap[i][j] > 19){
+					//Rectangle rect = new Rectangle(j*levelOne.pixelWidth, i*levelOne.pixelHeight, levelOne.pixelWidth, levelOne.pixelWidth);
+					
+					d.drawImage(gameMapBlocked[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+
+				}
+				
+			}
+		
+		}
+		}
+		
+		if(levelOneDState){
+			waitTimer++;
+			
+			if (waitTimer == 5){
+				player.setPosition(414, 171);
+				System.out.println("done");
+			}
+			
+//			if((player.x <= 263 && player.x >= 179) && player.y >=515){
+//				player.x +=0;
+//				player.y+=0;
+//				player.x-=0;
+//				player.y-=0;
+//				player.falling = true;
+//				levelOneMap = null;
+//				gameMapBlocked = null;
+//				gameMapPassed = null;
+//				
+//				levelOneCState = false;
+//				levelOneCSet = false;
+//				levelOneDState = true;
+//				waitTimer = 0;
+//				
+//			}
+		
+		
+		d.drawImage(background, 0, 0, this);
+		
+		
+		for (int i = 0; i < levelOneD.getMapHeight(); i++){
+			for(int j = 0; j < levelOneD.getMapWidth(); j++){
+				
+				d.drawImage(gameMapPassed[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+			
+			}
+		}
+		
+		for (int i = 0; i < levelOneD.getMapHeight(); i++){
+			for(int j = 0; j < levelOneD.getMapWidth(); j++){
+				if(levelOneMap[i][j] > 19){
+					//Rectangle rect = new Rectangle(j*levelOne.pixelWidth, i*levelOne.pixelHeight, levelOne.pixelWidth, levelOne.pixelWidth);
+					
+					d.drawImage(gameMapBlocked[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+
+				}
+				
+			}
+		
+		}
+		}
 		
 		 
 		
@@ -146,13 +339,30 @@ public class Game extends GameLoop {
 			d.drawImage(player.jetpackIm(playerAnimations), player.x, (int)player.y, this);
 		}
 		for(int i = 0; i < lobsters.size(); i++){
-			if(lobsters.get(0).flinching == true){
-				d.drawImage(lobsters.get(0).flinch(lobsterAnimations),  lobsters.get(0).x,  lobsters.get(0).y, this);
+			if(lobsters.get(i).flinching == true){
+				d.drawImage(lobsters.get(i).flinch(lobsterAnimations),  lobsters.get(i).x,  lobsters.get(i).y, this);
 			}
-			if(lobsters.get(0).walking==true){
-				d.drawImage(lobsters.get(0).walking(lobsterAnimations),  lobsters.get(0).x, lobsters.get(0).y, this);
+			if(lobsters.get(i).walking==true){
+				d.drawImage(lobsters.get(i).walking(lobsterAnimations),  lobsters.get(i).x, lobsters.get(i).y, this);
 			}
 		}
+//		for(int i = 0; i <killBots.size(); i++){
+//			if(killBots.get(i).flinching == true){
+//				d.drawImage(killBots.get(i).flinch(),  killBots.get(i).x,  killBots.get(i).y, this);
+//			}
+//			if(killBots.get(i).walking==true){
+//				d.drawImage(killBots.get(i).walking(),  killBots.get(i).x, killBots.get(i).y, this);
+//			}
+//			if(killBots.get(i).idle==true){
+//				d.drawImage(killBots.get(i).walking(),  killBots.get(i).x, killBots.get(i).y, this);
+//			}
+//			if(killBots.get(i).shooting==true){
+//				d.drawImage(killBots.get(i).walking(),  killBots.get(i).x, killBots.get(i).y, this);
+//			}
+//			if(killBots.get(i).falling==true){
+//				d.drawImage(killBots.get(i).walking(),  killBots.get(i).x, killBots.get(i).y, this);
+//			}
+//		}
 		
 		
 		
@@ -165,7 +375,10 @@ public class Game extends GameLoop {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		}
+		
+		
+		
+		
 		
 		
 		g.drawImage(offscreen,0,0, this);

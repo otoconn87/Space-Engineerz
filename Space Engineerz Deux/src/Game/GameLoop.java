@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import Map.LevelOne;
+import Sprites.KillBot;
 import Sprites.Laser;
 import Sprites.Lobster;
 import Sprites.Player;
@@ -27,7 +28,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public Image offscreen;
 	public Graphics d;
 	
-	public boolean levelOneState;
+	public boolean gameStarted, levelOneState, levelOneSet, levelOneBState, levelOneBSet, levelOneCState, levelOneCSet, levelOneDState, levelOneDSet;
 	public boolean select, down, up, cursor;
 	public boolean left, right, jump, shoot; // directional buttons
 
@@ -37,20 +38,234 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	public BufferedImage background,  playerAnimations, lobsterAnimations, laserAnimations;
 	public Menu menu;
-	public LevelOne levelOne;
+	public LevelOne levelOne, levelOneB, levelOneC, levelOneD;
 	public BufferedImage gameMapBlocked[][];
 	public BufferedImage gameMapPassed[][];
 	public Rectangle levelOneBlockedRectangles[][];
 	public int[][] levelOneMap;
 	public Player player;
+	public ArrayList<KillBot> killBots;
 	public ArrayList<Lobster> lobsters;
 	public ArrayList<Laser> lazer;
 	public int bottomCollisionCounter;
 	
 	public int gameTimer = 0;
+
 	public Laser laser;
 	
+	public void levelOneSetUp(){
+		if(!levelOneSet){
+			
+			lobsterPlayerCollision = false;
+			lobsterLaserCollision = false;
+			
+			levelOne = new LevelOne("level1_space.png", getClass()
+					.getResourceAsStream("level1a.map"));
+			// levelOne.loadMap();
+			gameMapBlocked = levelOne.getLevelOneBlockedTiles();
+			gameMapPassed = levelOne.getLevelOnePassTiles();
+			levelOneMap = levelOne.getLevelOneMap();
+			
+			
+			Lobster l;		
+			Point[] points = new Point[]{
+					new Point(400,275)
+//					new Point(860,200),
+//					new Point(1525,200),
+//					new Point(1680,200),
+//					new Point(1800,200)
+			};
+			for(int i = 0; i < points.length; i++){
+				l = new Lobster("space_lobster.png");
+				l.setFacingRight(false);
+				l.setPosition(points[i].x, points[i].y);
+				lobsters.add(l);
+			}	
+			
+			KillBot k;
+			Point[] p = new Point[]{
+					new Point(411, 296),
+					new Point(493, 192),
+					new Point(209, 186)
+			};
+//			for(int i=0; i<p.length; i++){
+//				k = new KillBot("killBotBoss.png", player, levelOne);
+//				k.setFacingRight(false);
+//				k.setPosition(p[i].x, p[i].y);
+//				killBots.add(k);
+//			}
+			
+			
+			
+			
+			
+	
 
+			try {
+
+				background = ImageIO.read(getClass().getResourceAsStream(
+						"futuropolis.jpg"));
+				
+
+			} catch (IOException e1) {
+
+				e1.printStackTrace();
+			}
+			levelOneSet = true;
+		}
+		else{
+			return;
+		}
+		
+	}
+	
+	
+	public void levelOneBSetUp(){
+		if(!levelOneBSet){
+			Lobster l;		
+			Point[] points = new Point[]{
+					new Point(400,275)
+//					new Point(860,200),
+//					new Point(1525,200),
+//					new Point(1680,200),
+//					new Point(1800,200)
+			};
+			for(int i = 0; i < points.length; i++){
+				l = new Lobster("space_lobster.png");
+				l.setFacingRight(false);
+				l.setPosition(points[i].x, points[i].y);
+				lobsters.add(l);
+			}		
+			
+			
+			
+			
+			lobsterPlayerCollision = false;
+			lobsterLaserCollision = false;
+			
+			levelOneB = new LevelOne("tileset2.png", getClass()
+					.getResourceAsStream("level1b.map"));
+			// levelOne.loadMap();
+			gameMapBlocked = levelOneB.getLevelOneBlockedTiles();
+			gameMapPassed = levelOneB.getLevelOnePassTiles();
+			levelOneMap = levelOneB.getLevelOneMap();
+			
+
+			try {
+
+				background = ImageIO.read(getClass().getResourceAsStream(
+						"futuropolis.jpg"));
+				
+
+			} catch (IOException e1) {
+
+				e1.printStackTrace();
+			}
+			levelOneBSet = true;
+		}
+		else{
+			return;
+		}
+		
+	}
+	
+	public void levelOneCSetUp(){
+		if(!levelOneCSet){
+			Lobster l;		
+			Point[] points = new Point[]{
+					new Point(400,275)
+//					new Point(860,200),
+//					new Point(1525,200),
+//					new Point(1680,200),
+//					new Point(1800,200)
+			};
+			for(int i = 0; i < points.length; i++){
+				l = new Lobster("space_lobster.png");
+				l.setFacingRight(false);
+				l.setPosition(points[i].x, points[i].y);
+				lobsters.add(l);
+			}		
+			
+			
+			
+			
+			lobsterPlayerCollision = false;
+			lobsterLaserCollision = false;
+			
+			levelOneC = new LevelOne("tileset2.png", getClass()
+					.getResourceAsStream("level1c.map"));
+			// levelOne.loadMap();
+			gameMapBlocked = levelOneC.getLevelOneBlockedTiles();
+			gameMapPassed = levelOneC.getLevelOnePassTiles();
+			levelOneMap = levelOneC.getLevelOneMap();
+			
+
+			try {
+
+				background = ImageIO.read(getClass().getResourceAsStream(
+						"futuropolis.jpg"));
+				
+
+			} catch (IOException e1) {
+
+				e1.printStackTrace();
+			}
+			levelOneCSet = true;
+		}
+		else{
+			return;
+		}
+		
+	}
+	
+	public void levelOneDSetUp(){
+		if(!levelOneDSet){
+			Lobster l;		
+			Point[] points = new Point[]{
+					new Point(400,275)
+//					new Point(860,200),
+//					new Point(1525,200),
+//					new Point(1680,200),
+//					new Point(1800,200)
+			};
+			for(int i = 0; i < points.length; i++){
+				l = new Lobster("space_lobster.png");
+				l.setFacingRight(false);
+				l.setPosition(points[i].x, points[i].y);
+				lobsters.add(l);
+			}		
+			
+			
+			
+			
+			lobsterPlayerCollision = false;
+			lobsterLaserCollision = false;
+			
+			levelOneD = new LevelOne("tileset3.png", getClass()
+					.getResourceAsStream("level1d.map"));
+			// levelOne.loadMap();
+			gameMapBlocked = levelOneD.getLevelOneBlockedTiles();
+			gameMapPassed = levelOneD.getLevelOnePassTiles();
+			levelOneMap = levelOneD.getLevelOneMap();
+			
+
+			try {
+
+				background = ImageIO.read(getClass().getResourceAsStream(
+						"futuropolis.jpg"));
+				
+
+			} catch (IOException e1) {
+
+				e1.printStackTrace();
+			}
+			levelOneDSet = true;
+		}
+		else{
+			return;
+		}
+		
+	}
 			
 	public void run() {
 		
@@ -59,53 +274,16 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		
 		player = new Player("space_player.png");
 		player.setFacingRight(true);
-		
-		//player.setPosition(109, 359);
 			
 		lobsters = new ArrayList<Lobster>();
 		lazer = new ArrayList<Laser>();
 
-		Lobster l;		
-		Point[] points = new Point[]{
-				new Point(400,275)
-//				new Point(860,200),
-//				new Point(1525,200),
-//				new Point(1680,200),
-//				new Point(1800,200)
-		};
-		for(int i = 0; i < points.length; i++){
-			l = new Lobster("space_lobster.png");
-			l.setFacingRight(false);
-			l.setPosition(points[i].x, points[i].y);
-			lobsters.add(l);
-		}		
-		
-		
-		
-		
-		lobsterPlayerCollision = false;
-		lobsterLaserCollision = false;
-		
-		levelOne = new LevelOne("level1_space.png", getClass()
-				.getResourceAsStream("level1a.map"));
-		// levelOne.loadMap();
-		gameMapBlocked = levelOne.getLevelOneBlockedTiles();
-		gameMapPassed = levelOne.getLevelOnePassTiles();
-		levelOneMap = levelOne.getLevelOneMap();
-		
 
-		try {
-
-			background = ImageIO.read(getClass().getResourceAsStream(
-					"futuropolis.jpg"));
-			
-
-		} catch (IOException e1) {
-
-			e1.printStackTrace();
-		}
 
 		while (true) {
+			
+			
+					
 			
 			if (player.bottomMapCollision){
 //				System.out.println("bottom collision");
@@ -131,14 +309,33 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			if(player.dead){
 				System.out.println("Game Over");
 			}
-
+			if(levelOneState && !levelOneSet){
+			levelOneSetUp();
+			
+			}
+			if(levelOneBState && !levelOneBSet){
+				levelOneBSetUp();
+			}
+			if(levelOneCState && !levelOneCSet){
+				levelOneCSetUp();
+			}
+			if(levelOneDState && !levelOneDSet){
+				levelOneDSetUp();
+			}
 			player.update();
 			createLazer();
 			updateLaser();
 			lobsterPlayerCollision();
 			lobsterMovement();
+//			for (int i = 0; i < killBots.size(); i++){
+//				killBots.get(i).update();
+//			}
+			
 			checkMapCollision();
+			
+			
 			repaint();
+			
 			try {
 				Thread.sleep(15);
 			} catch (InterruptedException e) {
@@ -148,7 +345,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	}
 	
 	private void checkMapCollision() {
-		if(levelOneState){
+		if(gameStarted && levelOneState){
 			
 			for (int i = 0; i < levelOne.getMapHeight(); i++) {
 				for (int j = 0; j < levelOne.getMapWidth(); j++) {
@@ -197,6 +394,156 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			}
 			bottomCollisionCounter = 0;
 			}
+			if(gameStarted && levelOneBState){
+			
+			for (int i = 0; i < levelOneB.getMapHeight(); i++) {
+				for (int j = 0; j < levelOneB.getMapWidth(); j++) {
+					if (levelOneMap[i][j] > 19) {						
+						Rectangle rect = new Rectangle(j * levelOneB.pixelWidth, i
+								* levelOneB.pixelHeight, levelOneB.pixelWidth,
+								levelOneB.pixelWidth);
+						
+						
+						
+						if (player.mapCollision(player.getLRRect(), rect)) {
+							if (player.left) {
+								player.setLeftMapCollision(true);
+								player.setRightMapCollision(false);
+								
+							}
+							if (player.right) {
+								player.setRightMapCollision(true);
+								player.setLeftMapCollision(false);
+							}
+						}
+						
+						if (player.mapCollision(player.getTBRect(), rect)) {
+							bottomCollisionCounter++;
+							if(player.jumping && (bottomCollisionCounter >= 1)){
+								player.setTopMapCollision(true);
+							}			
+							else if(bottomCollisionCounter >= 1){
+								
+								player.setBottomMapCollision(true);
+							}
+
+											
+						}
+						
+						if(player.grounded == true){
+						if((bottomCollisionCounter == 0)){
+							player.grounded = false;
+							player.setBottomMapCollision(false);
+							//player.setFalling(true);
+							player.setJump(false);
+						}
+						}					
+					}
+				}
+			}
+			bottomCollisionCounter = 0;
+			}
+			
+			if(gameStarted && levelOneCState){
+				
+				for (int i = 0; i < levelOneC.getMapHeight(); i++) {
+					for (int j = 0; j < levelOneC.getMapWidth(); j++) {
+						if (levelOneMap[i][j] > 19) {						
+							Rectangle rect = new Rectangle(j * levelOneC.pixelWidth, i
+									* levelOneC.pixelHeight, levelOneC.pixelWidth,
+									levelOneC.pixelWidth);
+							
+							
+							
+							if (player.mapCollision(player.getLRRect(), rect)) {
+								if (player.left) {
+									player.setLeftMapCollision(true);
+									player.setRightMapCollision(false);
+									
+								}
+								if (player.right) {
+									player.setRightMapCollision(true);
+									player.setLeftMapCollision(false);
+								}
+							}
+							
+							if (player.mapCollision(player.getTBRect(), rect)) {
+								bottomCollisionCounter++;
+								if(player.jumping && (bottomCollisionCounter >= 1)){
+									player.setTopMapCollision(true);
+								}			
+								else if(bottomCollisionCounter >= 1){
+									
+									player.setBottomMapCollision(true);
+								}
+
+												
+							}
+							
+							if(player.grounded == true){
+							if((bottomCollisionCounter == 0)){
+								player.grounded = false;
+								player.setBottomMapCollision(false);
+								//player.setFalling(true);
+								player.setJump(false);
+							}
+							}					
+						}
+					}
+				}
+				bottomCollisionCounter = 0;
+				}
+			
+			if(gameStarted && levelOneDState){
+				
+				for (int i = 0; i < levelOneD.getMapHeight(); i++) {
+					for (int j = 0; j < levelOneD.getMapWidth(); j++) {
+						if (levelOneMap[i][j] > 19) {						
+							Rectangle rect = new Rectangle(j * levelOneD.pixelWidth, i
+									* levelOneD.pixelHeight, levelOneD.pixelWidth,
+									levelOneD.pixelWidth);
+							
+							
+							
+							if (player.mapCollision(player.getLRRect(), rect)) {
+								if (player.left) {
+									player.setLeftMapCollision(true);
+									player.setRightMapCollision(false);
+									
+								}
+								if (player.right) {
+									player.setRightMapCollision(true);
+									player.setLeftMapCollision(false);
+								}
+							}
+							
+							if (player.mapCollision(player.getTBRect(), rect)) {
+								bottomCollisionCounter++;
+								if(player.jumping && (bottomCollisionCounter >= 1)){
+									player.setTopMapCollision(true);
+								}			
+								else if(bottomCollisionCounter >= 1){
+									
+									player.setBottomMapCollision(true);
+								}
+
+												
+							}
+							
+							if(player.grounded == true){
+							if((bottomCollisionCounter == 0)){
+								player.grounded = false;
+								player.setBottomMapCollision(false);
+								//player.setFalling(true);
+								player.setJump(false);
+							}
+							}					
+						}
+					}
+				}
+				bottomCollisionCounter = 0;
+				}
+		
 	}
 
 	private void updateLaser() {

@@ -1,12 +1,41 @@
 package Map;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
+import Game.Menu;
+import Sprites.Laser;
+import Sprites.Lobster;
+import Sprites.Player;
 
 
 
 public class LevelOne extends Map {
+	
+
+	
+
+		
+	public boolean lobsterPlayerCollision, lobsterLaserCollision;
+
+	public BufferedImage background,  playerAnimations, lobsterAnimations, laserAnimations;
+
+	public Player player;
+	public ArrayList<Lobster> lobsters;
+	public ArrayList<Laser> lazer;
+	
+	BufferedImage[][] gameMapBlocked;
+	BufferedImage[][] gameMapPassed;
+	int[][] levelOneMap;
+	
 
 	 
 	public int mapWidth;
@@ -38,8 +67,6 @@ public class LevelOne extends Map {
 		//this.blockedRectangles();
 		this.makeRectangles();
 		
-		blockedRect = blockedRectangles();
-		levelMap = getLevelOneMap();
 		
 		
 	}
@@ -58,6 +85,11 @@ public class LevelOne extends Map {
 		return rect;
 	}
 		
+//	public void update(Graphics g){
+//		
+//		
+//		
+//	}
 	
 	public BufferedImage[][] getLevelOneBlockedTiles(){
 		return this.getBlockedTiles();
