@@ -322,6 +322,7 @@ public class Game extends GameLoop {
 //		d.drawRect(player.x + 10, player.y + 15, 10, 14);
 //		d.drawRect(player.x + 5, player.y + 10, 15, 10);
 //		d.drawRect(player.x + 12, player.y + 10, 15, 10);
+//		d.drawRect(player.x + 5, player.y+2, 20, 25 );
 		 
 		 
 		 

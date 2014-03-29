@@ -222,24 +222,23 @@ public class Player extends Sprites {
 			} else {
 				dy = -3;
 			}
-
-			if (right) {
+			
+			if(right){
 				facingRight = true;
 			}
-			if (left) {
+			if(left){
 				facingRight = false;
 			}
 
-			if (!(rightMapCollision || leftMapCollision)) {
-				if (right) {
-					dx = 2;
-				}
-				if (left) {
-					dx = -2;
-				} else {
-					dx = 0;
-				}
+			if (right && !rightMapCollision) {
+				facingRight = true;
+				dx = 2;
 			}
+			if (left && !leftMapCollision) {
+				facingRight = false;
+				dx = -2;
+			}						
+			
 		}
 
 
@@ -257,11 +256,11 @@ public class Player extends Sprites {
 			dx = 0;
 		}
 		
-		if(leftMapCollision && (!facingRight || dy < 0)){
+		if(leftMapCollision && (dx < 0)){
 			dx = 0;
 		}
 		
-		if(rightMapCollision && (facingRight || dy > 0)){
+		if(rightMapCollision && (dx > 0)){
 			dx = 0;
 		}
 		
@@ -269,7 +268,23 @@ public class Player extends Sprites {
 			dy = 0;
 		}
 		
+		if(leftMapCollision){
+			if(left || dx < 0){
+				dx = 0;
+			}else{
+				leftMapCollision = false;
+			}
+		}
+		if(rightMapCollision){
+			if(right || dx > 0){
+				dx = 0;
+			}else{
+				rightMapCollision = false;
+			}
+		}
 
+
+		
 		// keep bottom of update function
 		movementUpdate();
 
@@ -300,14 +315,6 @@ public class Player extends Sprites {
 		shootLaser = true;
 	}
 	
-	public Rectangle getTBRect() {
-		return new Rectangle(this.x+10, (int)this.y, 10, 30);
-	}
-	
-	public Rectangle getLRRect(){
-		return new Rectangle(this.x, (int)this.y+10, 30, 10);
-	}
-	
 	// new rectangles
 
 	public Rectangle getTopRect() {
@@ -324,6 +331,10 @@ public class Player extends Sprites {
 
 	public Rectangle getRightRect() {
 		return new Rectangle(this.x + 12, this.y + 10, 15, 10);
+	}
+	
+	public Rectangle getPlayerRect(){
+		return new Rectangle(this.x + 5, this.y + 2, 20, 25 );
 	}
 	
 	

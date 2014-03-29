@@ -330,8 +330,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 						// Right Map Collision
 						if (player.mapCollision(player.getRightRect(), rect)) {
+							rightCollisionCounter++;
 							if (player.right && (rightCollisionCounter >= 1)) {
-								rightCollisionCounter++;
 								player.setRightMapCollision(true);
 								player.setLeftMapCollision(false);
 							}
@@ -390,8 +390,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 						// Right Map Collision
 						if (player.mapCollision(player.getRightRect(), rect)) {
+							rightCollisionCounter++;
 							if (player.right && (rightCollisionCounter >= 1)) {
-								rightCollisionCounter++;
 								player.setRightMapCollision(true);
 								player.setLeftMapCollision(false);
 							}
@@ -451,8 +451,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 						// Right Map Collision
 						if (player.mapCollision(player.getRightRect(), rect)) {
+							rightCollisionCounter++;
 							if (player.right && (rightCollisionCounter >= 1)) {
-								rightCollisionCounter++;
 								player.setRightMapCollision(true);
 								player.setLeftMapCollision(false);
 							}
@@ -512,8 +512,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 						// Right Map Collision
 						if (player.mapCollision(player.getRightRect(), rect)) {
+							rightCollisionCounter++;
 							if (player.right && (rightCollisionCounter >= 1)) {
-								rightCollisionCounter++;
 								player.setRightMapCollision(true);
 								player.setLeftMapCollision(false);
 							}
@@ -653,7 +653,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	private void lobsterPlayerCollision() {
 
 		for (int i = 0; i < lobsters.size(); i++) {
-			if ((lobsters.get(i).getRect().intersects(player.getLRRect()))
+			if ((lobsters.get(i).getRect().intersects(player.getPlayerRect()))
 					&& !lobsterPlayerCollision) {
 				lobsterPlayerCollision = true;
 				player.health -= 1;
@@ -662,7 +662,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 					player.dead = true;
 				}
 			}
-			if (!(lobsters.get(i).getRect().intersects(player.getLRRect()))) {
+			if (!(lobsters.get(i).getRect().intersects(player.getPlayerRect()))) {
 				lobsterPlayerCollision = false;
 			}
 		}
