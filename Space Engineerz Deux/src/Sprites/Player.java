@@ -105,15 +105,12 @@ public class Player extends Sprites {
 			}
 			walking = false;
 			idling = false;
-//			y-=3;
 			dy = -3;
 		
-			if(right && !rightMapCollision){
-//				x+=2;
+			if(right && facingRight && !rightMapCollision){
 				dx = 2;
 			}
-			if(left && !leftMapCollision){
-//				x-=2;
+			if(left && !facingRight && !leftMapCollision){
 				dx = -2;
 			}
 			if(jumpTimer == 20){
@@ -133,22 +130,18 @@ public class Player extends Sprites {
 			jumping = false;
 			topMapCollision = false;
 			if(bottomMapCollision){
-//				y+=0;
 				dy = 0;
 				falling = false;
 				grounded = true;
 			}
-			else if(grounded == false) {
+			if(!grounded) {
 				
-//				y+=3;
 				dy = 3;
 				jumping = false;
-				if(right && !rightMapCollision){
-//					x+=2;
+				if(right && facingRight && !rightMapCollision){
 					dx = 2;
 				}
-				if(left && !leftMapCollision){
-//					x-=2;
+				if(left && !facingRight && !leftMapCollision){
 					dx = -2;
 				}
 			}
@@ -157,6 +150,7 @@ public class Player extends Sprites {
 				jumpShooting = false;
 			}
 		}
+		
 		if(left && (!falling && !jumping && !jetpack)){
 			grounded = true;
 			inAir = false;
@@ -166,12 +160,10 @@ public class Player extends Sprites {
 			idling = false;
 			jumpShooting = false;
 			if(leftMapCollision){
-//				x+=3;
-				dx = 3;
+				dx = 0;
 				leftMapCollision = rightMapCollision = false;
 			}
 			else if(!leftMapCollision){
-//				x-=2;
 				dx = -2;
 				
 			}
@@ -186,12 +178,10 @@ public class Player extends Sprites {
 			idling = false;
 			jumpShooting = false;
 			if(rightMapCollision){
-//				x-=3;
-				dx = -3;
+				dx = 0;
 				leftMapCollision = rightMapCollision = false;
 			}
 			else if(!rightMapCollision){
-//				x+=2;
 				dx = 2;
 			}
 		}
@@ -212,10 +202,6 @@ public class Player extends Sprites {
 		}			
 		
 		if(idling){	
-//			x+=0;
-//			x-=0;
-//			y+=0;
-//			y-=0;
 			dx = dy = 0;
 		}
 		
@@ -225,46 +211,6 @@ public class Player extends Sprites {
 		if(!(jumping || falling) && shooting){
 			jumpShooting = false;
 		}
-		
-		
-		//TODO still a bunch of issues
-//		if(jetpack){
-//			walking = idling = jumping = falling = shooting = jumpShooting = false;
-//			jetTimer++;
-//			if(jetTimer <= 20){
-//				dy = -3*jetTimer*jetTimer/(20*20);		//exponential jetpack
-//			}else{
-//				dy = -3;
-//			}
-//			if(right){
-//				facingRight = true;
-//				if(!rightMapCollision){
-//					dx = 2;
-//				}else{
-//					dx = 0;
-//				}
-//			}
-//			if(left){
-//				facingRight = false;
-//				if(!leftMapCollision){
-//					dx = -2;
-//				}else{
-//					dx = 0;
-//				}
-//			}
-//			if(rightMapCollision || leftMapCollision){
-//				dx = 0;
-//			}
-//		}
-//		
-//		if(facingRight && (dx < 0)){
-//			dx = 0;
-//		}
-//		if(!facingRight && (dx > 0)){
-//			dx = 0;
-//		}
-		
-		
 		
 		// TODO still a bunch of issues
 		if (jetpack) {
@@ -284,40 +230,19 @@ public class Player extends Sprites {
 				facingRight = false;
 			}
 
-			if (!((rightMapCollision || leftMapCollision))) {
+			if (!(rightMapCollision || leftMapCollision)) {
 				if (right) {
 					dx = 2;
-				} else if (left) {
+				}
+				if (left) {
 					dx = -2;
 				} else {
 					dx = 0;
 				}
 			}
-			// if(right){
-			// facingRight = true;
-			// if(!rightMapCollision){
-			// dx = 2;
-			// }else{
-			// dx = 0;
-			// }
-			// }
-			// if(left){
-			// facingRight = false;
-			// if(!leftMapCollision){
-			// dx = -2;
-			// }else{
-			// dx = 0;
-			// }
-			// }
-			// if(rightMapCollision || leftMapCollision){
-			// dx = 0;
-			// }
-
 		}
 
-//		if ((topMapCollision) && (jumping || jetpack)) {
-//			dy = 0;
-//		}
+
 		if(dy == 0){
 			grounded = true;
 		}
@@ -332,11 +257,11 @@ public class Player extends Sprites {
 			dx = 0;
 		}
 		
-		if(leftMapCollision && !facingRight){
+		if(leftMapCollision && (!facingRight || dy < 0)){
 			dx = 0;
 		}
 		
-		if(rightMapCollision && facingRight){
+		if(rightMapCollision && (facingRight || dy > 0)){
 			dx = 0;
 		}
 		
