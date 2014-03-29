@@ -52,6 +52,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public int gameTimer = 0;
 
 	public Laser laser;
+	private int topCollisionCounter;
+	private int leftCollisionCounter;
+	private int rightCollisionCounter;
 	
 	public void levelOneSetUp(){
 		if(!levelOneSet){
@@ -355,31 +358,44 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 								levelOne.pixelWidth);
 						
 						
-						
-						if (player.mapCollision(player.getLRRect(), rect)) {
-							if (player.left) {
+						//Left Map Collision
+						if (player.mapCollision(player.getLeftRect(), rect)) {
+							leftCollisionCounter++;
+							if (player.left && (leftCollisionCounter >= 1)) {
 								player.setLeftMapCollision(true);
 								player.setRightMapCollision(false);
 								
 							}
-							if (player.right) {
+						}
+						
+						//Right Map Collision
+						if(player.mapCollision(player.getRightRect(), rect)){
+							if (player.right && (rightCollisionCounter >= 1)) {
+								rightCollisionCounter++;
 								player.setRightMapCollision(true);
 								player.setLeftMapCollision(false);
 							}
 						}
 						
-						if (player.mapCollision(player.getTBRect(), rect)) {
-							bottomCollisionCounter++;
-							if(player.jumping && (bottomCollisionCounter >= 1)){
+						//Top Map Collision
+						if (player.mapCollision(player.getTopRect(), rect)) {
+							topCollisionCounter++;
+							if((player.jumping || player.jetpack) && (topCollisionCounter >= 1)){
 								player.setTopMapCollision(true);
-							}			
-							else if(bottomCollisionCounter >= 1){
-								
-								player.setBottomMapCollision(true);
-							}
-
-											
+							}														
 						}
+						
+						//Bottom Map Collision
+						if (player.mapCollision(player.getBottomRect(), rect)) {
+							bottomCollisionCounter++;
+							if(!(player.jumping || player.jetpack) && (bottomCollisionCounter >= 1)){
+								player.setBottomMapCollision(true);
+							}														
+						}
+						
+						
+						
+				
 						
 						if(player.grounded == true){
 						if((bottomCollisionCounter == 0)){
@@ -419,7 +435,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 						
 						if (player.mapCollision(player.getTBRect(), rect)) {
 							bottomCollisionCounter++;
-							if(player.jumping && (bottomCollisionCounter >= 1)){
+							if((player.jumping || player.jetpack) && (bottomCollisionCounter >= 1)){
 								player.setTopMapCollision(true);
 							}			
 							else if(bottomCollisionCounter >= 1){
@@ -469,7 +485,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 							
 							if (player.mapCollision(player.getTBRect(), rect)) {
 								bottomCollisionCounter++;
-								if(player.jumping && (bottomCollisionCounter >= 1)){
+								if((player.jumping || player.jetpack) && (bottomCollisionCounter >= 1)){
 									player.setTopMapCollision(true);
 								}			
 								else if(bottomCollisionCounter >= 1){
@@ -519,7 +535,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 							
 							if (player.mapCollision(player.getTBRect(), rect)) {
 								bottomCollisionCounter++;
-								if(player.jumping && (bottomCollisionCounter >= 1)){
+								if((player.jumping || player.jetpack) && (bottomCollisionCounter >= 1)){
 									player.setTopMapCollision(true);
 								}			
 								else if(bottomCollisionCounter >= 1){

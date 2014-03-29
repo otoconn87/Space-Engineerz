@@ -2,6 +2,7 @@ package Game;
 
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import Sprites.Lobster;
 import Audio.JukeBox;
@@ -94,7 +95,7 @@ public class Game extends GameLoop {
 			waitTimer++;
 			
 			if (waitTimer == 100){
-				player.setPosition(109, 300);
+				player.setPosition(109, 100);
 				System.out.println("done");
 			}
 			
@@ -317,6 +318,12 @@ public class Game extends GameLoop {
 		}
 		}
 		
+//		d.drawRect(player.x + 10, player.y, 10, 15);
+//		d.drawRect(player.x + 10, player.y + 15, 10, 14);
+//		d.drawRect(player.x + 5, player.y + 10, 15, 10);
+//		d.drawRect(player.x + 12, player.y + 10, 15, 10);
+		 
+		 
 		 
 		
 		if(player.idling){

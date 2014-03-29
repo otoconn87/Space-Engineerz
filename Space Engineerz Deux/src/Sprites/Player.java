@@ -12,8 +12,7 @@ public class Player extends Sprites {
 	
 	
 	public int jumpTimer;
-	public int x;
-	public double y;
+	public int x, y;
 	public int dx, dy;
 	
 	public boolean walking, idling, jumping, shooting, jetpack, falling, inAir, jumpShooting, grounded;
@@ -229,41 +228,122 @@ public class Player extends Sprites {
 		
 		
 		//TODO still a bunch of issues
-		if(jetpack){
-			walking = idling = jumping = falling = shooting = jumpShooting = false;
+//		if(jetpack){
+//			walking = idling = jumping = falling = shooting = jumpShooting = false;
+//			jetTimer++;
+//			if(jetTimer <= 20){
+//				dy = -3*jetTimer*jetTimer/(20*20);		//exponential jetpack
+//			}else{
+//				dy = -3;
+//			}
+//			if(right){
+//				facingRight = true;
+//				if(!rightMapCollision){
+//					dx = 2;
+//				}else{
+//					dx = 0;
+//				}
+//			}
+//			if(left){
+//				facingRight = false;
+//				if(!leftMapCollision){
+//					dx = -2;
+//				}else{
+//					dx = 0;
+//				}
+//			}
+//			if(rightMapCollision || leftMapCollision){
+//				dx = 0;
+//			}
+//		}
+//		
+//		if(facingRight && (dx < 0)){
+//			dx = 0;
+//		}
+//		if(!facingRight && (dx > 0)){
+//			dx = 0;
+//		}
+		
+		
+		
+		// TODO still a bunch of issues
+		if (jetpack) {
+			walking = idling = jumping = falling = shooting = jumpShooting = grounded = false;
 			jetTimer++;
-			if(jetTimer <= 20){
-				dy = -3*jetTimer*jetTimer/(20*20);		//exponential jetpack
-			}else{
+			if (jetTimer <= 20) {
+				dy = -3 * jetTimer * jetTimer / (20 * 20); // exponential
+															// jetpack
+			} else {
 				dy = -3;
 			}
-			if(right){
+
+			if (right) {
 				facingRight = true;
-				if(!rightMapCollision){
-					dx = 2;
-				}else{
-					dx = 0;
-				}
 			}
-			if(left){
+			if (left) {
 				facingRight = false;
-				if(!leftMapCollision){
+			}
+
+			if (!((rightMapCollision || leftMapCollision))) {
+				if (right) {
+					dx = 2;
+				} else if (left) {
 					dx = -2;
-				}else{
+				} else {
 					dx = 0;
 				}
 			}
-			if(rightMapCollision || leftMapCollision){
-				dx = 0;
-			}
+			// if(right){
+			// facingRight = true;
+			// if(!rightMapCollision){
+			// dx = 2;
+			// }else{
+			// dx = 0;
+			// }
+			// }
+			// if(left){
+			// facingRight = false;
+			// if(!leftMapCollision){
+			// dx = -2;
+			// }else{
+			// dx = 0;
+			// }
+			// }
+			// if(rightMapCollision || leftMapCollision){
+			// dx = 0;
+			// }
+
+		}
+
+//		if ((topMapCollision) && (jumping || jetpack)) {
+//			dy = 0;
+//		}
+		if(dy == 0){
+			grounded = true;
+		}
+		if(topMapCollision && !grounded){
+			dy = 0;
+		}
+
+		if (facingRight && (dx < 0)) {
+			dx = 0;
+		}
+		if (!facingRight && (dx > 0)) {
+			dx = 0;
 		}
 		
-		if(facingRight && (dx < 0)){
+		if(leftMapCollision && !facingRight){
 			dx = 0;
 		}
-		if(!facingRight && (dx > 0)){
+		
+		if(rightMapCollision && facingRight){
 			dx = 0;
 		}
+		
+		if(bottomMapCollision && !(jumping || jetpack)){
+			dy = 0;
+		}
+		
 
 		// keep bottom of update function
 		movementUpdate();
@@ -302,7 +382,26 @@ public class Player extends Sprites {
 	public Rectangle getLRRect(){
 		return new Rectangle(this.x, (int)this.y+10, 30, 10);
 	}
+	
+	// new rectangles
 
+	public Rectangle getTopRect() {
+		return new Rectangle(this.x + 10, this.y, 10, 15);
+	}
+
+	public Rectangle getBottomRect() {
+		return new Rectangle(this.x + 10, this.y + 15, 10, 14);
+	}
+
+	public Rectangle getLeftRect() {
+		return new Rectangle(this.x + 5, this.y + 10, 15, 10);
+	}
+
+	public Rectangle getRightRect() {
+		return new Rectangle(this.x + 12, this.y + 10, 15, 10);
+	}
+	
+	
 	public void setFalling(boolean b) {
 		falling = b;	
 	}
