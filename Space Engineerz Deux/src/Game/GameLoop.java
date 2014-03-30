@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 
 import Map.LevelOne;
 import Sprites.Blastik;
+import Sprites.BlastikLaser;
 import Sprites.KillBot;
 import Sprites.KillBotLaser;
 import Sprites.Laser;
@@ -41,7 +42,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public boolean lobsterPlayerCollision, lobsterLaserCollision;
 
 	public BufferedImage background, playerAnimations, lobsterAnimations,
-			laserAnimations;
+			laserAnimations, blastikLaserAnimation;
 	public Menu menu;
 	public LevelOne levelOne, levelOneB, levelOneC, levelOneD;
 	public BufferedImage gameMapBlocked[][];
@@ -54,6 +55,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public Blastik blastik;
 	public ArrayList<Laser> lazer;
 	public ArrayList<KillBotLaser> kbLaser;
+	public ArrayList<BlastikLaser> blastikLaser;
 	public int bottomCollisionCounter;
 
 	public int gameTimer = 0;
@@ -64,6 +66,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	private int rightCollisionCounter;
 	private boolean killBotLaserCollision;
 	private boolean killBotLaserPlayerCollision;
+	private boolean blastikLaserCollision;
+	private boolean blastikLaserPlayerCollision;
 
 	public void levelOneSetUp() {
 		if (!levelOneSet) {
@@ -248,6 +252,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		
 		kbLaser = new ArrayList<KillBotLaser>();
 		
+		blastikLaser = new ArrayList<BlastikLaser>();
+		
 
 		while (true) {
 
@@ -277,6 +283,14 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			//killbot laser
 			createKillBotLaser();
 			updateKillBotLaser();
+			
+			//TODO
+			//blastik laser
+			if(levelOneDState){
+				createBlastikLaser();
+				updateBlastikLaser();
+			}
+			
 			
 
 			for (int i = 0; i < killBots.size(); i++){
@@ -548,7 +562,20 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		for (int i = 0; i < lazer.size(); i++) {
 			lazer.get(i).update();
 		}
-		checkLaserCollision();
+		
+		//which map to pass in
+		if(levelOneState){
+			checkLaserCollision(levelOne);
+		}
+		if(levelOneBState){
+			checkLaserCollision(levelOneB);
+		}
+		if(levelOneCState){
+			checkLaserCollision(levelOneC);
+		}
+		if(levelOneDState){
+			checkLaserCollision(levelOneD);
+		}
 		checkLaserLobsterCollision();
 		checkLaserKillBotCollision();
 	}
@@ -583,6 +610,15 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		checkLaserPlayerCollision();
 	}
 	
+	//TODO
+	private void updateBlastikLaser(){
+		for (int i = 0; i < blastikLaser.size(); i++) {
+			blastikLaser.get(i).update();
+		}
+//		checkKBLaserCollision();
+//		checkLaserPlayerCollision();
+	}
+	
 	
 	private void checkLaserPlayerCollision() {
 		for (int i = 0; i < kbLaser.size(); i++) {
@@ -604,6 +640,31 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 	}
 
+	//TODO
+	private void createBlastikLaser() {
+		
+		if (blastik.shootLaser) {
+			blastik.shootLaser = false; // only one shot per button pressed
+			shoot = false;
+
+			BlastikLaser lz;
+
+			lz = new BlastikLaser("GundamDude.png", player);
+			
+			if (blastik.facingRight) {
+				lz.setPosition(blastik.getX() + 20, blastik.getY());
+				lz.setFacingRight(true);
+				lz.setRight();
+			} else {
+				lz.setPosition(blastik.getX() - 20, blastik.getY());
+				lz.setFacingRight(false);
+				lz.setLeft();
+			}
+			blastikLaser.add(lz);
+		}
+		
+	}
+	
 	
 	private void createKillBotLaser() {
 		for(int i = 0; i < killBots.size(); i++){
@@ -703,15 +764,17 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 	}
 
-	private void checkLaserCollision() {
+	private void checkLaserCollision(LevelOne l) {
+		
+		LevelOne level = l;
 
 		for (int k = 0; k < lazer.size(); k++) {
-			for (int i = 0; i < levelOne.getMapHeight(); i++) {
-				for (int j = 0; j < levelOne.getMapWidth(); j++) {
+			for (int i = 0; i < level.getMapHeight(); i++) {
+				for (int j = 0; j < level.getMapWidth(); j++) {
 					if (levelOneMap[i][j] > 19) {
-						Rectangle rect = new Rectangle(j * levelOne.pixelWidth,
-								i * levelOne.pixelHeight, levelOne.pixelWidth,
-								levelOne.pixelWidth);
+						Rectangle rect = new Rectangle(j * level.pixelWidth,
+								i * level.pixelHeight, level.pixelWidth,
+								level.pixelWidth);
 
 						if (lazer.get(k).mapCollision(lazer.get(k).getRect(),
 								rect)) {

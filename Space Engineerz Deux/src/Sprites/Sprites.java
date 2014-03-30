@@ -1,11 +1,12 @@
 package Sprites;
 
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
-import java.awt.Rectangle;
 
 
 public abstract class Sprites {
@@ -36,6 +37,18 @@ public abstract class Sprites {
 		AffineTransformOp op = new AffineTransformOp(imageFlip,
 				AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 		b = op.filter(b, null);
+		
+		return b;
+	}
+	
+	public BufferedImage rotate(BufferedImage b) {
+		AffineTransform imageFlip = AffineTransform.getScaleInstance(-1, 1);
+		imageFlip.translate(-b.getWidth(null), 0);
+		imageFlip.rotate(Math.PI/4);
+		AffineTransformOp op = new AffineTransformOp(imageFlip,
+				AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		b = op.filter(b, null);
+		
 		return b;
 	}
 	

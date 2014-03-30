@@ -2,9 +2,7 @@ package Game;
 
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
 
-import Sprites.Lobster;
 import Audio.JukeBox;
 
 
@@ -347,8 +345,8 @@ public class Game extends GameLoop {
 		//d.fillRect(blastik.x,  blastik.y, 75, 105);
 		}
 				
-		if(player.idling){
-			d.drawImage(player.idle(playerAnimations),  player.x,  (int)player.y, this);
+		if(player.idling){			
+			d.drawImage(player.idle(playerAnimations),  player.x,  (int)player.y, this);		
 		}
 		if((player.jumping || player.falling) && !(player.shooting || player.jumpShooting)){
 			d.drawImage(player.jumping(playerAnimations), player.x, (int)player.y, this);
@@ -415,6 +413,17 @@ public class Game extends GameLoop {
 			e.printStackTrace();
 		}	
 		
+		try {
+			for (int i = 0; i < blastikLaser.size(); i++) {
+				if (blastikLaser.get(i).laserFire) {
+					d.drawImage(blastikLaser.get(i).laserIm(laserAnimations),
+							blastikLaser.get(i).x, blastikLaser.get(i).y, this);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
 		
 		
 		
@@ -422,6 +431,7 @@ public class Game extends GameLoop {
 		g.drawImage(offscreen,0,0, this);
 		
 	}
+	
 	
 	public void update(Graphics g){
 		paint(g);

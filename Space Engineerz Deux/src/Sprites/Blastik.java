@@ -12,7 +12,7 @@ public class Blastik extends Sprites{
 	public boolean bottomMapCollision;
 	//public LevelOne level;
 
-	public boolean facingRight, left, right;
+	public boolean facingRight, left, right, shootLaser;
 
 	public int animationTimer, botTimer, flinchTimer;
 	
@@ -31,7 +31,7 @@ public class Blastik extends Sprites{
 		idle = true;
 		health = 15;
 		player = p;
-		
+		shootLaser = false;
 		
 	}
 	
@@ -73,6 +73,10 @@ public class Blastik extends Sprites{
 	
 	public void setIdling(boolean b){
 		idle = b;
+	}
+	
+	public void laserFire(){		
+		shootLaser = true;
 	}
 
 	
@@ -220,14 +224,16 @@ public class Blastik extends Sprites{
 	// TODO shoot
 	public BufferedImage shoot() {
 		animationTimer++;
-		
 
 		try {
 			
 			if (shooting) {
 				
-				 if (animationTimer >= 0 && animationTimer < 20) {
+				 if (animationTimer >= 0 && animationTimer < 300) {
 					shoot = image.getSubimage(885, 251, 106, 105);
+					if(animationTimer == 50){
+						laserFire();
+					}
 
 				}
 				else {
