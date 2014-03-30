@@ -366,6 +366,11 @@ public class Game extends GameLoop {
 			d.drawImage(blastik.walking(),  blastik.x, blastik.y, this);
 		}
 		
+		if (blastik.dead){
+			levelOneDState = false;
+			
+		}
+		
 		//d.fillRect(blastik.x,  blastik.y, 75, 105);
 		}
 

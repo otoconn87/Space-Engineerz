@@ -20,7 +20,7 @@ public abstract class Map {
 	private int pixelHeight;
 	
 	private Rectangle rect;
-	private Rectangle[][] rectArray; //lol
+	private Rectangle[][] rectArray; 
 	
 	private BufferedReader br; 
 	private BufferedImage tileSet;

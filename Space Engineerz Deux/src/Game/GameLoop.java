@@ -25,30 +25,37 @@ import Sprites.Player;
 @SuppressWarnings("serial")
 public class GameLoop extends Applet implements Runnable, KeyListener {
 
-	public int x, y;
-	public int walkTimer = 0;
+	
 
 	public Image offscreen;
+	
 	public Graphics d;
 
 	public boolean gameStarted, gameOver, gameCompleted, levelOneState, levelOneSet, levelOneBState,
-			levelOneBSet, levelOneCState, levelOneCSet, levelOneDState,
-			levelOneDSet;
-	public boolean select, down, up, cursor;
+				   levelOneBSet, levelOneCState, levelOneCSet, levelOneDState,	levelOneDSet;
+	
+	
+	public boolean select, down, up, cursor; // Menu bools
+	
 	public boolean left, right, jump, shoot; // directional buttons
 
 	public boolean walking, idling, shooting, dead; // character states
 
-	public boolean lobsterPlayerCollision, lobsterLaserCollision;
+	public boolean lobsterPlayerCollision, lobsterLaserCollision; //lobster collision bools
 
 	public BufferedImage background, playerAnimations, lobsterAnimations, laserAnimations, gameOverScreen, completionScreen,	 blastikLaserAnimation;
 
-	public Menu menu;
-	public LevelOne levelOne, levelOneB, levelOneC, levelOneD;
+	public Menu menu; //menu object
+	
+	public LevelOne levelOne, levelOneB, levelOneC, levelOneD; //level objects
+	
+	//2D Arrays for building the levels
 	public BufferedImage gameMapBlocked[][];
 	public BufferedImage gameMapPassed[][];
 	public Rectangle levelOneBlockedRectangles[][];
 	public int[][] levelOneMap;
+	
+	//Game Sprites
 	public Player player;
 	public ArrayList<KillBot> killBots;
 	public ArrayList<Lobster> lobsters;
@@ -56,14 +63,21 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public ArrayList<Laser> lazer;
 	public ArrayList<KillBotLaser> kbLaser;
 	public ArrayList<BlastikLaser> blastikLaser;
-	public int bottomCollisionCounter;
+	
+	
+	
 
 	public int gameTimer = 0;
 
 	public Laser laser;
+	
+	//Counters for determining map collisions
+	public int bottomCollisionCounter;
 	private int topCollisionCounter;
 	private int leftCollisionCounter;
 	private int rightCollisionCounter;
+	
+	
 	private boolean killBotLaserCollision;
 	private boolean killBotLaserPlayerCollision;
 	private boolean blastikLaserCollision;
