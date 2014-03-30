@@ -41,11 +41,57 @@ public abstract class Sprites {
 		return b;
 	}
 	
-	public BufferedImage rotate(BufferedImage b) {
-		AffineTransform imageFlip = AffineTransform.getScaleInstance(-1, 1);
-		imageFlip.translate(-b.getWidth(null), 0);
-		imageFlip.rotate(Math.PI/4);
-		AffineTransformOp op = new AffineTransformOp(imageFlip,
+	public BufferedImage rotate(BufferedImage b, int px, int py, int lx, int ly, int w, int h) {
+		
+		double theta;
+		AffineTransform imageRotate = null;
+		
+		if(px < lx){
+			theta = (Math.atan((py-ly)/(px-lx)));
+			
+			imageRotate = AffineTransform.getScaleInstance(1, 1);
+			imageRotate.translate(w/2, h/2);
+			
+			imageRotate.rotate(theta);
+			
+			imageRotate.translate(-b.getWidth()/2, -b.getHeight()/2);
+		}
+		if (px > lx) {
+			theta = (Math.atan((ly - py) / (px - lx)));
+
+			imageRotate = AffineTransform.getScaleInstance(-1, 1);
+			imageRotate.translate(-b.getWidth(null), 0);
+			imageRotate.translate(w / 2, h / 2);
+
+			imageRotate.rotate(theta);
+
+			imageRotate.translate(-b.getWidth() / 2, -b.getHeight() / 2);
+		}
+		if(px == lx){
+			if(py < ly){
+				theta = Math.PI/2;
+				
+				imageRotate = AffineTransform.getScaleInstance(1, 1);
+				imageRotate.translate(w/2, h/2);
+				
+				imageRotate.rotate(theta);
+				
+				imageRotate.translate(-b.getWidth()/2, -b.getHeight()/2);
+			}
+			if(py > ly){
+				theta = (3/2)*Math.PI;
+				
+				imageRotate = AffineTransform.getScaleInstance(1, 1);
+				imageRotate.translate(w/2, h/2);
+				
+				imageRotate.rotate(theta);
+				
+				imageRotate.translate(-b.getWidth()/2, -b.getHeight()/2);
+			}
+		}
+	
+
+		AffineTransformOp op = new AffineTransformOp(imageRotate,
 				AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 		b = op.filter(b, null);
 		
