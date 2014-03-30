@@ -23,7 +23,7 @@ import Sprites.Player;
 @SuppressWarnings("serial")
 public class GameLoop extends Applet implements Runnable, KeyListener {
 
-	public int x, y, laserX;
+	public int x, y;
 	public int walkTimer = 0;
 
 	public Image offscreen;
@@ -122,10 +122,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 				e1.printStackTrace();
 			}
 			levelOneSet = true;
-		} else {
-			return;
 		}
-
 	}
 
 	public void levelOneBSetUp() {
@@ -164,8 +161,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 				e1.printStackTrace();
 			}
 			levelOneBSet = true;
-		} else {
-			return;
 		}
 
 	}
@@ -206,10 +201,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 				e1.printStackTrace();
 			}
 			levelOneCSet = true;
-		} else {
-			return;
 		}
-
 	}
 
 	public void levelOneDSetUp() {
@@ -248,10 +240,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 				e1.printStackTrace();
 			}
 			levelOneDSet = true;
-		} else {
-			return;
 		}
-
 	}
 
 	public void run() {
@@ -593,7 +582,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 	}
 	
-	//TODO
+	
 	private void updateKillBotLaser() {
 		for (int i = 0; i < kbLaser.size(); i++) {
 			kbLaser.get(i).update();
@@ -602,7 +591,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		checkLaserPlayerCollision();
 	}
 	
-	// TODO
+	
 	private void checkLaserPlayerCollision() {
 		for (int i = 0; i < kbLaser.size(); i++) {
 				if ((player.getPlayerRect().intersects(kbLaser.get(i)
@@ -623,7 +612,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 	}
 
-	//TODO
+	
 	private void createKillBotLaser() {
 		for(int i = 0; i < killBots.size(); i++){
 			if (killBots.get(i).shootLaser) {
@@ -648,7 +637,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		
 	}
 
-	//TODO
+	
 	private void checkLaserKillBotCollision() {
 		for (int i = 0; i < lazer.size(); i++) {
 			for (int j = 0; j < killBots.size(); j++) {
@@ -670,7 +659,6 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 	}
 	
-	//TODO
 	private void checkKBLaserCollision() {
 
 		for (int k = 0; k < kbLaser.size(); k++) {
