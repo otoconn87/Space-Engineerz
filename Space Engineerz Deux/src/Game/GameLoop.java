@@ -299,7 +299,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			if(levelOneDState){
 				createBlastikLaser();
 				updateBlastikLaser();
+				blastik.update();
 			}
+			
 			
 			
 
