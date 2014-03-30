@@ -14,7 +14,7 @@ public class Blastik extends Sprites{
 
 	public boolean facingRight, left, right, shootLaser;
 
-	public int animationTimer, botTimer, flinchTimer;
+	public int animationTimer, botTimer, flinchTimer, laserTimer;
 	
 	//Animation images
 	public BufferedImage walk; 
@@ -32,6 +32,7 @@ public class Blastik extends Sprites{
 		health = 15;
 		player = p;
 		shootLaser = false;
+		laserTimer = 0;
 		
 	}
 	
@@ -82,6 +83,16 @@ public class Blastik extends Sprites{
 	
 	
 	public void update(){
+		
+		laserTimer++;
+		if(shooting){
+			if(laserTimer == 100){
+				laserFire();
+			}
+		}
+		if(laserTimer == 1000){
+			laserTimer = 0;
+		}
 		
 		if(falling){
 			y+=2;
@@ -229,11 +240,9 @@ public class Blastik extends Sprites{
 			
 			if (shooting) {
 				
-				 if (animationTimer >= 0 && animationTimer < 300) {
+				 if (animationTimer >= 0 && animationTimer < 500) {
 					shoot = image.getSubimage(885, 251, 106, 105);
-					if(animationTimer == 50){
-						laserFire();
-					}
+					
 
 				}
 				else {

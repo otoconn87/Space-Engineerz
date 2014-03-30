@@ -22,6 +22,7 @@ public class BlastikLaser extends Player {
 		height = 32;
 		laserFire = true;
 		player = p;
+		updateCounter = 0;
 
 	}
 	
@@ -30,27 +31,42 @@ public class BlastikLaser extends Player {
 		playerX = player.x;
 		playerY = player.y;
 		
-//		if(facingRight){
-//			x+=5;	
-//		}else{
-//			x-=5;
-//		}
-		
-		if(y < playerY){
-			//laser is above player
-			dy = 1;
+		if (updateCounter == 1) {
+			if (y < playerY) {
+				// laser is above player
+				dy = 1;
+			}
+			if (y > playerY) {
+				// laser is below player
+				dy = -1;
+			}
+			if (x < playerX) {
+				dx = 2;
+			}
+			if (x > playerX) {
+				dx = -2;
+			}
 		}
-		if(y > playerY){
-			//laser is below player
-			dy = -1;
+		if ((Math.abs(y - playerY) < 10) && (Math.abs(x - playerX) < 10)) {
+			if (y < playerY) {
+				// laser is above player
+				dy = 1;
+			}
+			if (y > playerY) {
+				// laser is below player
+				dy = -1;
+			}
+			if (x < playerX) {
+				dx = 2;
+			}
+			if (x > playerX) {
+				dx = -2;
+			}
 		}
-		if(x < playerX){
-			dx = 2;
+
+		if (updateCounter == 50) {
+			updateCounter = 0;
 		}
-		if(x > playerX){
-			dx = -2;
-		}
-		
 		setPosition(x,y);
 	}
 
