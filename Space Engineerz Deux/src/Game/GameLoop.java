@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import Map.LevelOne;
+import Sprites.Blastik;
 import Sprites.KillBot;
 import Sprites.Laser;
 import Sprites.Lobster;
@@ -49,6 +50,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public Player player;
 	public ArrayList<KillBot> killBots;
 	public ArrayList<Lobster> lobsters;
+	public Blastik blastik;
 	public ArrayList<Laser> lazer;
 	public int bottomCollisionCounter;
 
@@ -209,22 +211,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	public void levelOneDSetUp() {
 		if (!levelOneDSet) {
-			Lobster l;
-			Point[] points = new Point[] { new Point(400, 275)
-			// new Point(860,200),
-			// new Point(1525,200),
-			// new Point(1680,200),
-			// new Point(1800,200)
-			};
-			for (int i = 0; i < points.length; i++) {
-				l = new Lobster("space_lobster.png");
-				l.setFacingRight(false);
-				l.setPosition(points[i].x, points[i].y);
-				lobsters.add(l);
-			}
-
-			lobsterPlayerCollision = false;
-			lobsterLaserCollision = false;
+			blastik = new Blastik("GundamDude.png", player);
+			blastik.setPosition(201, 290);
+			
 
 			levelOneD = new LevelOne("tileset3.png", getClass()
 					.getResourceAsStream("level1d.map"));
@@ -310,6 +299,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 			for (int i = 0; i < killBots.size(); i++){
 				killBots.get(i).update();
+			}
+			if(levelOneDState){
+			blastik.update();
 			}
 			
 

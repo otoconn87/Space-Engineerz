@@ -64,7 +64,7 @@ public class Game extends GameLoop {
 				d.drawImage(menu.getStartSprites(), menu.x, menu.y, this );
 				if(menuTimer == 101){
 					menuState = false;
-					levelOneState = true;
+					levelOneDState = true;
 					
 					gameStarted = true;
 					
@@ -317,7 +317,7 @@ public class Game extends GameLoop {
 		for (int i = 0; i < levelOneD.getMapHeight(); i++){
 			for(int j = 0; j < levelOneD.getMapWidth(); j++){
 				
-				d.drawImage(gameMapPassed[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+				d.drawImage(gameMapPassed[i][j], j*levelOneD.pixelHeight, i*levelOneD.pixelWidth, this);
 			
 			}
 		}
@@ -327,13 +327,24 @@ public class Game extends GameLoop {
 				if(levelOneMap[i][j] > 19){
 					//Rectangle rect = new Rectangle(j*levelOne.pixelWidth, i*levelOne.pixelHeight, levelOne.pixelWidth, levelOne.pixelWidth);
 					
-					d.drawImage(gameMapBlocked[i][j], j*levelOne.pixelHeight, i*levelOne.pixelWidth, this);
+					d.drawImage(gameMapBlocked[i][j], j*levelOneD.pixelHeight, i*levelOneD.pixelWidth, this);
 
 				}
 				
 			}
 		
 		}
+		if(blastik.idle){
+			d.drawImage(blastik.idling(),  blastik.x,  blastik.y, this);
+		}
+		if((blastik.shooting)){
+			d.drawImage(blastik.shoot(), blastik.x, blastik.y, this);
+		}
+		if(blastik.walking){
+			d.drawImage(blastik.walking(),  blastik.x, blastik.y, this);
+		}
+		
+		//d.fillRect(blastik.x,  blastik.y, 75, 105);
 		}
 		
 //		d.drawRect(player.x + 10, player.y, 10, 15);
@@ -387,6 +398,8 @@ public class Game extends GameLoop {
 			}
 			
 		}
+		
+		
 		
 		
 		

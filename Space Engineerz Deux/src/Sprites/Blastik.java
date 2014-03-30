@@ -3,9 +3,7 @@ package Sprites;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-
-
-public class KillBot extends Sprites {
+public class Blastik extends Sprites{
 	
 	public int x, y;
 	public int health;
@@ -26,19 +24,19 @@ public class KillBot extends Sprites {
 	
 	public Player player;
 	
-	public KillBot(String s, Player p) {
+	public Blastik(String s, Player p) {
 		super(s);
 
 		animationTimer = 0;
 		idle = true;
-		health = 3;
+		health = 15;
 		player = p;
 		
 		
 	}
 	
 	public Rectangle getRect(){
-		return new Rectangle(this.x,this.y,47,49);
+		return new Rectangle(this.x,this.y,75,105);
 	}
 
 	public int getX() {
@@ -89,6 +87,8 @@ public class KillBot extends Sprites {
 		}
 		
 		if(idle){
+			shooting = false;
+			walking = false;
 			x+=0;
 			x-=0;
 			y+=0;
@@ -102,21 +102,23 @@ public class KillBot extends Sprites {
 			setFacingRight(true);
 		}
 		
-		if(((Math.abs(x - player.x) <= 150) && (Math.abs(y - player.y) <=20)) && !shooting){
+		if(((Math.abs(x - player.x) <= 250) && (Math.abs(y - player.y) <=90)) && !shooting){
 			idle = false;
 			walking = true;
 			
 			if(facingRight){
-				if(Math.abs(x - player.x) <=50){
+				if(Math.abs(x - player.x) <=150){
 					x+=0;
+					walking = false;
 				}
 				else{
 					x+=2;
 				}
 			}
 			else if(!facingRight){
-				if(Math.abs(x - player.x) <=50){
+				if(Math.abs(x - player.x) <=150){
 					x-=0;
+					walking = false;
 				}
 				else{
 				x-=2;
@@ -124,11 +126,11 @@ public class KillBot extends Sprites {
 			}
 		
 		}
-		else{
+		else if((Math.abs(x - player.x) >250)){
 			idle = true;
 			walking = false;
 		}
-		if(Math.abs(x - player.x) <=50 && (Math.abs(y - player.y) <=20)){
+		if(Math.abs(x - player.x) <=175 && (Math.abs(y - player.y) <=90)){
 			x+=0;
 			x-=0;
 			shooting = true;
@@ -137,13 +139,17 @@ public class KillBot extends Sprites {
 			
 		}
 		else{
-			idle = true;
+			
 			shooting = false;
 		}
 		if(flinching){
 			walking = false;
 			idle = false;
 			
+		}
+		
+		if(!walking && !shooting){
+			idle = true;
 		}
 		
 		
@@ -159,38 +165,19 @@ public class KillBot extends Sprites {
 			if (idle) {
 				
 				if (animationTimer >= 1 && animationTimer < 15) {
-					idling = image.getSubimage(1, 2, 36, 39);
-
-				} else if (animationTimer >= 15 && animationTimer < 30) {
-					idling = image.getSubimage(38, 2, 40, 38);
-
-				} else if (animationTimer >= 30 && animationTimer < 45) {
-					idling = image.getSubimage(78, 2, 37, 38);
-
-				}
-				else if (animationTimer >= 30 && animationTimer < 45) {
-					idling = image.getSubimage(115, 1, 39, 39);
+					idling = image.getSubimage(679, 123, 108, 113);
 
 				} 
-				else if (animationTimer >= 30 && animationTimer < 45) {
-					idling = image.getSubimage(155, 1, 37, 38);
+				
 
-				}
-				else if (animationTimer >= 30 && animationTimer < 45) {
-					idling = image.getSubimage(193, 2, 38, 38);
-
-				}
-				else if (animationTimer >= 30 && animationTimer < 45) {
-					idling = image.getSubimage(230, 2, 37, 38);
-
-				}else {
+				else {
 					animationTimer = 0;
 				}
 
-				// Have to Implements walking left
+				
 			
 
-				if (facingRight) {
+				if (!facingRight) {
 					idling = flip(idling);
 				}
 			}
@@ -208,50 +195,22 @@ public class KillBot extends Sprites {
 			if (walking) {
 
 				if (animationTimer >= 1 && animationTimer < 15) {
-					walk = image.getSubimage(4, 45, 30, 38);
+					walk = image.getSubimage(579, 131, 95, 106);
 
-				} else if (animationTimer >= 15 && animationTimer < 30) {
-					walk = image.getSubimage(37, 45, 31, 38);
+				} 
 
-				} else if (animationTimer >= 30 && animationTimer < 45) {
-					walk = image.getSubimage(67, 44, 40, 38);
-
-				} else if (animationTimer >= 45 && animationTimer < 60) {
-					walk = image.getSubimage(112, 46, 44, 38);
-
-				} else if (animationTimer >= 60 && animationTimer < 75) {
-					walk = image.getSubimage(162, 46, 27, 38);
-
-				} else if (animationTimer >= 75 && animationTimer < 90) {
-					walk = image.getSubimage(202, 46, 27, 38);
-
-				} else if (animationTimer >= 90 && animationTimer < 105) {
-					walk = image.getSubimage(239, 46, 33, 37);
-
-				} else if (animationTimer >= 105 && animationTimer < 120) {
-					walk = image.getSubimage(278, 44, 42, 38);
-
-				} else if (animationTimer >= 120 && animationTimer < 135) {
-					walk = image.getSubimage(321, 44, 39, 38);
-
-				} else if (animationTimer >= 135 && animationTimer < 150) {
-					walk = image.getSubimage(363, 45, 27, 38);
-
-				}  else if (animationTimer >= 150 && animationTimer < 175) {
-					walk = image.getSubimage(404, 45, 27, 38);
-
-				}else {
+				else {
 					animationTimer = 0;
 				}
 
-				// Have to Implements walking left
+				
 			
 
-				if (facingRight) {
+				if (!facingRight) {
 					walk = flip(walk);
 				}
+			
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -267,23 +226,18 @@ public class KillBot extends Sprites {
 			
 			if (shooting) {
 				
-				if (animationTimer >= 1 && animationTimer < 15) {
-					shoot = image.getSubimage(2, 182, 43, 40);
+				 if (animationTimer >= 0 && animationTimer < 20) {
+					shoot = image.getSubimage(885, 251, 106, 105);
 
-				} else if (animationTimer >= 15 && animationTimer < 30) {
-					shoot = image.getSubimage(44, 183, 44, 40);
-
-				} else if (animationTimer >= 30 && animationTimer < 45) {
-					shoot = image.getSubimage(94, 182, 47, 40);
-
-				} else {
+				}
+				else {
 					animationTimer = 0;
 				}
 
 				// Have to Implements walking left
 			
 
-				if (facingRight) {
+				if (!facingRight) {
 					shoot = flip(shoot);
 				}
 			}
@@ -327,7 +281,7 @@ public class KillBot extends Sprites {
 				// Have to Implements walking left
 			
 
-				if (facingRight) {
+				if (!facingRight) {
 					flinch = flip(flinch);
 				}
 			}
