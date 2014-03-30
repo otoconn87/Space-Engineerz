@@ -71,7 +71,7 @@ public class BlastikLaser extends Player {
 	}
 
 	public Rectangle getRect() {
-		return new Rectangle(this.x, this.y, width, height);
+		return new Rectangle(this.x+20, this.y+23, 23, 23);
 	}
 
 	public int getX() {
