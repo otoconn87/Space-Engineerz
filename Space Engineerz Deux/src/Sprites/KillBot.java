@@ -12,7 +12,7 @@ public class KillBot extends Sprites {
 
 	public boolean walking, shooting, flinching, dead, idle, falling;
 	public boolean bottomMapCollision;
-	public LevelOne level;
+	//public LevelOne level;
 
 	public boolean facingRight, left, right;
 
@@ -26,14 +26,14 @@ public class KillBot extends Sprites {
 	
 	public Player player;
 	
-	public KillBot(String s, Player p, LevelOne l) {
+	public KillBot(String s, Player p) {
 		super(s);
 
 		animationTimer = 0;
 		idle = true;
 		health = 3;
 		player = p;
-		level = l;
+		
 		
 	}
 	
@@ -89,34 +89,56 @@ public class KillBot extends Sprites {
 		}
 		
 		if(idle){
-			
+			x+=0;
+			x-=0;
+			y+=0;
 		}
 		
 		if((x - player.x) > 0){
 			setFacingRight(false);
 			
 		}
-		else if((x - player.x) < 0){
+		if((x - player.x) < 0){
 			setFacingRight(true);
 		}
 		
-		if(Math.abs(x - player.x) <= 90){
+		if(((Math.abs(x - player.x) <= 150) && (Math.abs(y - player.y) <=20)) && !shooting){
 			idle = false;
 			walking = true;
 			
 			if(facingRight){
-				x+=2;
+				if(Math.abs(x - player.x) <=50){
+					x+=0;
+				}
+				else{
+					x+=2;
+				}
 			}
 			else if(!facingRight){
+				if(Math.abs(x - player.x) <=50){
+					x-=0;
+				}
+				else{
 				x-=2;
+				}
 			}
 		
 		}
-		if(Math.abs(x - player.x) <=40 ){
+		else{
+			idle = true;
+			walking = false;
+		}
+		if(Math.abs(x - player.x) <=50 && (Math.abs(y - player.y) <=20)){
+			x+=0;
+			x-=0;
 			shooting = true;
 			idle = false;
 			walking = false;
 			
+		}
+		else{
+			idle = true;
+			shooting = false;
 		}
 		if(flinching){
 			walking = false;
@@ -168,7 +190,7 @@ public class KillBot extends Sprites {
 				// Have to Implements walking left
 			
 
-				if (!facingRight) {
+				if (facingRight) {
 					idling = flip(idling);
 				}
 			}
@@ -225,7 +247,7 @@ public class KillBot extends Sprites {
 				// Have to Implements walking left
 			
 
-				if (!facingRight) {
+				if (facingRight) {
 					walk = flip(walk);
 				}
 			}
@@ -261,7 +283,7 @@ public class KillBot extends Sprites {
 				// Have to Implements walking left
 			
 
-				if (!facingRight) {
+				if (facingRight) {
 					shoot = flip(shoot);
 				}
 			}
@@ -269,7 +291,7 @@ public class KillBot extends Sprites {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		shooting = false;
+		
 		return shoot;
 	}
 
@@ -305,7 +327,7 @@ public class KillBot extends Sprites {
 				// Have to Implements walking left
 			
 
-				if (!facingRight) {
+				if (facingRight) {
 					flinch = flip(flinch);
 				}
 			}
