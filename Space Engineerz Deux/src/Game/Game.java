@@ -115,6 +115,12 @@ public class Game extends GameLoop {
 						
 					}	
 					}
+				if(killBots.size() > 0){
+					for(int i = 0; i < killBots.size(); i++){
+						killBots.remove(i);
+						
+					}	
+					}
 				levelOneState = false;
 				levelOneSet = false;
 				levelOneBState = true;
@@ -170,6 +176,12 @@ public class Game extends GameLoop {
 				if(lobsters.size() > 0){
 					for(int i = 0; i < lobsters.size(); i++){
 						lobsters.remove(i);
+						
+					}	
+					}
+				if(killBots.size() > 0){
+					for(int i = 0; i < killBots.size(); i++){
+						killBots.remove(i);
 						
 					}	
 					}
@@ -230,6 +242,12 @@ public class Game extends GameLoop {
 					
 				}	
 				}
+				if(killBots.size() > 0){
+					for(int i = 0; i < killBots.size(); i++){
+						killBots.remove(i);
+						
+					}	
+					}
 				levelOneMap = null;
 				gameMapBlocked = null;
 				gameMapPassed = null;
@@ -354,23 +372,21 @@ public class Game extends GameLoop {
 				d.drawImage(lobsters.get(i).walking(lobsterAnimations),  lobsters.get(i).x, lobsters.get(i).y, this);
 			}
 		}
-//		for(int i = 0; i <killBots.size(); i++){
-//			if(killBots.get(i).flinching == true){
-//				d.drawImage(killBots.get(i).flinch(),  killBots.get(i).x,  killBots.get(i).y, this);
-//			}
-//			if(killBots.get(i).walking==true){
-//				d.drawImage(killBots.get(i).walking(),  killBots.get(i).x, killBots.get(i).y, this);
-//			}
-//			if(killBots.get(i).idle==true){
-//				d.drawImage(killBots.get(i).walking(),  killBots.get(i).x, killBots.get(i).y, this);
-//			}
-//			if(killBots.get(i).shooting==true){
-//				d.drawImage(killBots.get(i).walking(),  killBots.get(i).x, killBots.get(i).y, this);
-//			}
-//			if(killBots.get(i).falling==true){
-//				d.drawImage(killBots.get(i).walking(),  killBots.get(i).x, killBots.get(i).y, this);
-//			}
-//		}
+		for(int i = 0; i <killBots.size(); i++){
+			if(killBots.get(i).flinching == true){
+				d.drawImage(killBots.get(i).flinch(),  killBots.get(i).x,  killBots.get(i).y, this);
+			}
+			if(killBots.get(i).walking==true){
+				d.drawImage(killBots.get(i).walking(),  killBots.get(i).x, killBots.get(i).y, this);
+			}
+			if(killBots.get(i).idle==true){
+				d.drawImage(killBots.get(i).idling(),  killBots.get(i).x, killBots.get(i).y, this);
+			}
+			if(killBots.get(i).shooting==true){
+				d.drawImage(killBots.get(i).shoot(),  killBots.get(i).x, killBots.get(i).y, this);
+			}
+			
+		}
 		
 		
 		
