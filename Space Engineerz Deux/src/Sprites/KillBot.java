@@ -133,7 +133,7 @@ public class KillBot extends Sprites {
 			idle = true;
 			walking = false;
 		}
-		if(Math.abs(x - player.x) <=75 && (Math.abs(y - player.y) <=20)){
+		if(Math.abs(x - player.x) <=100 && (Math.abs(y - player.y) <=20)){
 			x+=0;
 			x-=0;
 			shooting = true;
@@ -149,6 +149,10 @@ public class KillBot extends Sprites {
 			walking = false;
 			idle = false;
 			
+		}
+		
+		if(walking){
+			idle = false;
 		}
 		
 		
