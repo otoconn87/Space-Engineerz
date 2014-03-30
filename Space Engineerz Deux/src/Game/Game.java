@@ -41,6 +41,30 @@ public class Game extends GameLoop {
 	public void paint(Graphics g){
 		d.clearRect(0, 0, 864, 500);
 		
+		if(player.dead){
+			levelOneState = levelOneBState = levelOneCState = levelOneDState = false;
+			gameOver = true;
+		}
+		if(gameOver){
+			d.drawImage(gameOverScreen, 0, 0, this);
+			if(lobsters.size() > 0){
+				for(int i = 0; i < lobsters.size(); i++){
+					lobsters.remove(i);
+					
+				}	
+				}
+			if(killBots.size() > 0){
+				for(int i = 0; i < killBots.size(); i++){
+					killBots.remove(i);
+					
+				}	
+				}
+			
+			if(select){
+				menuState = true;
+			}
+		}
+		
 		if(menuState){
 			
 			if(gameTimer == 1){
@@ -344,9 +368,12 @@ public class Game extends GameLoop {
 		
 		//d.fillRect(blastik.x,  blastik.y, 75, 105);
 		}
-				
-		if(player.idling){			
-			d.drawImage(player.idle(playerAnimations),  player.x,  (int)player.y, this);		
+
+			
+		if(!gameOver || gameCompleted){
+		if(player.idling){
+			d.drawImage(player.idle(playerAnimations),  player.x,  (int)player.y, this);
+
 		}
 		if((player.jumping || player.falling) && !(player.shooting || player.jumpShooting)){
 			d.drawImage(player.jumping(playerAnimations), player.x, (int)player.y, this);
@@ -363,6 +390,7 @@ public class Game extends GameLoop {
 		}
 		if(player.jetpack){
 			d.drawImage(player.jetpackIm(playerAnimations), player.x, (int)player.y, this);
+		}
 		}
 		for(int i = 0; i < lobsters.size(); i++){
 			if(lobsters.get(i).flinching == true){

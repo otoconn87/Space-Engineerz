@@ -31,7 +31,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public Image offscreen;
 	public Graphics d;
 
-	public boolean gameStarted, levelOneState, levelOneSet, levelOneBState,
+	public boolean gameStarted, gameOver, gameCompleted, levelOneState, levelOneSet, levelOneBState,
 			levelOneBSet, levelOneCState, levelOneCSet, levelOneDState,
 			levelOneDSet;
 	public boolean select, down, up, cursor;
@@ -41,8 +41,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	public boolean lobsterPlayerCollision, lobsterLaserCollision;
 
-	public BufferedImage background, playerAnimations, lobsterAnimations,
-			laserAnimations, blastikLaserAnimation;
+	public BufferedImage background, playerAnimations, lobsterAnimations, laserAnimations, gameOverScreen, completionScreen,	 blastikLaserAnimation;
+
 	public Menu menu;
 	public LevelOne levelOne, levelOneB, levelOneC, levelOneD;
 	public BufferedImage gameMapBlocked[][];
@@ -213,11 +213,11 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public void levelOneDSetUp() {
 		if (!levelOneDSet) {
 			blastik = new Blastik("GundamDude.png", player);
-			blastik.setPosition(201, 290);
+			blastik.setPosition(201, 340);
 			
 
 			levelOneD = new LevelOne("tileset3.png", getClass()
-					.getResourceAsStream("level1d.map"));
+					.getResourceAsStream("level1d_allt.map"));
 			// levelOne.loadMap();
 			gameMapBlocked = levelOneD.getLevelOneBlockedTiles();
 			gameMapPassed = levelOneD.getLevelOnePassTiles();
@@ -238,6 +238,16 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	public void run() {
 
+		try {
+			completionScreen = ImageIO.read(getClass().getResourceAsStream(
+					"endgame.jpg"));
+			gameOverScreen = ImageIO.read(getClass().getResourceAsStream(
+					"gameover.jpeg"));
+
+		} catch (IOException e1) {
+
+			e1.printStackTrace();
+		}
 		cursor = true;
 		menu = new Menu("megaman_menu.jpg", "menuSprites.png", "MegaMan7.gif");
 
