@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 
 import Map.LevelOne;
 import Sprites.KillBot;
+import Sprites.KillBotLaser;
 import Sprites.Laser;
 import Sprites.Lobster;
 import Sprites.Player;
@@ -50,6 +51,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public ArrayList<KillBot> killBots;
 	public ArrayList<Lobster> lobsters;
 	public ArrayList<Laser> lazer;
+	public ArrayList<KillBotLaser> kbLaser;
 	public int bottomCollisionCounter;
 
 	public int gameTimer = 0;
@@ -58,12 +60,14 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	private int topCollisionCounter;
 	private int leftCollisionCounter;
 	private int rightCollisionCounter;
+	private boolean killBotLaserCollision;
+	private boolean killBotLaserPlayerCollision;
 
 	public void levelOneSetUp() {
 		if (!levelOneSet) {
 
 			lobsterPlayerCollision = false;
-			lobsterLaserCollision = false;
+			lobsterLaserCollision  = killBotLaserCollision = false;
 
 			levelOne = new LevelOne("level1_space.png", getClass()
 					.getResourceAsStream("level1a.map"));
@@ -89,9 +93,10 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			KillBot k;
 
 			Point[] p = new Point[]{
-					new Point(411, 296),
+					new Point(209, 186),
 					new Point(493, 192),
-					new Point(209, 186)
+					new Point(411, 296)
+					
 			};
 			for(int i=0; i<p.length; i++){
 				k = new KillBot("killBotBoss.png", player);
@@ -263,28 +268,10 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		
 		lazer = new ArrayList<Laser>();
 		
+		kbLaser = new ArrayList<KillBotLaser>();
+		
 
 		while (true) {
-
-			if (player.bottomMapCollision) {
-				// System.out.println("bottom collision");
-			}
-			if (player.topMapCollision) {
-				// System.out.println("top collision");
-			}
-			if (player.leftMapCollision) {
-				// System.out.println("left collision");
-			}
-			if (player.rightMapCollision) {
-				// System.out.println("right collision");
-			}
-
-			if (!player.left && !player.right && !player.falling
-					&& !player.jumping && !player.shooting) {
-				player.setIdling(true);
-			} else {
-				player.setIdling(false);
-			}
 
 			if (player.dead) {
 				System.out.println("Game Over");
@@ -302,11 +289,17 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			if (levelOneDState && !levelOneDSet) {
 				levelOneDSetUp();
 			}
+			
 			player.update();
 			createLazer();
 			updateLaser();
 			lobsterPlayerCollision();
 			lobsterMovement();
+			
+			//killbot laser
+			createKillBotLaser();
+			updateKillBotLaser();
+			
 
 			for (int i = 0; i < killBots.size(); i++){
 				killBots.get(i).update();
@@ -576,6 +569,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 		checkLaserCollision();
 		checkLaserLobsterCollision();
+		checkLaserKillBotCollision();
 	}
 
 	private void createLazer() {
@@ -598,9 +592,118 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			lazer.add(lz);
 		}
 	}
+	
+	//TODO
+	private void updateKillBotLaser() {
+		for (int i = 0; i < kbLaser.size(); i++) {
+			kbLaser.get(i).update();
+		}
+		checkKBLaserCollision();
+		checkLaserPlayerCollision();
+	}
+	
+	// TODO
+	private void checkLaserPlayerCollision() {
+		for (int i = 0; i < kbLaser.size(); i++) {
+				if ((player.getPlayerRect().intersects(kbLaser.get(i)
+						.getRect())) && !killBotLaserPlayerCollision) {
+					killBotLaserPlayerCollision = true;
+					player.health -= 1;
+//					player.shootLaser = false;
+					kbLaser.remove(i);
+					killBotLaserPlayerCollision = false;
+					System.out.println("Player Health:\t"
+							+ player.health);
+				}
+				if (player.health == 0) {
+					player.dead = true;
+//					killBots.remove(j);
+				}
+			
+		}
+	}
 
-	private void checkLaserLobsterCollision() {
+	//TODO
+	private void createKillBotLaser() {
+		for(int i = 0; i < killBots.size(); i++){
+			if (killBots.get(i).shootLaser) {
+				killBots.get(i).shootLaser = false; // only one shot per button pressed
+				shoot = false;
+
+				KillBotLaser lz;
+
+				lz = new KillBotLaser("space_player.png");
+				if (killBots.get(i).facingRight) {
+					lz.setPosition(killBots.get(i).getX() + 20, killBots.get(i).getY());
+					lz.setFacingRight(true);
+					lz.setRight();
+				} else {
+					lz.setPosition(killBots.get(i).getX() - 20, killBots.get(i).getY());
+					lz.setFacingRight(false);
+					lz.setLeft();
+				}
+				kbLaser.add(lz);
+			}
+		}
+		
+	}
+
+	//TODO
+	private void checkLaserKillBotCollision() {
 		for (int i = 0; i < lazer.size(); i++) {
+			for (int j = 0; j < killBots.size(); j++) {
+				if ((killBots.get(j).getRect().intersects(lazer.get(i)
+						.getRect())) && !killBotLaserCollision) {
+					killBotLaserCollision = true;
+					killBots.get(j).health -= 1;
+					player.shootLaser = false;
+					lazer.remove(i);
+					killBotLaserCollision = false;
+					System.out.println("Kill Bot Health:\t"
+							+ killBots.get(j).health);
+				}
+				if (killBots.get(j).health == 0) {
+					killBots.get(j).dead = true;
+					killBots.remove(j);
+				}
+			}
+		}
+	}
+	
+	//TODO
+	private void checkKBLaserCollision() {
+
+		for (int k = 0; k < kbLaser.size(); k++) {
+			for (int i = 0; i < levelOne.getMapHeight(); i++) {
+				for (int j = 0; j < levelOne.getMapWidth(); j++) {
+					if (levelOneMap[i][j] > 19) {
+						Rectangle rect = new Rectangle(j * levelOne.pixelWidth,
+								i * levelOne.pixelHeight, levelOne.pixelWidth,
+								levelOne.pixelWidth);
+
+						if (kbLaser.get(k).mapCollision(kbLaser.get(k).getRect(),
+								rect)) {
+							if (!kbLaser.get(k).facingRight) {
+								kbLaser.get(k).setLeftMapCollision(true);
+								kbLaser.get(k).setRightMapCollision(false);
+							}
+							if (kbLaser.get(k).facingRight) {
+								kbLaser.get(k).setRightMapCollision(true);
+								kbLaser.get(k).setLeftMapCollision(false);
+							}
+//							killbots.shootLaser = false;
+							kbLaser.remove(k);
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private void checkLaserLobsterCollision() {
+		for (int i = 0; i < lazer.size(); i++) {			
+			
 			for (int j = 0; j < lobsters.size(); j++) {
 				if ((lobsters.get(j).getRect().intersects(lazer.get(i)
 						.getRect())) && !lobsterLaserCollision) {

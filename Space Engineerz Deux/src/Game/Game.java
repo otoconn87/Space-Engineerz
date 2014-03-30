@@ -335,16 +335,7 @@ public class Game extends GameLoop {
 		
 		}
 		}
-		
-//		d.drawRect(player.x + 10, player.y, 10, 15);
-//		d.drawRect(player.x + 10, player.y + 15, 10, 14);
-//		d.drawRect(player.x + 5, player.y + 10, 15, 10);
-//		d.drawRect(player.x + 12, player.y + 10, 15, 10);
-//		d.drawRect(player.x + 5, player.y+2, 20, 25 );
-		 
-		 
-		 
-		
+				
 		if(player.idling){
 			d.drawImage(player.idle(playerAnimations),  player.x,  (int)player.y, this);
 		}
@@ -399,7 +390,17 @@ public class Game extends GameLoop {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
+		try {
+			for (int i = 0; i < kbLaser.size(); i++) {
+				if (kbLaser.get(i).laserFire) {
+					d.drawImage(kbLaser.get(i).laserIm(laserAnimations),
+							kbLaser.get(i).x, kbLaser.get(i).y, this);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
 		
 		
 		
