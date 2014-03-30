@@ -120,11 +120,14 @@ public class Player extends Sprites {
 				bottomMapCollision = false;
 				jumpTimer = 0;
 			}
+		
+			
 			if(!shooting){
 				jumpShooting = false;
 			}
 						
 		}
+		
 		if(falling && !jetpack){
 			walking = false;
 			jumping = false;
@@ -222,7 +225,7 @@ public class Player extends Sprites {
 			} else {
 				dy = -3;
 			}
-			
+
 			if(right){
 				facingRight = true;
 			}
@@ -237,15 +240,16 @@ public class Player extends Sprites {
 			if (left && !leftMapCollision) {
 				facingRight = false;
 				dx = -2;
-			}						
+			}
 			
 		}
 
-
-		if(dy == 0){
-			grounded = true;
+		
+		if(!bottomMapCollision &&!jumping && !jetpack){
+			falling = true;
 		}
-		if(topMapCollision && !grounded){
+		
+		if(topMapCollision && (dy != 0)){
 			dy = 0;
 		}
 

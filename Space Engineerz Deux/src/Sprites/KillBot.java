@@ -14,7 +14,7 @@ public class KillBot extends Sprites {
 	public boolean bottomMapCollision;
 	//public LevelOne level;
 
-	public boolean facingRight, left, right;
+	public boolean facingRight, left, right, shootLaser;
 
 	public int animationTimer, botTimer, flinchTimer;
 	
@@ -33,6 +33,7 @@ public class KillBot extends Sprites {
 		idle = true;
 		health = 3;
 		player = p;
+		shootLaser = false;
 		
 		
 	}
@@ -76,6 +77,10 @@ public class KillBot extends Sprites {
 	public void setIdling(boolean b){
 		idle = b;
 	}
+	
+	public void laserFire(){		
+		shootLaser = true;
+	}
 
 	
 	
@@ -102,7 +107,7 @@ public class KillBot extends Sprites {
 			setFacingRight(true);
 		}
 		
-		if(((Math.abs(x - player.x) <= 150) && (Math.abs(y - player.y) <=20)) && !shooting){
+		if(((Math.abs(x - player.x) <= 200) && (Math.abs(y - player.y) <=20)) && !shooting){
 			idle = false;
 			walking = true;
 			
@@ -111,7 +116,7 @@ public class KillBot extends Sprites {
 					x+=0;
 				}
 				else{
-					x+=2;
+					x+=1;
 				}
 			}
 			else if(!facingRight){
@@ -119,7 +124,7 @@ public class KillBot extends Sprites {
 					x-=0;
 				}
 				else{
-				x-=2;
+				x-=1;
 				}
 			}
 		
@@ -128,7 +133,7 @@ public class KillBot extends Sprites {
 			idle = true;
 			walking = false;
 		}
-		if(Math.abs(x - player.x) <=50 && (Math.abs(y - player.y) <=20)){
+		if(Math.abs(x - player.x) <=100 && (Math.abs(y - player.y) <=20)){
 			x+=0;
 			x-=0;
 			shooting = true;
@@ -144,6 +149,10 @@ public class KillBot extends Sprites {
 			walking = false;
 			idle = false;
 			
+		}
+		
+		if(walking){
+			idle = false;
 		}
 		
 		
@@ -272,6 +281,10 @@ public class KillBot extends Sprites {
 
 				} else if (animationTimer >= 15 && animationTimer < 30) {
 					shoot = image.getSubimage(44, 183, 44, 40);
+					if(animationTimer == 25){
+						laserFire();
+					}
+					
 
 				} else if (animationTimer >= 30 && animationTimer < 45) {
 					shoot = image.getSubimage(94, 182, 47, 40);
