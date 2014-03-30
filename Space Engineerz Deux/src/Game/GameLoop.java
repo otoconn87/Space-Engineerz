@@ -82,6 +82,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	private boolean killBotLaserPlayerCollision;
 	private boolean blastikLaserCollision;
 	private boolean blastikLaserPlayerCollision;
+	private boolean blastikLASERcollision;
+	private boolean BlastikLaserPlayerCollision;
 
 	public void levelOneSetUp() {
 		if (!levelOneSet) {
@@ -227,7 +229,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public void levelOneDSetUp() {
 		if (!levelOneDSet) {
 			blastik = new Blastik("GundamDude.png", player);
-			blastik.setPosition(201, 340);
+			blastik.setPosition(380, 340);
 			
 
 			levelOneD = new LevelOne("tileset3.png", getClass()
@@ -636,16 +638,86 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		checkLaserPlayerCollision();
 	}
 	
-	//TODO
+	//TODO updateBlastikLaser
 	private void updateBlastikLaser(){
 		for (int i = 0; i < blastikLaser.size(); i++) {
 			blastikLaser.get(i).update();
 		}
-//		checkKBLaserCollision();
-//		checkLaserPlayerCollision();
+		checkBlastikLaserCollision();
+		checkBlastikLaserPlayerCollision();
+		checkBlasticHit();
 	}
-	
-	
+
+	//TODO checkBlastikLaserCollision
+	private void checkBlastikLaserCollision() {
+		for (int k = 0; k < blastikLaser.size(); k++) {
+			for (int i = 0; i < levelOneD.getMapHeight(); i++) {
+				for (int j = 0; j < levelOneD.getMapWidth(); j++) {
+					if (levelOneMap[i][j] > 19) {
+						Rectangle rect = new Rectangle(j * levelOneD.pixelWidth,
+								i * levelOneD.pixelHeight, levelOneD.pixelWidth,
+								levelOneD.pixelWidth);
+
+						if (blastikLaser.get(k).mapCollision(blastikLaser.get(k).getRect(),
+								rect)) {
+							if (!blastikLaser.get(k).facingRight) {
+								blastikLaser.get(k).setLeftMapCollision(true);
+								blastikLaser.get(k).setRightMapCollision(false);
+							}
+							if (blastikLaser.get(k).facingRight) {
+								blastikLaser.get(k).setRightMapCollision(true);
+								blastikLaser.get(k).setLeftMapCollision(false);
+							}
+//							killbots.shootLaser = false;
+							blastikLaser.remove(k);
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// TODO checkBlastikLaserPlayerCollision
+	private void checkBlastikLaserPlayerCollision() {
+		for (int i = 0; i < blastikLaser.size(); i++) {
+			if ((player.getPlayerRect().intersects(blastikLaser.get(i)
+					.getRect())) && !BlastikLaserPlayerCollision) {
+				BlastikLaserPlayerCollision = true;
+				player.health -= 5;
+				// player.shootLaser = false;
+				blastikLaser.remove(i);
+				BlastikLaserPlayerCollision = false;
+				System.out.println("Player Health:\t" + player.health);
+			}
+			if (player.health == 0) {
+				player.dead = true;
+				// killBots.remove(j);
+			}
+		}
+	}
+
+	private void checkBlasticHit() {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < blastikLaser.size(); i++) {
+			if ((blastik.getRect().intersects(blastikLaser.get(i)
+					.getRect())) && !blastikLASERcollision) {
+				blastikLASERcollision = true;
+				blastik.health -= 100;
+//				player.shootLaser = false;
+				blastikLaser.remove(i);
+				blastikLASERcollision = false;
+				System.out.println("Blastic Health:\t"
+						+ blastik.health);
+			}
+			if (blastik.health == 0) {
+				blastik.dead = true;
+			}
+		
+	}
+		
+	}
+
 	private void checkLaserPlayerCollision() {
 		for (int i = 0; i < kbLaser.size(); i++) {
 				if ((player.getPlayerRect().intersects(kbLaser.get(i)
@@ -666,7 +738,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 	}
 
-	//TODO
+	//TODO createBlastikLaser
 	private void createBlastikLaser() {
 		
 		if (blastik.shootLaser) {
@@ -678,11 +750,11 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			lz = new BlastikLaser("GundamDude.png", player);
 			
 			if (blastik.facingRight) {
-				lz.setPosition(blastik.getX() + 20, blastik.getY());
+				lz.setPosition(blastik.getX() + 70, blastik.getY());
 				lz.setFacingRight(true);
 				lz.setRight();
 			} else {
-				lz.setPosition(blastik.getX() - 20, blastik.getY());
+				lz.setPosition(blastik.getX() - 70, blastik.getY());
 				lz.setFacingRight(false);
 				lz.setLeft();
 			}

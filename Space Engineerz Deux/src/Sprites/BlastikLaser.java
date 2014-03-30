@@ -19,7 +19,7 @@ public class BlastikLaser extends Player {
 	public BlastikLaser(String s, Player p) {
 		super(s);
 		width = 62;
-		height = 32;
+		height = 80;
 		laserFire = true;
 		player = p;
 		updateCounter = 0;
@@ -71,7 +71,7 @@ public class BlastikLaser extends Player {
 	}
 
 	public Rectangle getRect() {
-		return new Rectangle(this.x, this.y, width, height);
+		return new Rectangle(this.x+20, this.y+23, 23, 23);
 	}
 
 	public int getX() {
@@ -115,24 +115,23 @@ public class BlastikLaser extends Player {
 			if (laserFire) {
 				laserTimer++;
 				if(laserTimer > 0 && laserTimer <= 5){
-					laserIm = image.getSubimage(10, 414, width, height);
+					laserIm = image.getSubimage(10, 390, width, height);
 				}else if(laserTimer > 5 && laserTimer <= 10){
-					laserIm = image.getSubimage(73, 414, width, height);
+					laserIm = image.getSubimage(73, 390, width, height);
 				}else if(laserTimer > 10 && laserTimer <= 15){
-					laserIm = image.getSubimage(139, 414, width, height);
+					laserIm = image.getSubimage(139, 390, width, height);
 				}else{
 					laserTimer = 0;
 				}
 				
-
-				if (facingRight) {
-					laserIm = flip(laserIm);
-				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		laserIm = rotate(laserIm, player.x, player.y, this.x, this.y, width, height);
+		
 		
 		return laserIm;
 	}

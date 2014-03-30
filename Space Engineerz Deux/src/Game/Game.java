@@ -311,7 +311,7 @@ public class Game extends GameLoop {
 			waitTimer++;
 			
 			if (waitTimer == 5){
-				player.setPosition(414, 171);
+				player.setPosition(700, 171);
 				System.out.println("done");
 			}
 			

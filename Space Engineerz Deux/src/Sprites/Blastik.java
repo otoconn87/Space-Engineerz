@@ -29,7 +29,7 @@ public class Blastik extends Sprites{
 
 		animationTimer = 0;
 		idle = true;
-		health = 15;
+		health = 500;
 		player = p;
 		shootLaser = false;
 		laserTimer = 0;
@@ -37,7 +37,7 @@ public class Blastik extends Sprites{
 	}
 	
 	public Rectangle getRect(){
-		return new Rectangle(this.x,this.y,75,105);
+		return new Rectangle(this.x+40,this.y,25,105);
 	}
 
 	public int getX() {
@@ -90,7 +90,7 @@ public class Blastik extends Sprites{
 				laserFire();
 			}
 		}
-		if(laserTimer == 1000){
+		if(laserTimer == 400){
 			laserTimer = 0;
 		}
 		
@@ -117,7 +117,9 @@ public class Blastik extends Sprites{
 			setFacingRight(true);
 		}
 		
-		if(((Math.abs(x - player.x) <= 250) && (Math.abs(y - player.y) <=90)) && !shooting){
+
+		
+		if(((Math.abs((x+40) - player.x) <= 250) && (Math.abs(y - player.y) <=90)) && !shooting){
 			idle = false;
 			walking = true;
 			
@@ -126,7 +128,7 @@ public class Blastik extends Sprites{
 					x+=0;
 					walking = false;
 				}
-				else{
+				else if(x <= 470){
 					x+=2;
 				}
 			}
@@ -135,7 +137,7 @@ public class Blastik extends Sprites{
 					x-=0;
 					walking = false;
 				}
-				else{
+				else if(x >= 300){
 				x-=2;
 				}
 			}
@@ -145,7 +147,9 @@ public class Blastik extends Sprites{
 			idle = true;
 			walking = false;
 		}
-		if(Math.abs(x - player.x) <=175 && (Math.abs(y - player.y) <=90)){
+
+		
+		if(Math.abs((x+40) - player.x) <=250 && (Math.abs(y - player.y) <=90)){
 			x+=0;
 			x-=0;
 			shooting = true;
@@ -157,6 +161,9 @@ public class Blastik extends Sprites{
 			
 			shooting = false;
 		}
+		
+		
+		
 		if(flinching){
 			walking = false;
 			idle = false;
