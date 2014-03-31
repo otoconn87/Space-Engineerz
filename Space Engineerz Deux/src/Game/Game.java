@@ -61,6 +61,8 @@ public class Game extends GameLoop {
 				}
 			
 			if(select){
+				audio.close();
+				gameTimer = 1;
 				menuState = true;
 			}
 		}
@@ -86,7 +88,7 @@ public class Game extends GameLoop {
 				d.drawImage(menu.getStartSprites(), menu.x, menu.y, this );
 				if(menuTimer == 101){
 					menuState = false;
-					levelOneDState = true;
+					levelOneState = true;
 					gameTimer = 3;
 					gameStarted = true;
 					
@@ -275,11 +277,12 @@ public class Game extends GameLoop {
 				levelOneMap = null;
 				gameMapBlocked = null;
 				gameMapPassed = null;
-				
+				audio.close();
 				levelOneCState = false;
 				levelOneCSet = false;
 				levelOneDState = true;
 				waitTimer = 0;
+				gameTimer = 6;
 				
 			}
 		
@@ -317,6 +320,13 @@ public class Game extends GameLoop {
 				player.setPosition(700, 171);
 				System.out.println("done");
 			}
+			
+//			if(gameTimer == 6){
+//				
+//				audio = new JukeBox("Intervals - Tapestry (HD).mp3");
+//				audio.loop();
+//				gameTimer++;
+//			}
 			
 //			if((player.x <= 263 && player.x >= 179) && player.y >=515){
 //				player.x +=0;

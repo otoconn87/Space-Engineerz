@@ -3,12 +3,16 @@ package Sprites;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import Audio.JukeBox;
+
 public class BlastikLaser extends Player {
 
 	public int x, y, dx, dy,  width, height;
 
 	public boolean laserFire, facingRight, left;
 	public Player player;
+	
+	
 	
 	int playerX, playerY, updateCounter;
 
@@ -30,6 +34,8 @@ public class BlastikLaser extends Player {
 		updateCounter++;
 		playerX = player.x;
 		playerY = player.y;
+		
+
 		
 		if (updateCounter == 1) {
 			if (y < playerY) {

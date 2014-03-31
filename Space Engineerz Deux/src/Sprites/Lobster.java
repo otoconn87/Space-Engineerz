@@ -78,9 +78,11 @@ public class Lobster extends Sprites {
 		
 		if(lobsterTimer >=0 && lobsterTimer < 50){
 			x+=2;
+			facingRight = true;
 		}
 		else if(lobsterTimer >= 50 && lobsterTimer < 100){
 			x-=2;
+			facingRight = false;
 		}
 		else{
 			lobsterTimer = 0;

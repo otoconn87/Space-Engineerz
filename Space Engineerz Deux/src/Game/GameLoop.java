@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import Audio.JukeBox;
 import Map.LevelOne;
 import Sprites.Blastik;
 import Sprites.BlastikLaser;
@@ -63,6 +64,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public ArrayList<Laser> lazer;
 	public ArrayList<KillBotLaser> kbLaser;
 	public ArrayList<BlastikLaser> blastikLaser;
+	
+	public JukeBox audio;
 	
 	
 	
@@ -119,7 +122,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			Point[] p = new Point[]{
 					new Point(209, 186),
 					new Point(493, 192),
-					new Point(411, 296)
+					new Point(411, 280)
 					
 			};
 			for(int i=0; i<p.length; i++){
@@ -153,7 +156,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		if (!levelOneBSet) {
 			Lobster l;
 			Point[] points = new Point[] { 
-					new Point(269, 203)
+					new Point(250, 180)
 			
 			};
 			for (int i = 0; i < points.length; i++) {
@@ -205,7 +208,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		if (!levelOneCSet) {
 			Lobster l;
 			Point[] points = new Point[] {
-					new Point(605, 357)
+					new Point(570, 340)
 		
 			};
 			for (int i = 0; i < points.length; i++) {
@@ -217,8 +220,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			
 			KillBot k;
 			Point[] p = new Point[]{
-					new Point(103, 139),
-					new Point(440, 460)
+					new Point(103, 128),
+					new Point(440, 450)
 					
 					
 			};
@@ -662,7 +665,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 				lz.setFacingRight(false);
 				lz.setLeft();
 			}
+			
 			lazer.add(lz);
+			
 		}
 	}
 	

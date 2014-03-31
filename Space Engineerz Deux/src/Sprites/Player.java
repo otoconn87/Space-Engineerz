@@ -18,9 +18,9 @@ public class Player extends Sprites {
 	public boolean walking, idling, jumping, shooting, jetpack, falling, inAir, jumpShooting, grounded;
 	public boolean leftMapCollision, rightMapCollision, topMapCollision, bottomMapCollision;
 	
-	public boolean facingRight, left, right, shootLaser;	
+	public boolean facingRight, left, right, shootLaser, audioPlayed;	
 	
-	public int walkTimer;
+	public int walkTimer;;
 	
 	public int health;
 
@@ -84,6 +84,19 @@ public class Player extends Sprites {
 
 	
 	public void update(){
+		
+		if(shooting || jumpShooting){
+			
+			if(!audioPlayed){
+			audio = new JukeBox("scifi003.mp3");
+			audio.play();
+			audioPlayed = true;
+			}
+		}
+		if(!shooting && !jumpShooting){
+			audioPlayed = false;
+		}
+		
 		
 		if(!bottomMapCollision &&!jumping && !jetpack){
 			falling = true;
@@ -413,6 +426,7 @@ public class Player extends Sprites {
 			if (shooting && !jumpShooting) {
 				if(shootTimer == 10){
 					laserFire();
+					
 				}		
 				if (shootTimer >= 1 && shootTimer < 5) {
 					shoot = image.getSubimage(13, 8, 32, 32);

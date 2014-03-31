@@ -3,6 +3,8 @@ package Sprites;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import Audio.JukeBox;
+
 public class Blastik extends Sprites{
 	
 	public int x, y;
@@ -10,6 +12,9 @@ public class Blastik extends Sprites{
 
 	public boolean walking, shooting, flinching, dead, idle, falling;
 	public boolean bottomMapCollision;
+	
+	public JukeBox audio;
+	public boolean audioPlayed;
 	//public LevelOne level;
 
 	public boolean facingRight, left, right, shootLaser;
@@ -29,7 +34,7 @@ public class Blastik extends Sprites{
 
 		animationTimer = 0;
 		idle = true;
-		health = 1;
+		health = 500;
 		player = p;
 		shootLaser = false;
 		laserTimer = 0;
@@ -83,6 +88,17 @@ public class Blastik extends Sprites{
 	
 	
 	public void update(){
+		
+		if(shooting){
+			if(!audioPlayed){
+				audio = new JukeBox("scifi003.mp3");
+				audio.play();
+				audioPlayed= true;
+			}
+		}
+		if(!shooting){
+			audioPlayed = false;
+		}
 		
 		laserTimer++;
 		

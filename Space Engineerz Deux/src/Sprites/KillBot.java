@@ -3,12 +3,17 @@ package Sprites;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import Audio.JukeBox;
+
 
 
 public class KillBot extends Sprites {
 	
 	public int x, y;
 	public int health;
+	
+	public JukeBox audio;
+	public boolean audioPlayed;
 
 	public boolean walking, shooting, flinching, dead, idle, falling;
 	public boolean bottomMapCollision;
@@ -85,6 +90,17 @@ public class KillBot extends Sprites {
 	
 	
 	public void update(){
+		
+		if(shooting){
+			if(!audioPlayed){
+				audio = new JukeBox("scifi003.mp3");
+				audio.play();
+				audioPlayed= true;
+			}
+		}
+		if(!shooting){
+			audioPlayed = false;
+		}
 		
 		if(falling){
 			y+=2;
