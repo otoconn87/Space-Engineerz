@@ -29,7 +29,7 @@ public class Blastik extends Sprites{
 
 		animationTimer = 0;
 		idle = true;
-		health = 500;
+		health = 1;
 		player = p;
 		shootLaser = false;
 		laserTimer = 0;
@@ -85,6 +85,11 @@ public class Blastik extends Sprites{
 	public void update(){
 		
 		laserTimer++;
+		
+		if(health <=0){
+			dead = true;
+		}
+		
 		if(shooting){
 			if(laserTimer == 100){
 				laserFire();

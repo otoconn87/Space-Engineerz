@@ -69,8 +69,8 @@ public class Game extends GameLoop {
 			
 			if(gameTimer == 1){
 				gameTimer++;
-//				audio = new JukeBox("Flash man.mp3");
-//				audio.loop();
+				audio = new JukeBox("Flash man.mp3");
+				audio.loop();
 			}
 			d.clearRect(0, 0, 900, 500);
 			d.drawImage(menu.getMenuBG(), 0, 0, this);
@@ -78,8 +78,8 @@ public class Game extends GameLoop {
 			d.drawImage(menu.getQuitSprite(), 300, 300, this);
 			
 			if(gameStart){
-//				audio.stop();
-//				audio.close();
+				audio.stop();
+				audio.close();
 				gameTimer = 3;
 				choose  = false;
 				menuTimer++;
@@ -87,7 +87,7 @@ public class Game extends GameLoop {
 				if(menuTimer == 101){
 					menuState = false;
 					levelOneDState = true;
-					
+					gameTimer = 3;
 					gameStarted = true;
 					
 				}
@@ -116,9 +116,9 @@ public class Game extends GameLoop {
 		if(levelOneState){
 			waitTimer++;
 			
-			if (waitTimer == 100){
-				player.setPosition(109, 100);
-				System.out.println("done");
+			if (waitTimer == 30){
+				player.setPosition(126, 361);
+				//System.out.println("done");
 			}
 			
 			if(player.x <= 33 && player.y <=200){
@@ -151,8 +151,8 @@ public class Game extends GameLoop {
 			}
 		
 		if(gameTimer == 3){
-//			audio = new JukeBox("Epic Level Music.mp3");
-//			audio.loop();
+			audio = new JukeBox("Epic Level Music.mp3");
+			audio.loop();
 			gameTimer++;
 		}
 		d.drawImage(background, 0, 0, this);
@@ -185,6 +185,7 @@ public class Game extends GameLoop {
 			waitTimer++;
 			
 			if (waitTimer == 5){
+				player.health = 5;
 				player.setPosition(790, 132);
 				System.out.println("done");
 			}
@@ -248,6 +249,7 @@ public class Game extends GameLoop {
 			waitTimer++;
 			
 			if (waitTimer == 5){
+				player.health = 5;
 				player.setPosition(800, 170);
 				System.out.println("done");
 			}
@@ -311,6 +313,7 @@ public class Game extends GameLoop {
 			waitTimer++;
 			
 			if (waitTimer == 5){
+				player.health = 5;
 				player.setPosition(700, 171);
 				System.out.println("done");
 			}
@@ -368,14 +371,34 @@ public class Game extends GameLoop {
 		
 		if (blastik.dead){
 			levelOneDState = false;
-			
+			gameCompleted = true;
 		}
 		
 		//d.fillRect(blastik.x,  blastik.y, 75, 105);
 		}
+		
+		if(gameCompleted){
+			if(lobsters.size() > 0){
+				for(int i = 0; i < lobsters.size(); i++){
+					lobsters.remove(i);
+					
+				}	
+				}
+			if(killBots.size() > 0){
+				for(int i = 0; i < killBots.size(); i++){
+					killBots.remove(i);
+					
+				}	
+				}
+			
+			if(select){
+				menuState = true;
+			}
+			d.drawImage(completionScreen, 0, 0, this);
+		}
 
 			
-		if(!gameOver || gameCompleted){
+		if(!gameOver && !gameCompleted){
 		if(player.idling){
 			d.drawImage(player.idle(playerAnimations),  player.x,  (int)player.y, this);
 

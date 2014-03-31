@@ -14,7 +14,7 @@ public class Lobster extends Sprites {
 
 	public boolean facingRight, left;
 
-	public int walkTimer;
+	public int walkTimer, lobsterTimer;
 	
 	public BufferedImage walk; // walking subImages
 	public BufferedImage shoot; // TODO
@@ -71,6 +71,23 @@ public class Lobster extends Sprites {
 
 	public void setIdling() {
 		walking = false;
+	}
+	
+	public void update(){
+		lobsterTimer++;
+		
+		if(lobsterTimer >=0 && lobsterTimer < 50){
+			x+=2;
+		}
+		else if(lobsterTimer >= 50 && lobsterTimer < 100){
+			x-=2;
+		}
+		else{
+			lobsterTimer = 0;
+		}
+		
+		
+		
 	}
 
 	public BufferedImage walking(BufferedImage b) {

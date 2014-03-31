@@ -93,7 +93,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 			levelOne = new LevelOne("level1_space.png", getClass()
 					.getResourceAsStream("level1a.map"));
-			// levelOne.loadMap();
+			
 			gameMapBlocked = levelOne.getLevelOneBlockedTiles();
 			gameMapPassed = levelOne.getLevelOnePassTiles();
 			levelOneMap = levelOne.getLevelOneMap();
@@ -127,7 +127,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 				killBots.add(k);
 			}
 			
-			System.out.println(killBots.size());
+			
 			
 			
 			
@@ -150,17 +150,29 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public void levelOneBSetUp() {
 		if (!levelOneBSet) {
 			Lobster l;
-			Point[] points = new Point[] { new Point(400, 275)
-			// new Point(860,200),
-			// new Point(1525,200),
-			// new Point(1680,200),
-			// new Point(1800,200)
+			Point[] points = new Point[] { 
+					new Point(269, 203)
+			
 			};
 			for (int i = 0; i < points.length; i++) {
 				l = new Lobster("space_lobster.png");
 				l.setFacingRight(false);
 				l.setPosition(points[i].x, points[i].y);
 				lobsters.add(l);
+			}
+			
+			KillBot k;
+			Point[] p = new Point[]{
+					new Point(61, 103),
+					new Point(643, 445),
+					new Point(668, 259)
+					
+			};
+			for(int i=0; i<p.length; i++){
+				k = new KillBot("killBotBoss.png", player);
+				k.setFacingRight(false);
+				k.setPosition(p[i].x, p[i].y);
+				killBots.add(k);
 			}
 
 			lobsterPlayerCollision = false;
@@ -190,17 +202,29 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	public void levelOneCSetUp() {
 		if (!levelOneCSet) {
 			Lobster l;
-			Point[] points = new Point[] { new Point(400, 275)
-			// new Point(860,200),
-			// new Point(1525,200),
-			// new Point(1680,200),
-			// new Point(1800,200)
+			Point[] points = new Point[] {
+					new Point(605, 357)
+		
 			};
 			for (int i = 0; i < points.length; i++) {
 				l = new Lobster("space_lobster.png");
 				l.setFacingRight(false);
 				l.setPosition(points[i].x, points[i].y);
 				lobsters.add(l);
+			}
+			
+			KillBot k;
+			Point[] p = new Point[]{
+					new Point(103, 139),
+					new Point(440, 460)
+					
+					
+			};
+			for(int i=0; i<p.length; i++){
+				k = new KillBot("killBotBoss.png", player);
+				k.setFacingRight(false);
+				k.setPosition(p[i].x, p[i].y);
+				killBots.add(k);
 			}
 
 			lobsterPlayerCollision = false;
@@ -304,7 +328,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			createLazer();
 			updateLaser();
 			lobsterPlayerCollision();
-			lobsterMovement();
+			;
 			
 			//killbot laser
 			createKillBotLaser();
@@ -323,6 +347,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 			for (int i = 0; i < killBots.size(); i++){
 				killBots.get(i).update();
+			}
+			for (int i = 0; i < lobsters.size(); i++){
+				lobsters.get(i).update();
 			}
 			if(levelOneDState){
 			blastik.update();
@@ -894,22 +921,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 	}
 
-	private void lobsterMovement() {
-
-		for (int i = 0; i < lobsters.size(); i++) {
-			if (!lobsters.get(i).facingRight) {
-				lobsters.get(i).setLeft();
-			} else {
-				lobsters.get(i).setRight();
-			}
-			if (lobsters.get(i).getX() == 200) {
-				lobsters.get(i).setRight();
-			}
-			if (lobsters.get(i).getX() == 400) {
-				lobsters.get(i).setLeft();
-			}
-		}
-	}
+	
 
 	private void lobsterPlayerCollision() {
 
