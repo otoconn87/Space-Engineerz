@@ -84,6 +84,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	private boolean blastikLaserPlayerCollision;
 	private boolean blastikLASERcollision;
 	private boolean BlastikLaserPlayerCollision;
+	private boolean LaserBlastikCollision;
+	private boolean blastikPlayerCollision;
 
 	public void levelOneSetUp() {
 		if (!levelOneSet) {
@@ -337,6 +339,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			//TODO
 			//blastik laser
 			if(levelOneDState){
+				blastikPlayerCollision();		
 				createBlastikLaser();
 				updateBlastikLaser();
 				blastik.update();
@@ -367,6 +370,10 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			}
 		}
 	}
+
+
+
+
 
 	private void checkMapCollision() {
 		if (gameStarted && levelOneState) {
@@ -630,10 +637,13 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 		if(levelOneDState){
 			checkLaserCollision(levelOneD);
+			checkLaserBlastikCollision();
 		}
 		checkLaserLobsterCollision();
 		checkLaserKillBotCollision();
 	}
+
+
 
 	private void createLazer() {
 		if (player.shootLaser) {
@@ -717,7 +727,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 				BlastikLaserPlayerCollision = false;
 				System.out.println("Player Health:\t" + player.health);
 			}
-			if (player.health == 0) {
+			if (player.health <= 0) {
 				player.dead = true;
 				// killBots.remove(j);
 			}
@@ -737,7 +747,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 				System.out.println("Blastic Health:\t"
 						+ blastik.health);
 			}
-			if (blastik.health == 0) {
+			if (blastik.health <= 0) {
 				blastik.dead = true;
 			}
 		
@@ -757,7 +767,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 					System.out.println("Player Health:\t"
 							+ player.health);
 				}
-				if (player.health == 0) {
+				if (player.health <= 0) {
 					player.dead = true;
 //					killBots.remove(j);
 				}
@@ -833,6 +843,38 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 					killBots.get(j).dead = true;
 					killBots.remove(j);
 				}
+			}
+		}
+	}
+	
+	private void blastikPlayerCollision() {
+			if ((blastik.getRect().intersects(player.getPlayerRect()))
+					&& !blastikPlayerCollision) {
+				blastikPlayerCollision = true;
+				player.health -= 1;
+				System.out.println("Player Health:\t" + player.health);
+				if (player.health <= 0) {
+					player.dead = true;
+				}
+			}
+			if (!(blastik.getRect().intersects(player.getPlayerRect()))) {
+				blastikPlayerCollision = false;
+			}
+		
+	}
+	
+	private void checkLaserBlastikCollision() {
+		for (int i = 0; i < lazer.size(); i++) {
+			if(blastik.getRect().intersects(lazer.get(i).getRect()) && !LaserBlastikCollision){
+				LaserBlastikCollision = true;
+				blastik.health -= 1; // lol
+				player.shootLaser = false;
+				lazer.remove(i);
+				LaserBlastikCollision = false;
+				System.out.println("Blastik Health:\t" + blastik.health);
+			}
+			if(blastik.health <= 0){	// lol
+				blastik.dead = true;
 			}
 		}
 	}
@@ -931,7 +973,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 				lobsterPlayerCollision = true;
 				player.health -= 1;
 				System.out.println("Player Health:\t" + player.health);
-				if (player.health == 0) {
+				if (player.health <= 0) {
 					player.dead = true;
 				}
 			}

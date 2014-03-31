@@ -286,8 +286,6 @@ public class Player extends Sprites {
 				rightMapCollision = false;
 			}
 		}
-
-
 		
 		// keep bottom of update function
 		movementUpdate();
