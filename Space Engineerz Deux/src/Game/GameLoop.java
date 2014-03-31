@@ -72,6 +72,8 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	private boolean BlastikLaserPlayerCollision;
 	private boolean LaserBlastikCollision;
 	private boolean blastikPlayerCollision;
+	private boolean PAUSED = false;
+	private boolean pauseGame = false;
 
 	public void levelOneSetUp() {
 		if (!levelOneSet) {
@@ -269,6 +271,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		blastikLaser = new ArrayList<BlastikLaser>();
 		
 
+		
 		while (true) {
 
 			if (player.dead) {
@@ -287,6 +290,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			if (levelOneDState && !levelOneDSet) {
 				levelOneDSetUp();
 			}
+			
+			if(!pauseGame){
+				
 			
 			player.update();
 			createLazer();
@@ -319,7 +325,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 			
 
 			checkMapCollision();
-
+			}
 			repaint();
 
 			try {
@@ -959,80 +965,96 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 	public void keyPressed(KeyEvent key) {
 
-		if (key.getKeyCode() == 37) {
-			player.setLeft(true);
-			player.setRight(false);
+		if(!PAUSED){
+			if (key.getKeyCode() == 37) {
+				player.setLeft(true);
+				player.setRight(false);
 
-		}
-		if (key.getKeyCode() == 39) {
-			player.setRight(true);
-			player.setLeft(false);
+			}
+			if (key.getKeyCode() == 39) {
+				player.setRight(true);
+				player.setLeft(false);
 
-		}
-		if (key.getKeyCode() == 38) {
-			up = true;
-			cursor = true;
+			}
+			if (key.getKeyCode() == 38) {
+				up = true;
+				cursor = true;
 
-		}
+			}
 
-		if (key.getKeyCode() == 40) {
-			down = true;
-			cursor = false;
+			if (key.getKeyCode() == 40) {
+				down = true;
+				cursor = false;
 
-		}
-		if (key.getKeyCode() == 87) {
-			player.setJump(true);
-		}
+			}
+			if (key.getKeyCode() == 87) {
+				player.setJump(true);
+			}
 
-		if (key.getKeyCode() == 70) {
-			player.setShoot(true);
-		}
-		if (key.getKeyCode() == 10) {
-			select = true;
+			if (key.getKeyCode() == 70) {
+				player.setShoot(true);
+			}
+			if (key.getKeyCode() == 10) {
+				select = true;
 
-		}
-		if (key.getKeyCode() == KeyEvent.VK_E) {
-			player.setJetpack(true);
-		}
+			}
+			if (key.getKeyCode() == KeyEvent.VK_E) {
+				player.setJetpack(true);
+			}
 
-		if (key.getKeyCode() == KeyEvent.VK_P) {
-			player.setPosition(109, 300);
+			if (key.getKeyCode() == KeyEvent.VK_P) {
+				player.setPosition(109, 300);
+			}
+		}
+		
+		
+		if (key.getKeyCode() == KeyEvent.VK_SPACE){
+			if(!PAUSED){
+				pauseGame = true;
+				PAUSED = true;
+			}else{
+				pauseGame = false;
+				PAUSED = false;
+			}
 		}
 
 	}
 
 	public void keyReleased(KeyEvent key) {
-		if (key.getKeyCode() == 37) {
-			player.setLeft(false);
-		}
-		if (key.getKeyCode() == 39) {
+		if(!PAUSED){
+			if (key.getKeyCode() == 37) {
+				player.setLeft(false);
+			}
+			if (key.getKeyCode() == 39) {
 
-			player.setRight(false);
-		}
-		if (key.getKeyCode() == 87) {
-			// player.setJump(false);
-		}
+				player.setRight(false);
+			}
+			if (key.getKeyCode() == 87) {
+				// player.setJump(false);
+			}
 
-		if (key.getKeyCode() == 70) {
-			player.setShoot(false);
-			player.shotOnce = false;
-		}
-		if (key.getKeyCode() == 10) {
-			select = false;
-		}
-		if (key.getKeyCode() == 38) {
-			up = false;
-		}
+			if (key.getKeyCode() == 70) {
+				player.setShoot(false);
+				player.shotOnce = false;
+			}
+			if (key.getKeyCode() == 10) {
+				select = false;
+			}
+			if (key.getKeyCode() == 38) {
+				up = false;
+			}
 
-		if (key.getKeyCode() == 40) {
-			down = false;
+			if (key.getKeyCode() == 40) {
+				down = false;
+			}
+			if (key.getKeyCode() == KeyEvent.VK_E) {
+				player.setJetpack(false);
+				player.bottomMapCollision = false;
+				player.setFalling(true);
+				player.jetTimer = 0;
+			}
 		}
-		if (key.getKeyCode() == KeyEvent.VK_E) {
-			player.setJetpack(false);
-			player.bottomMapCollision = false;
-			player.setFalling(true);
-			player.jetTimer = 0;
-		}
+		
 
 	}
 
