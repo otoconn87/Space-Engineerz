@@ -62,14 +62,11 @@ public class Blastik extends Sprites{
 		facingRight = b;
 	}
 
-	public void setLeft(boolean b) {
-		
+	public void setLeft(boolean b) {	
 		left = b;
-
 	}
 
 	public void setRight(boolean b) {
-
 		right = b;
 	}
 
@@ -202,23 +199,15 @@ public class Blastik extends Sprites{
 	public BufferedImage idling(){
 			animationTimer++;
 		
-
-		try {
-			
-			if (idle) {
-				
+		try {			
+			if (idle) {				
 				if (animationTimer >= 1 && animationTimer < 15) {
 					idling = image.getSubimage(679, 123, 108, 113);
-
-				} 
-				
+				} 				
 
 				else {
 					animationTimer = 0;
 				}
-
-				
-			
 
 				if (!facingRight) {
 					idling = flip(idling);
@@ -239,15 +228,12 @@ public class Blastik extends Sprites{
 
 				if (animationTimer >= 1 && animationTimer < 15) {
 					walk = image.getSubimage(579, 131, 95, 106);
-
 				} 
 
 				else {
 					animationTimer = 0;
 				}
 
-				
-			
 
 				if (!facingRight) {
 					walk = flip(walk);
