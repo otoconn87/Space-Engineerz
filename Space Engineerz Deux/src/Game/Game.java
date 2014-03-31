@@ -13,7 +13,7 @@ public class Game extends GameLoop {
 	public JukeBox audio;
 	
 	public boolean menuState;
-	//public boolean levelOneState;
+
 	public boolean newGame;
 	public boolean quit;
 	public boolean gameStart;
@@ -23,7 +23,7 @@ public class Game extends GameLoop {
 	
 	
 
-		
+	//initialize thread
 	public void init(){
 		setSize(864, 500);
 		Thread thread = new Thread(this);
@@ -38,13 +38,20 @@ public class Game extends GameLoop {
 		
 	}
 	
+	//method for drawing objects and initializes various states
+	
 	public void paint(Graphics g){
 		d.clearRect(0, 0, 864, 500);
+		
+		
 		
 		if(player.dead){
 			levelOneState = levelOneBState = levelOneCState = levelOneDState = false;
 			gameOver = true;
 		}
+		
+		//gameOver State
+		
 		if(gameOver){
 			d.drawImage(gameOverScreen, 0, 0, this);
 			if(lobsters.size() > 0){
@@ -67,6 +74,8 @@ public class Game extends GameLoop {
 			}
 		}
 		
+		//Menu State
+		
 		if(menuState){
 			
 			if(gameTimer == 1){
@@ -88,7 +97,7 @@ public class Game extends GameLoop {
 				d.drawImage(menu.getStartSprites(), menu.x, menu.y, this );
 				if(menuTimer == 101){
 					menuState = false;
-					levelOneState = true;
+					levelOneDState = true;
 					gameTimer = 3;
 					gameStarted = true;
 					
@@ -115,6 +124,8 @@ public class Game extends GameLoop {
 		}
 		
 		
+		//First segment of the level
+		
 		if(levelOneState){
 			waitTimer++;
 			
@@ -128,6 +139,7 @@ public class Game extends GameLoop {
 				player.y+=0;
 				player.x-=0;
 				player.y-=0;
+				gameTimer = 3;
 				player.walking = true;
 				levelOneMap = null;
 				gameMapBlocked = null;
@@ -183,6 +195,9 @@ public class Game extends GameLoop {
 		}
 
 
+		//Second level segment
+		
+		
 		if(levelOneBState){
 			waitTimer++;
 			
@@ -247,6 +262,9 @@ public class Game extends GameLoop {
 		}
 		}
 		
+		
+		//Third level Segment
+		
 		if(levelOneCState){
 			waitTimer++;
 			
@@ -277,12 +295,12 @@ public class Game extends GameLoop {
 				levelOneMap = null;
 				gameMapBlocked = null;
 				gameMapPassed = null;
-				audio.close();
+				//audio.close();
 				levelOneCState = false;
 				levelOneCSet = false;
 				levelOneDState = true;
 				waitTimer = 0;
-				gameTimer = 6;
+				//gameTimer = 6;
 				
 			}
 		
@@ -312,6 +330,8 @@ public class Game extends GameLoop {
 		}
 		}
 		
+		//Boss room
+		
 		if(levelOneDState){
 			waitTimer++;
 			
@@ -320,30 +340,12 @@ public class Game extends GameLoop {
 				player.setPosition(700, 171);
 				System.out.println("done");
 			}
-			
-//			if(gameTimer == 6){
-//				
-//				audio = new JukeBox("Intervals - Tapestry (HD).mp3");
-//				audio.loop();
-//				gameTimer++;
-//			}
-			
-//			if((player.x <= 263 && player.x >= 179) && player.y >=515){
-//				player.x +=0;
-//				player.y+=0;
-//				player.x-=0;
-//				player.y-=0;
-//				player.falling = true;
-//				levelOneMap = null;
-//				gameMapBlocked = null;
-//				gameMapPassed = null;
-//				
-//				levelOneCState = false;
-//				levelOneCSet = false;
-//				levelOneDState = true;
-//				waitTimer = 0;
-//				
-//			}
+			if(gameTimer == 3){
+				gameTimer++;
+				audio = new JukeBox("Intervals - Tapestry (HD).mp3");
+				audio.loop();
+			}
+
 		
 		
 		d.drawImage(background, 0, 0, this);
@@ -369,6 +371,9 @@ public class Game extends GameLoop {
 			}
 		
 		}
+		
+		//Boss animations
+		
 		if(blastik.idle){
 			d.drawImage(blastik.idling(),  blastik.x,  blastik.y, this);
 		}
@@ -386,6 +391,9 @@ public class Game extends GameLoop {
 		
 		//d.fillRect(blastik.x,  blastik.y, 75, 105);
 		}
+		
+		
+		//Finish State
 		
 		if(gameCompleted){
 			if(lobsters.size() > 0){
@@ -407,7 +415,9 @@ public class Game extends GameLoop {
 			d.drawImage(completionScreen, 0, 0, this);
 		}
 
-			
+		//Player animations
+		
+		
 		if(!gameOver && !gameCompleted){
 		if(player.idling){
 			d.drawImage(player.idle(playerAnimations),  player.x,  (int)player.y, this);
@@ -430,6 +440,10 @@ public class Game extends GameLoop {
 			d.drawImage(player.jetpackIm(playerAnimations), player.x, (int)player.y, this);
 		}
 		}
+		
+		//Enemy animations
+		
+		
 		for(int i = 0; i < lobsters.size(); i++){
 			if(lobsters.get(i).flinching == true){
 				d.drawImage(lobsters.get(i).flinch(lobsterAnimations),  lobsters.get(i).x,  lobsters.get(i).y, this);
@@ -456,7 +470,7 @@ public class Game extends GameLoop {
 		
 		
 		
-		
+		//laser animations
 		
 		try{
 				for(int i=0; i < lazer.size(); i++){

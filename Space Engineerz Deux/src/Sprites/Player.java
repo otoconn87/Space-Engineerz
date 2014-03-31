@@ -15,6 +15,8 @@ public class Player extends Sprites {
 	public int x, y;
 	public int dx, dy;
 	
+	//movement and collision checks
+	
 	public boolean walking, idling, jumping, shooting, jetpack, falling, inAir, jumpShooting, grounded;
 	public boolean leftMapCollision, rightMapCollision, topMapCollision, bottomMapCollision;
 	
@@ -26,8 +28,10 @@ public class Player extends Sprites {
 
 	public boolean dead, shotOnce;
 	public int shootTimer;
+	
+	//animation images
 
-	public BufferedImage walk; //walking subImages
+	public BufferedImage walk; 
 	public BufferedImage idle;
 	public BufferedImage jump;
 	public BufferedImage shoot;
@@ -81,7 +85,9 @@ public class Player extends Sprites {
 	public void setFacingRight(boolean b) {
 		facingRight = b;
 	}
-
+	
+	
+	//handle movement
 	
 	public void update(){
 		
@@ -353,6 +359,8 @@ public class Player extends Sprites {
 	}
 	
 	
+	
+	
 	public void setFalling(boolean b) {
 		falling = b;	
 	}
@@ -369,6 +377,9 @@ public class Player extends Sprites {
 		jetpack = b;
 		}
 
+	
+	//Animations
+	
 	public BufferedImage jumping(BufferedImage b) {
 		
 		if((jumping || falling) && !shooting && !jumpShooting){

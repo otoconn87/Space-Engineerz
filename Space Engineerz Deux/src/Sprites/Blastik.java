@@ -86,16 +86,17 @@ public class Blastik extends Sprites{
 	
 	public void update(){
 		
-		if(shooting){
-			if(!audioPlayed){
-				audio = new JukeBox("scifi003.mp3");
-				audio.play();
-				audioPlayed= true;
-			}
-		}
-		if(!shooting){
-			audioPlayed = false;
-		}
+//		if(shooting){
+//			if(!audioPlayed){
+//				audio = new JukeBox("scifi003.mp3");
+//				audio.play();
+//				audioPlayed= true;
+//			}
+//		}
+//		if(!shooting){
+//			audioPlayed = false;
+//		}
+//		
 		
 		laserTimer++;
 		
@@ -137,7 +138,7 @@ public class Blastik extends Sprites{
 		
 
 		
-		if(((Math.abs((x+40) - player.x) <= 250) && (Math.abs(y - player.y) <=90)) && !shooting){
+		if(((Math.abs((x+40) - player.x) <= 450) && (Math.abs(y - player.y) <=750)) && !shooting){
 			idle = false;
 			walking = true;
 			

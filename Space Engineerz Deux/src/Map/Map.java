@@ -33,6 +33,9 @@ public abstract class Map {
 	
 	public Map (String tiles) {
 		
+		
+		//read tileset image
+		
 		try {
 			tileSet = ImageIO.read(getClass().getResourceAsStream(tiles));
 			
@@ -46,9 +49,13 @@ public abstract class Map {
 	}
 	
 	public void makeTileMap(int rows, int cols, int pixelWidth){
+		
 		tileMap = new BufferedImage[cols + ((rows-1)*cols)];
 		blockedTiles = new BufferedImage[cols + ((rows-1)*cols)];
 		passTiles = new BufferedImage[cols + ((rows-1)*cols)];
+		
+		//fill passTiles and blockedTiles with appropriate tiles from tileset
+		
 		for(int i = 0; i < rows; i++){
 			for(int j = 0; j < cols; j++){
 				BufferedImage mapImage = tileSet.getSubimage(j*pixelWidth, i*pixelWidth, pixelWidth, pixelWidth);
@@ -69,22 +76,25 @@ public abstract class Map {
 	
 	public void readMap(InputStream is){
 		try{
+			
+			//read map file
+			
 			br = new BufferedReader(new InputStreamReader(is));
-			mapWidth = Integer.parseInt(br.readLine());
+			mapWidth = Integer.parseInt(br.readLine()); //first line of map file
 			setMapWidth(mapWidth);
 			//System.out.println(mapWidth);
-		    mapHeight = Integer.parseInt(br.readLine());
+		    mapHeight = Integer.parseInt(br.readLine()); //second line of map file
 		    setMapHeight(mapHeight);
 		    //System.out.println(mapHeight);
-		    levelMap = new int[mapHeight][mapWidth];
-		   // actualMap = new BufferedImage[mapHeight][mapWidth];
+		    levelMap = new int[mapHeight][mapWidth];	//Array for holding map data
+		   
 
 		        for(int i = 0; i < mapHeight; i++) {
 		            String line = br.readLine();
 		          //  System.out.println(line);
 		            String[] tileValues = line.split("\\s+");
 		            for(int j = 0; j < mapWidth; j++){
-		                levelMap[i][j] = Integer.parseInt(tileValues[j]); 
+		                levelMap[i][j] = Integer.parseInt(tileValues[j]); //hold map data
 		               //actualMap[i][j] = tileMap[levelMap[i][j]];
 		               //System.out.println(levelMap[i][j]);
 		               
@@ -120,9 +130,7 @@ public abstract class Map {
 		}
 		return actualMap;
 	}
-//	public boolean setBlocked(boolean b){
-//		return this.blocked = b;
-//	}
+
 	
 	public int[][] setLevelMap(){
 		int[][] map = new int[getMapHeight()][getMapWidth()];

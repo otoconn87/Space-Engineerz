@@ -85,11 +85,7 @@ public class LevelOne extends Map {
 		return rect;
 	}
 		
-//	public void update(Graphics g){
-//		
-//		
-//		
-//	}
+
 	
 	public BufferedImage[][] getLevelOneBlockedTiles(){
 		return this.getBlockedTiles();

@@ -80,6 +80,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	private int leftCollisionCounter;
 	private int rightCollisionCounter;
 	
+	//collisions
 	
 	private boolean killBotLaserCollision;
 	private boolean killBotLaserPlayerCollision;
@@ -92,6 +93,10 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 	private boolean PAUSED = false;
 	private boolean pauseGame = false;
 
+	
+	
+	//level state set up methods
+	
 	public void levelOneSetUp() {
 		if (!levelOneSet) {
 
@@ -283,6 +288,9 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 		}
 	}
 
+	
+	//Begin game!
+	
 	public void run() {
 
 		try {
@@ -382,7 +390,7 @@ public class GameLoop extends Applet implements Runnable, KeyListener {
 
 
 
-
+	//check collisions
 
 	private void checkMapCollision() {
 		if (gameStarted && levelOneState) {

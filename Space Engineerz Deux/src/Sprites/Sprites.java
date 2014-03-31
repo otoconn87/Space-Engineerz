@@ -22,6 +22,9 @@ public abstract class Sprites {
 		}
 	}
 	
+	
+	//check rectangle collisions 
+	
 	public boolean mapCollision(Rectangle r1, Rectangle r2){
 		if (r1.intersects(r2)){
 			return true;
@@ -30,6 +33,8 @@ public abstract class Sprites {
 			return false;
 		}
 	}
+	
+	//Flip images when appropriate
 	
 	public BufferedImage flip(BufferedImage b) {
 		AffineTransform imageFlip = AffineTransform.getScaleInstance(-1, 1);

@@ -15,6 +15,8 @@ public class Menu {
 	public int y = 240;
 	public int timer = 0;
 	
+	//Menu constructor
+	
 	public Menu(String background, String menuSprites, String selectSprites){
 		try {
 			bg = ImageIO.read(getClass().getResourceAsStream(background));
@@ -24,6 +26,8 @@ public class Menu {
 			e.printStackTrace();
 		}
 	}
+	
+	//Menu sprites
 	
 	public BufferedImage getMenuBG(){
 		return bg;
